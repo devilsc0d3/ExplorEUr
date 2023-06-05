@@ -2,10 +2,10 @@ package main
 
 import "net/http"
 
-func server() {
-	http.Handle("/main")
+func router() {
+	http.HandleFunc("/", test)
 }
 
-func router() {
+func test(w http.ResponseWriter, _ *http.Request) {
 
 }
