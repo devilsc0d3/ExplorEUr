@@ -3,6 +3,7 @@ package main
 import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"os"
 )
 
 type Product struct {
@@ -11,8 +12,16 @@ type Product struct {
 	Price uint
 }
 
+func GetEnv(key string) string {
+	value, isValid := os.LookupEnv(key)
+	if !isValid {
+		panic("Not found")
+	}
+	return value
+}
+
 func main() {
-	db, err := gorm.Open(postgres.Open("test.db"), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
