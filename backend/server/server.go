@@ -12,7 +12,7 @@ func router() {
 }
 
 func test(w http.ResponseWriter, _ *http.Request) {
-	page, _ := template.ParseFiles("./front/home.html")
+	page, _ := template.ParseFiles("./front/template/home.html")
 	err := page.Execute(w, nil)
 	if err != nil {
 		return
@@ -20,14 +20,14 @@ func test(w http.ResponseWriter, _ *http.Request) {
 }
 
 func category(w http.ResponseWriter, _ *http.Request) {
-	page, _ := template.ParseFiles("./front/home.html")
+	page, _ := template.ParseFiles("./front/template/home.html")
 	err := page.Execute(w, nil)
 	if err != nil {
 		return
 	}
 }
 
-const port = "8765"
+const port = "8080"
 
 func Server() {
 	router()
