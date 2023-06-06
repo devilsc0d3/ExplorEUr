@@ -1,6 +1,7 @@
 package database
 
 import (
+	"exploreur/backend/database/user"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"os"
@@ -19,5 +20,5 @@ func Init() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.AutoMigrate(&User{})
+	db.AutoMigrate(user.User{})
 }
