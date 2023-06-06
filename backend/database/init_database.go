@@ -19,5 +19,8 @@ func Init() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.AutoMigrate(&User{})
+	err = db.AutoMigrate(&User{})
+	if err != nil {
+		return
+	}
 }

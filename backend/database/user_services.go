@@ -2,6 +2,7 @@ package database
 
 import (
 	"errors"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -10,7 +11,7 @@ type User struct {
 	gorm.Model
 	Nickname string
 	Email    string
-	Password string
+	Password []byte
 	PostID   int
 	Role     string
 }
@@ -22,7 +23,8 @@ func AddUser(nickname string, email string, password string, role string) {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Create(&User{Nickname: nickname, Email: email, Password: password, Role: role})
+	passwordHashed, _ := bcrypt.GenerateFromPassword([]byte(password), 5)
+	db.Create(&User{Nickname: nickname, Email: email, Password: passwordHashed, Role: role})
 }
 
 func DeleteUser(id int) {
@@ -78,7 +80,10 @@ func ResetDatabase() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Migrator().DropTable(&User{})
+	err = db.Migrator().DropTable(&User{})
+	if err != nil {
+		panic("problem to delete user table")
+	}
 	err = db.AutoMigrate(&User{})
 	if err != nil {
 		panic("failed to auto migrate: ")
