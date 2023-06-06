@@ -40,7 +40,7 @@ func UpdateCategoryName(name string, id int) {
 	db.Model(&Category{}).Where("id = ?", id).Update("name", name)
 }
 
-func GetUser(name string) (int, error) {
+func GetCategory(name string) (int, error) {
 	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
