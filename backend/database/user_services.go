@@ -72,3 +72,15 @@ func GetUser(nickname string) (int, error) {
 	}
 	return int(singleUser.ID), nil
 }
+
+func ResetDatabase() {
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	db.Migrator().DropTable(&User{})
+	err = db.AutoMigrate(&User{})
+	if err != nil {
+		panic("failed to auto migrate: ")
+	}
+}
