@@ -1,6 +1,9 @@
 package main
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 const port = "8765"
 
@@ -11,8 +14,8 @@ func main() {
 
 func server() {
 	router()
-	err := http.ListenAndServe(":"+port, nil)
-	if err != nil {
+	fmt.Println("Listening on http://localhost:" + port)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		return
 	}
 }
