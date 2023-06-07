@@ -1,7 +1,6 @@
-package database
+package register
 
 import (
-	"exploreur/backend/register"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"os"
@@ -20,7 +19,7 @@ func Init() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	err = db.AutoMigrate(&register.User{})
+	err = db.AutoMigrate(&User{})
 	if err != nil {
 		return
 	}

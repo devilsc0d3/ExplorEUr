@@ -4,8 +4,6 @@ import (
 	"regexp"
 )
 
-// TODO register
-
 func IfNicknameExist(nickname string) bool {
 	id, err := GetIDByNickname(nickname)
 	if err != nil {

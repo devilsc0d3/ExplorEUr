@@ -2,7 +2,6 @@ package register
 
 import (
 	"errors"
-	"exploreur/backend/database"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -20,7 +19,7 @@ type User struct {
 var user = &User{}
 
 func AddUser(nickname string, email string, password string, role string) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -29,7 +28,7 @@ func AddUser(nickname string, email string, password string, role string) {
 }
 
 func DeleteUser(id int) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -37,7 +36,7 @@ func DeleteUser(id int) {
 }
 
 func UpdateUserNickname(nickname string, id int) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -45,7 +44,7 @@ func UpdateUserNickname(nickname string, id int) {
 }
 
 func UpdateUserPassword(password string, id int) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -53,7 +52,7 @@ func UpdateUserPassword(password string, id int) {
 }
 
 func UpdateUserRole(role string, id int) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -61,7 +60,7 @@ func UpdateUserRole(role string, id int) {
 }
 
 func GetIDByNickname(nickname string) (int, error) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -77,7 +76,7 @@ func GetIDByNickname(nickname string) (int, error) {
 }
 
 func GetIDByEmail(email string) (int, error) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -93,7 +92,7 @@ func GetIDByEmail(email string) (int, error) {
 }
 
 func ResetDatabase() {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
