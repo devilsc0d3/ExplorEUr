@@ -9,7 +9,6 @@ const port = "8080"
 
 func main() {
 	server()
-	//TODO BDD
 }
 
 func server() {
