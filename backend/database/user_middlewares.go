@@ -1,5 +1,7 @@
 package database
 
+import "regexp"
+
 // TODO register
 
 func IfNicknameExist(nickname string) bool {
@@ -22,4 +24,9 @@ func IfEmailExist(email string) bool {
 		return false
 	}
 	return true
+}
+
+func CheckEmail(email string) bool {
+	re := regexp.MustCompile(`^[0-9a-z!#$%&'*+–/=?^_.{|}~]{1,64}@[a-z]{1,63}\.[a-z]{1,20}$`)
+	return re.MatchString(email)
 }
