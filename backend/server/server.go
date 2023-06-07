@@ -1,6 +1,7 @@
-package main
+package server
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 )
