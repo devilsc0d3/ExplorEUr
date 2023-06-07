@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>ExploreUr</title>
+  </head>
+  <style>
+      body {
+          text-align: center;
+      }
+      .cat {
+          text-align: center;
+          border-radius: 15px;
+          background-color: bisque;
+          height: 100px;
+      }
+
+      .txt {
+          font-size: 40px;
+          text-align: center;
+      }
+  </style>
+  <body>
+    <h1> Category </h1>
+        {{range .}}
+            <div class="cat">
+                <p class="txt">{{.}}</p>
+            </div>
+        {{end}}
+  </body>
+</html>
