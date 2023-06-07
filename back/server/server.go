@@ -11,16 +11,16 @@ func router() {
 }
 
 func test(w http.ResponseWriter, _ *http.Request) {
-	page, _ := template.ParseFiles("./front/home.html")
-	err := page.Execute(w, nil)
+	page, _ := template.ParseFiles("./../../front/template/home.html")
+	err := page.ExecuteTemplate(w, "home.html", nil)
 	if err != nil {
 		return
 	}
 }
 
 func category(w http.ResponseWriter, _ *http.Request) {
-	page, _ := template.ParseFiles("./front/home.html")
-	err := page.Execute(w, nil)
+	page, _ := template.ParseFiles("./../../front/template/home.html")
+	err := page.ExecuteTemplate(w, "home.html", nil)
 	if err != nil {
 		return
 	}
