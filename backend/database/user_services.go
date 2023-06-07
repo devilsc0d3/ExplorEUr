@@ -59,7 +59,7 @@ func UpdateUserRole(role string, id int) {
 	db.Model(&User{}).Where("id = ?", id).Update("role", role)
 }
 
-func GetUser(nickname string) (int, error) {
+func GetIDByNickname(nickname string) (int, error) {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
@@ -68,9 +68,25 @@ func GetUser(nickname string) (int, error) {
 	result := db.Select("id").Where("nickname = ?", nickname).First(&singleUser)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			panic("user not found")
+			return -1, nil
 		}
-		return 0, result.Error
+		return -1, result.Error
+	}
+	return int(singleUser.ID), nil
+}
+
+func GetIDByEmail(email string) (int, error) {
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	var singleUser User
+	result := db.Select("id").Where("email = ?", email).First(&singleUser)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return -1, nil
+		}
+		return -1, result.Error
 	}
 	return int(singleUser.ID), nil
 }
