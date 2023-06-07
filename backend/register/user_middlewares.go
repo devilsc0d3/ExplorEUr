@@ -1,6 +1,8 @@
-package database
+package register
 
-import "regexp"
+import (
+	"regexp"
+)
 
 // TODO register
 

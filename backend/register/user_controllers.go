@@ -1,6 +1,8 @@
-package database
+package register
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func AddUserController(nickname string, email string, password string) {
 	if !IfNicknameExist(nickname) {
