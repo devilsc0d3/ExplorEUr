@@ -4,15 +4,15 @@ import (
 	"regexp"
 )
 
-func VerifUserPassword(password string) int {
+func VerifUserPassword(password string) bool {
 
 	verif1, _ := regexp.MatchString(`[^\w]`, password)
 	verif2, _ := regexp.MatchString(`[\w]`, password)
 
 	if verif1 && verif2 {
-		return 1
+		return true
 	} else {
-		return -1
+		return false
 	}
 
 }
