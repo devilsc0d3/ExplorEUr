@@ -4,39 +4,41 @@ body {
     justify-content: center;
     align-content: center;
     display: flex;
-
 }
 
 .content {
     display: flex;
     flex-direction: column;
-    margin-top: 30vh;
-    border: 2px solid black;
+    margin-top: 28vh;
+    border: 3px solid black;
+    border-radius: 7%;
 }
 
 .container {
-    margin-top: 3vh;
+    margin-top: 5vh;
     display: flex;
 }
 
 .image {
-    height: 5vh;
+    height: 5.3vh;
     width: 2.6vw;
-    margin-left: 0.2vw;
-    margin-right: 0.2vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
 }
 
 .input {
     height: 5vh;
     width: 15vw;
-    margin-bottom: 1.5vh;
-    margin-right: 0.9vw;
+    margin-bottom: 0.4vh;
+    margin-right: 2vw;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .choice {
     display: flex;
     flex-direction: row;
     margin-bottom: 2vh;
+    margin-left: 1.8vw;
 }
 
 .checkbox {
@@ -45,23 +47,44 @@ body {
 
 .forgot {
     margin-left: 4.5vw;
-    margin-top: 1.5vh;
+    margin-top: 1.4vh;
 }
 
 
-.register {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 3vh;
-    margin-left: 7.5vw;
+.registration {
+    text-align: center;
+    margin-bottom: 4vh;
     font-size: 24px;
+    color: black; /* Changer la couleur du lien */
+    text-decoration: none; /* Supprimer la décoration de soulignement par défaut */
+    font-weight: bold; /* Ajouter un style en gras */
+    padding: 5px 10px; /* Ajouter un espace interne pour améliorer l'apparence */
+}
+
+.registration:hover{
+    text-align: center;
+    margin-bottom: 4vh;
+    font-size: 24px;
+    color: lightgreen; /* Changer la couleur du lien au survol */
 }
 
 .loginButton {
-    margin-left: 3vw;
-    margin-right: 3vw;
+    text-align: center;
+    margin-left: 5vw;
+    margin-right: 5vw;
     height: 4vh;
-    margin-bottom: 3vh;
+    margin-bottom: 5vh;
+    box-shadow: 0px 0px 10px #000,
+    0px 0px 20px RGB(144,238,144);
+    border-radius: 10px;
+    border-color: lightgreen;
+}
+
+.loginButton:hover{
+    /*box-shadow: 0px 0px 10px #000,
+    0px 0px 20px RGB(220,120,0);*/
+    background-color: lightgreen;
+
 }
 
 

@@ -9,6 +9,7 @@ func router() {
 	http.HandleFunc("/", HomeHandler)
 	http.HandleFunc("/category", CategoryHandler)
 	http.HandleFunc("/login", LoginHandler)
+	http.HandleFunc("/registration", RegistrationHandler)
 }
 
 func HomeHandler(w http.ResponseWriter, _ *http.Request) {
@@ -33,6 +34,14 @@ func CategoryHandler(w http.ResponseWriter, _ *http.Request) {
 func LoginHandler(w http.ResponseWriter, _ *http.Request) {
 	page, _ := template.ParseFiles("./../../front/template/login.html")
 	err := page.ExecuteTemplate(w, "login.html", nil)
+	if err != nil {
+		return
+	}
+}
+
+func RegistrationHandler(w http.ResponseWriter, _ *http.Request) {
+	page, _ := template.ParseFiles("./../../front/template/registration.html")
+	err := page.ExecuteTemplate(w, "registration.html", nil)
 	if err != nil {
 		return
 	}
