@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/login.css">
+    <title>Login - Forum</title>
+</head>
+<body>
+<form class="loginInput">
+    <div class="container">
+        <img class="image" src="../static/image/utilisateur.png">
+        <input class="input" type="text" name="nickname" autocomplete="off" placeholder="Enter your nickname">
+    </div>
+    <div class="container">
+        <img class="image" src="../static/image/cadenas.png.png">
+        <input class="input" type="text" name="password" autocomplete="off" placeholder="Enter your password">
+    </div>
+        <a class="forgot" href="/recover_password">Forgot password?</a>
+    <div class="choice">
+        <label>
+            <input class="checkbox" type="checkbox" id="1" value="1">
+            Remember me
+        </label>
+            <a class="register" href="/sign_up">Register</a>
+    </div>
+    <button class="loginButton" type="submit">Login</button>
+</form>
+</body>
+</html>

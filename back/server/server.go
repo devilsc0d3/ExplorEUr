@@ -6,11 +6,12 @@ import (
 )
 
 func router() {
-	http.HandleFunc("/", home)
-	http.HandleFunc("/category", category)
+	http.HandleFunc("/", HomeHandler)
+	http.HandleFunc("/category", CategoryHandler)
+	http.HandleFunc("/login", LoginHandler)
 }
 
-func home(w http.ResponseWriter, _ *http.Request) {
+func HomeHandler(w http.ResponseWriter, _ *http.Request) {
 	page, _ := template.ParseFiles("./../../front/template/home.html")
 	err := page.ExecuteTemplate(w, "home.html", nil)
 	if err != nil {
@@ -18,12 +19,20 @@ func home(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
-func category(w http.ResponseWriter, _ *http.Request) {
+func CategoryHandler(w http.ResponseWriter, _ *http.Request) {
 	page, _ := template.ParseFiles("./../../front/template/category.html")
 
 	dataTest := []string{"place", "Tools", "information", "+"}
 
 	err := page.ExecuteTemplate(w, "category.html", dataTest)
+	if err != nil {
+		return
+	}
+}
+
+func LoginHandler(w http.ResponseWriter, _ *http.Request) {
+	page, _ := template.ParseFiles("./../../front/template/login.html")
+	err := page.ExecuteTemplate(w, "login.html", nil)
 	if err != nil {
 		return
 	}
