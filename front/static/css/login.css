@@ -55,17 +55,17 @@ body {
     text-align: center;
     margin-bottom: 4vh;
     font-size: 24px;
-    color: black; /* Changer la couleur du lien */
-    text-decoration: none; /* Supprimer la décoration de soulignement par défaut */
-    font-weight: bold; /* Ajouter un style en gras */
-    padding: 5px 10px; /* Ajouter un espace interne pour améliorer l'apparence */
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
 }
 
 .registration:hover{
     text-align: center;
     margin-bottom: 4vh;
     font-size: 24px;
-    color: lightgreen; /* Changer la couleur du lien au survol */
+    color: lightgreen;
 }
 
 .loginButton {
@@ -81,10 +81,7 @@ body {
 }
 
 .loginButton:hover{
-    /*box-shadow: 0px 0px 10px #000,
-    0px 0px 20px RGB(220,120,0);*/
     background-color: lightgreen;
-
 }
 
 
