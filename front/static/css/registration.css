@@ -53,7 +53,6 @@ body {
     color: #90ee90;
 }
 
-
 .registerButton{
     text-align: center;
     margin-left: 5vw;
@@ -71,3 +70,12 @@ body {
     background-color: lightgreen;
 }
 
+.password-info {
+    text-align: center;
+    margin-left: 5vh;
+}
+
+.password-description {
+    font-size: 0.6rem;
+    color: #888;
+}
