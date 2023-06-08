@@ -7,19 +7,19 @@ body {
 
 }
 
-.loginInput{
+.content {
     display: flex;
     flex-direction: column;
     margin-top: 30vh;
     border: 2px solid black;
 }
 
-.container{
-    margin-top: 2vh;
+.container {
+    margin-top: 3vh;
     display: flex;
 }
 
-.image{
+.image {
     height: 5vh;
     width: 2.6vw;
     margin-left: 0.2vw;
@@ -29,32 +29,39 @@ body {
 .input {
     height: 5vh;
     width: 15vw;
-    margin-bottom: 5vh;
+    margin-bottom: 1.5vh;
     margin-right: 0.9vw;
-}
-
-.forgot {
-    margin-bottom: 5vh;
 }
 
 .choice {
     display: flex;
     flex-direction: row;
-    margin-bottom: 5vh;
+    margin-bottom: 2vh;
 }
 
 .checkbox {
-    margin-top: 0vh;
+    margin-left: 3.1vw;
 }
 
-.register {
-    margin-left: 7.5vw;
+.forgot {
+    margin-left: 4.5vw;
+    margin-top: 1.5vh;
 }
-.loginButton{
+
+
+.register {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 3vh;
+    margin-left: 7.5vw;
+    font-size: 24px;
+}
+
+.loginButton {
     margin-left: 3vw;
     margin-right: 3vw;
-    height: 3vh;
-    margin-bottom: 2vh;
+    height: 4vh;
+    margin-bottom: 3vh;
 }
 
 
