@@ -6,7 +6,7 @@ import (
 
 func main() {
 	//fmt.Println("test0")
-	//register.Init()
+	//database.Init()
 	//fmt.Println("test1")
 	server.Server()
 }
