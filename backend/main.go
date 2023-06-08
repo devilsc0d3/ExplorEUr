@@ -1,7 +1,12 @@
 package main
 
-import "exploreur/backend/database"
+import (
+	"exploreur/backend/server"
+)
 
 func main() {
-	database.Init()
+	//fmt.Println("test0")
+	//database.Init()
+	//fmt.Println("test1")
+	server.Server()
 }
