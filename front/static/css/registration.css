@@ -15,7 +15,7 @@ body {
 }
 
 .container {
-    margin-top: 5vh;
+    margin-top: 4.5vh;
     display: flex;
 }
 
@@ -73,9 +73,12 @@ body {
 .password-info {
     text-align: center;
     margin-left: 5vh;
+    height: 0.1vh;
+    margin-bottom: 0.5vh;
 }
 
 .password-description {
+    height: 0.1vh;
     font-size: 0.6rem;
     color: #888;
 }
