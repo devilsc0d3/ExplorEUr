@@ -2,9 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login - Forum</title>
 </head>
 <body>
-
+    <form class="loginInput">
+        <input class="nicknameInput" type="text" name="nickname" autocomplete="off" placeholder="Enter your nickname">
+        <input class="passwordInput" type="text" name="password" autocomplete="off" placeholder="Enter your password">
+        <label>
+            <input type="checkbox" id="1" value="1">
+            Remember me
+        </label>
+        <ul>
+            <li>
+                <a href="/sign_up">Register</a>
+                <a href="/recover_password">Forgot password?</a>
+            </li>
+        </ul>
+        <button type="submit">Login</button>
+    </form>
 </body>
 </html>
