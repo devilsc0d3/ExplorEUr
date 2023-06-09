@@ -1,4 +1,4 @@
-package register
+package registerDB
 
 import (
 	"regexp"
