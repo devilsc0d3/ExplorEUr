@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/registration.css">
+    <title>Registration - ExplorEUr</title>
+</head>
+<body>
+<form class="content" method="POST">
+    <div class="container">
+        <img class="image" src="../static/image/utilisateur.png">
+        <input class="input" id="nickname" type="text" name="nickname" autocomplete="off" placeholder="Enter a nickname" required>
+    </div>
+    <div class="container">
+        <img class="image" src="../static/image/email.png">
+        <input class="input" id="email" type="text" name="email" autocomplete="off" placeholder="Enter a email" requirede>
+    </div>
+    <div class="container">
+        <img class="image" src="../static/image/cadenas.png">
+        <input class="input" id="password" type="text" name="password" autocomplete="off" placeholder="Enter a password" required>
+    </div>
+    <div class="password-info">
+        <p class="password-description">(The password must contain at least one lowercase letter, one uppercase letter, <br>one digit, one special character, and must be a minimum of 8 characters)</p>
+    </div>
+    <div class="container">
+        <img class="image" src="../static/image/cadenas.png">
+        <input class="input" type="password" id="confirmation" name="confirmation"  autocomplete="off" placeholder="Confirm your password"required>
+    </div>
+    <button class="registerButton" type="submit">Register</button>
+    <div class="redirection">
+        <label>Already have an account?</label>
+        <a class="login" href="/login">Log in</a>
+    </div>
+</form>
+</body>
+</html>

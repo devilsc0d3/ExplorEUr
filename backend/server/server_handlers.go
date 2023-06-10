@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"html/template"
@@ -19,6 +19,22 @@ func category(w http.ResponseWriter, _ *http.Request) {
 	dataTest := []string{"place", "Tools", "information", "+"}
 
 	err := page.ExecuteTemplate(w, "category.html", dataTest)
+	if err != nil {
+		return
+	}
+}
+
+func LoginHandler(w http.ResponseWriter, _ *http.Request) {
+	page, _ := template.ParseFiles("./../../front/template/login.html")
+	err := page.ExecuteTemplate(w, "login.html", nil)
+	if err != nil {
+		return
+	}
+}
+
+func RegistrationHandler(w http.ResponseWriter, _ *http.Request) {
+	page, _ := template.ParseFiles("./../../front/template/registration.html")
+	err := page.ExecuteTemplate(w, "registration.html", nil)
 	if err != nil {
 		return
 	}
