@@ -7,8 +7,12 @@ import (
 )
 
 func router() {
+	fs := http.FileServer(http.Dir("./front/static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.HandleFunc("/", home)
 	http.HandleFunc("/category", category)
+	http.HandleFunc("/login", Login)
+	http.HandleFunc("/registration", Registration)
 }
 
 const port = "8080"
