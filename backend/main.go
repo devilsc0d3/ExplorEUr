@@ -1,11 +1,11 @@
 package main
 
 import (
-	"exploreur/backend/registerDB"
 	"exploreur/backend/server"
+	"exploreur/backend/userDB"
 )
 
 func main() {
-	registerDB.Init()
+	userDB.Init()
 	server.Server()
 }
