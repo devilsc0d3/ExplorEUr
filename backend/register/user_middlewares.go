@@ -1,6 +1,7 @@
-package userDB
+package register
 
 import (
+	"golang.org/x/crypto/bcrypt"
 	"regexp"
 )
 
@@ -43,4 +44,16 @@ func CheckPassword(password string) bool {
 		return false
 	}
 
+}
+
+func CheckNicknameAndPassword(nickname string, password string) bool {
+	if IfNicknameExist(nickname) {
+		id, _ := GetIDByNickname(nickname)
+		user := GetUserByID(id)
+		err := bcrypt.CompareHashAndPassword(user.Password, []byte(password))
+		if err == nil {
+			return true
+		}
+	}
+	return false
 }

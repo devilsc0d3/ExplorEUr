@@ -1,4 +1,4 @@
-package userDB
+package register
 
 import (
 	"fmt"

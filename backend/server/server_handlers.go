@@ -1,7 +1,7 @@
 package server
 
 import (
-	"exploreur/backend/userDB"
+	"exploreur/backend/register"
 	"html/template"
 	"net/http"
 )
@@ -43,7 +43,7 @@ func LoginHandler(w http.ResponseWriter, _ *http.Request) {
 func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/registration.html")
 	if r.FormValue("nickname") != "" && r.FormValue("email") != "" && r.FormValue("password") != "" && r.FormValue("confirmation") == r.FormValue("password") {
-		user := userDB.AddUserController(r.FormValue("nickname"), r.FormValue("email"), r.FormValue("password"))
+		user := register.AddUserController(r.FormValue("nickname"), r.FormValue("email"), r.FormValue("password"))
 		if user == "" {
 			http.Redirect(w, r, "/", 303)
 		}
