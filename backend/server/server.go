@@ -5,14 +5,6 @@ import (
 	"net/http"
 )
 
-/*func router() {
-	fs := http.FileServer(http.Dir("../front/static/"))
-
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	http.HandleFunc("/", home)
-	http.HandleFunc("/category", category)
-}*/
-
 const port = "8080"
 
 func Server() {
@@ -22,6 +14,4 @@ func Server() {
 	if err != nil {
 		return
 	}
-
-	//log.Fatal(http.ListenAndServeTLS(":"+port, "./localhost.crt", "localhost.key", nil))
 }
