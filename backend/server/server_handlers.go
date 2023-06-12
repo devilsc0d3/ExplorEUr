@@ -51,7 +51,7 @@ func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("nickname") != "" && r.FormValue("email") != "" && r.FormValue("password") != "" && r.FormValue("confirmation") == r.FormValue("password") {
 		user := register.AddUserController(r.FormValue("nickname"), r.FormValue("email"), r.FormValue("password"))
 		if user == "" {
-			http.Redirect(w, r, "/", 303)
+			http.Redirect(w, r, "/login", 303)
 		}
 	}
 	err := page.ExecuteTemplate(w, "registration.html", nil)
