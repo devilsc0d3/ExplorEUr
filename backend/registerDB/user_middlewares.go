@@ -35,8 +35,9 @@ func CheckPassword(password string) bool {
 
 	check1, _ := regexp.MatchString(`[^\w]`, password)
 	check2, _ := regexp.MatchString(`[\w]`, password)
+	check3 := len(password) >= 8
 
-	if check1 && check2 {
+	if check1 && check2 && check3 {
 		return true
 	} else {
 		return false
