@@ -32,8 +32,14 @@ func CategoryHandler(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
-func LoginHandler(w http.ResponseWriter, _ *http.Request) {
+func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/login.html")
+	if r.FormValue("nickname") != "" && r.FormValue("password") != "" {
+		user1 := register.CheckNicknameAndPassword(r.FormValue("nickname"), r.FormValue("password"))
+		if user1 == true {
+			http.Redirect(w, r, "/", 303)
+		}
+	}
 	err := page.ExecuteTemplate(w, "login.html", nil)
 	if err != nil {
 		return
