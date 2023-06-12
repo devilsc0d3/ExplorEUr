@@ -2,24 +2,27 @@ package server
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 var data = []string{"Place", "Tools", "Information", "+"}
+var registeredPaths = make(map[string]bool) // Map to track registered paths
 
 func router() {
 	fs := http.FileServer(http.Dir("./front/static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	http.HandleFunc("/", home)
-	http.HandleFunc("/category", category)
 	http.HandleFunc("/login", Login)
 	http.HandleFunc("/registration", Registration)
+	http.HandleFunc("/category", category)
 
 	for i := 0; i < len(data); i++ {
-		http.HandleFunc("/"+data[i], Chat)
+		http.HandleFunc("/"+strings.ToLower(data[i]), Chat)
+		registeredPaths[data[i]] = true // Mark path as registered
 	}
 	Reset()
+
 }
 
 const port = "8080"
@@ -37,25 +40,11 @@ func Server() {
 
 func Reset() {
 
-	client := &http.Client{}
-
-	// create a new DELETE request
-	req, err := http.NewRequest("DELETE", "http://localhost:8080/registration", nil)
-	if err != nil {
-		panic(err)
+	data = append(data, "test")
+	for i := 0; i < len(data); i++ {
+		if !registeredPaths[data[i]] { // Check if path is already registered
+			http.HandleFunc("/"+strings.ToLower(data[i]), Chat)
+			registeredPaths[data[i]] = true // Mark path as registered
+		}
 	}
-
-	// send the request
-	resp, err := client.Do(req)
-	if err != nil {
-		panic(err)
-	}
-	defer resp.Body.Close()
-
-	// read the response body
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(body)
 }

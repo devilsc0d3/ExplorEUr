@@ -16,9 +16,7 @@ func home(w http.ResponseWriter, _ *http.Request) {
 func category(w http.ResponseWriter, _ *http.Request) {
 	page, _ := template.ParseFiles("./front/template/category.html")
 
-	dataTest := []string{"Place", "Tools", "Information", "+"}
-
-	err := page.ExecuteTemplate(w, "category.html", dataTest)
+	err := page.ExecuteTemplate(w, "category.html", data)
 	if err != nil {
 		return
 	}
