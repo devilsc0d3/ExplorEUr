@@ -1,20 +1,11 @@
 package server
 
 import (
-	"exploreur/backend/registerDB"
+	"exploreur/backend/register"
+	_ "exploreur/backend/register"
 	"html/template"
 	"net/http"
 )
-
-func Router() {
-	fs := http.FileServer(http.Dir("./front/static/"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	http.HandleFunc("/", HomeHandler)
-	http.HandleFunc("/category", CategoryHandler)
-	http.HandleFunc("/login", LoginHandler)
-	http.HandleFunc("/register", Register)
-	http.HandleFunc("/registration", RegistrationHandler)
-}
 
 func HomeHandler(w http.ResponseWriter, _ *http.Request) {
 	page, _ := template.ParseFiles("./front/template/home.html")
@@ -43,20 +34,20 @@ func LoginHandler(w http.ResponseWriter, _ *http.Request) {
 
 func Register(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("nickname") != "" && r.FormValue("email") != "" && r.FormValue("password") != "" && r.FormValue("confirmation") == r.FormValue("password") {
-		userError := registerDB.AddUserController(r.FormValue("nickname"), r.FormValue("email"), r.FormValue("password"))
+		userError := register.AddUserController(r.FormValue("nickname"), r.FormValue("email"), r.FormValue("password"))
 		if userError == "" {
 			http.Redirect(w, r, "/login", 303)
 		} else if userError != "" {
-			if registerDB.IfNicknameExist(r.FormValue("nickname")) {
+			if register.IfNicknameExist(r.FormValue("nickname")) {
 				http.Redirect(w, r, "/registration?error=nickname-already-used", 303)
 			}
-			if registerDB.IfEmailExist(r.FormValue("email")) {
+			if register.IfEmailExist(r.FormValue("email")) {
 				http.Redirect(w, r, "/registration?error=email-already-used", 303)
 			}
-			if !registerDB.CheckEmail(r.FormValue("email")) {
+			if !register.CheckEmail(r.FormValue("email")) {
 				http.Redirect(w, r, "/registration?error=email-not-valid", 303)
 			}
-			if !registerDB.CheckPassword(r.FormValue("password")) {
+			if !register.CheckPassword(r.FormValue("password")) {
 				http.Redirect(w, r, "/registration?error=password-not-valid", 303)
 			}
 		}
@@ -66,6 +57,14 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/registration.html")
+	err := page.ExecuteTemplate(w, "registration.html", nil)
+	if err != nil {
+		return
+	}
+}
+
+func Chat(w http.ResponseWriter, r *http.Request) {
+	page, _ := template.ParseFiles("./front/template/chat.html")
 	err := page.ExecuteTemplate(w, "registration.html", nil)
 	if err != nil {
 		return
