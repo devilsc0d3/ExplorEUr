@@ -14,6 +14,8 @@ func GetEnv(key string) string {
 	return value
 }
 
+var Db *gorm.DB
+
 func Init() {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
@@ -23,4 +25,5 @@ func Init() {
 	if err != nil {
 		return
 	}
+	Db = db
 }

@@ -21,7 +21,7 @@ func router() {
 		http.HandleFunc("/"+strings.ToLower(data[i]), Chat)
 		registeredPaths[data[i]] = true // Mark path as registered
 	}
-	Reset()
+	//Reset()
 
 }
 

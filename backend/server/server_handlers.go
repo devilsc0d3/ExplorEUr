@@ -1,6 +1,7 @@
 package server
 
 import (
+	"exploreur/backend/register"
 	"html/template"
 	"net/http"
 )
@@ -15,7 +16,6 @@ func home(w http.ResponseWriter, _ *http.Request) {
 
 func category(w http.ResponseWriter, _ *http.Request) {
 	page, _ := template.ParseFiles("./front/template/category.html")
-
 	err := page.ExecuteTemplate(w, "category.html", data)
 	if err != nil {
 		return
@@ -40,7 +40,9 @@ func Registration(w http.ResponseWriter, _ *http.Request) {
 
 func Chat(w http.ResponseWriter, _ *http.Request) {
 	page, _ := template.ParseFiles("./front/template/chat.html")
-	err := page.ExecuteTemplate(w, "chat.html", nil)
+	var users []register.User
+	register.Db.Table("users").Find(&users)
+	err := page.ExecuteTemplate(w, "chat.html", users)
 	if err != nil {
 		return
 	}
