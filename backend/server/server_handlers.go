@@ -6,16 +6,6 @@ import (
 	"net/http"
 )
 
-func Router() {
-	fs := http.FileServer(http.Dir("./front/static/"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	http.HandleFunc("/", HomeHandler)
-	http.HandleFunc("/category", CategoryHandler)
-	http.HandleFunc("/login", LoginHandler)
-	http.HandleFunc("/register", Register)
-	http.HandleFunc("/registration", RegistrationHandler)
-}
-
 func HomeHandler(w http.ResponseWriter, _ *http.Request) {
 	page, _ := template.ParseFiles("./front/template/home.html")
 	err := page.ExecuteTemplate(w, "home.html", nil)
@@ -60,6 +50,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 				http.Redirect(w, r, "/registration?error=password-not-valid", 303)
 			}
 		}
+	} else if r.FormValue("password") != r.FormValue("confirmation") {
+		http.Redirect(w, r, "/registration?error=password-not-identical", 303)
 	}
 	http.Redirect(w, r, "/registration", 303)
 }
@@ -67,6 +59,22 @@ func Register(w http.ResponseWriter, r *http.Request) {
 func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/registration.html")
 	err := page.ExecuteTemplate(w, "registration.html", nil)
+	if err != nil {
+		return
+	}
+}
+
+func RecoveringPassword(w http.ResponseWriter, r *http.Request) {
+	page, _ := template.ParseFiles("./front/template/recovering_password.html")
+	if r.FormValue("nickname") != "" && r.FormValue("password") != "" && r.FormValue("confirmation") == r.FormValue("password") {
+		userError := registerDB.UpdateUserPasswordController(r.FormValue("nickname"), r.FormValue("password"))
+		if userError == "" {
+			http.Redirect(w, r, "/login", 303)
+		}
+	} else if r.FormValue("password") != r.FormValue("confirmation") {
+		http.Redirect(w, r, "/registration?error=password-not-identical", 303)
+	}
+	err := page.ExecuteTemplate(w, "recovering_password.html", nil)
 	if err != nil {
 		return
 	}

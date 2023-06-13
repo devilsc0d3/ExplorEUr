@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+	registerDB.ResetDatabase()
 	registerDB.Init()
 	server.Server()
 }

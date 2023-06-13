@@ -6,7 +6,7 @@ body {
     display: flex;
 }
 
-.content {
+.registrationContent {
     display: flex;
     flex-direction: column;
     margin-top: 21vh;
@@ -14,8 +14,17 @@ body {
     border-radius: 7%;
 }
 
+
+.content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 28vh;
+    border: 3px solid black;
+    border-radius: 7%;
+}
+
 .container {
-    margin-top: 4.5vh;
+    margin-top: 5vh;
     display: flex;
 }
 
@@ -32,6 +41,50 @@ body {
     margin-bottom: 0.4vh;
     margin-right: 2vw;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.choice {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2vh;
+    margin-left: 1.8vw;
+}
+
+.checkbox {
+    margin-left: 3.1vw;
+}
+
+.registration {
+    text-align: center;
+    margin-bottom: 4vh;
+    font-size: 24px;
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+
+.registration:hover {
+    text-align: center;
+    margin-bottom: 4vh;
+    font-size: 24px;
+    color: lightgreen;
+}
+
+.loginButton {
+    text-align: center;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    height: 4vh;
+    margin-bottom: 5vh;
+    box-shadow: 0px 0px 10px #000,
+    0px 0px 20px RGB(144, 238, 144);
+    border-radius: 10px;
+    border-color: lightgreen;
+}
+
+.loginButton:hover {
+    background-color: lightgreen;
 }
 
 .redirection {
@@ -53,20 +106,20 @@ body {
     color: #90ee90;
 }
 
-.registerButton{
+.registerButton {
     text-align: center;
     margin-left: 5vw;
     margin-right: 5vw;
     height: 4vh;
     margin-bottom: 2.5vh;
     box-shadow: 0px 0px 10px #000,
-    0px 0px 20px RGB(144,238,144);
+    0px 0px 20px RGB(144, 238, 144);
     border-radius: 10px;
     border-color: lightgreen;
     margin-top: 4vh;
 }
 
-.registerButton:hover{
+.registerButton:hover {
     background-color: lightgreen;
 }
 
@@ -81,4 +134,9 @@ body {
     height: 0.1vh;
     font-size: 0.6rem;
     color: #888;
+}
+
+.forgot {
+    margin-left: 4.5vw;
+    margin-top: 1.4vh;
 }

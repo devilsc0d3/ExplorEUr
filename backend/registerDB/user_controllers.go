@@ -43,11 +43,12 @@ func UpdateUserNicknameController(nickname string, newNickname string) {
 	}
 }
 
-func UpdateUserPasswordController(nickname string, password string) {
+func UpdateUserPasswordController(nickname string, password string) string {
 	if CheckPassword(password) {
 		id, _ := GetIDByNickname(nickname)
 		UpdateUserPassword(password, id)
 	} else {
-		fmt.Println("the password is incorrect") //+bonne pratique
+		return "the password is incorrect"
 	}
+	return ""
 }
