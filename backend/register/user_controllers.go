@@ -4,23 +4,24 @@ import (
 	"fmt"
 )
 
-func AddUserController(nickname string, email string, password string) {
+func AddUserController(nickname string, email string, password string) string {
 	if !IfNicknameExist(nickname) {
 		if !IfEmailExist(email) {
 			if CheckPassword(password) {
 				if CheckEmail(email) {
 					AddUser(nickname, email, password, "user")
+					return ""
 				} else {
-					fmt.Println("the email is incorrect")
+					return "the email is incorrect"
 				}
 			} else {
-				fmt.Println("the password is incorrect") //+bonne pratique
+				return "the password is incorrect"
 			}
 		} else {
-			fmt.Println("the email already exist")
+			return "the email already exist"
 		}
 	} else {
-		fmt.Println("the nickname already exist")
+		return "the nickname already exist"
 	}
 }
 
@@ -40,7 +41,6 @@ func UpdateUserNicknameController(nickname string, newNickname string) {
 	} else {
 		fmt.Println("the nickname already exist")
 	}
-
 }
 
 func UpdateUserPasswordController(nickname string, password string) {
@@ -50,5 +50,4 @@ func UpdateUserPasswordController(nickname string, password string) {
 	} else {
 		fmt.Println("the password is incorrect") //+bonne pratique
 	}
-
 }

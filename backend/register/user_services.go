@@ -91,6 +91,24 @@ func GetIDByEmail(email string) (int, error) {
 	return int(singleUser.ID), nil
 }
 
+func GetUserByID(id int) *User {
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
+	if err != nil {
+		return nil
+	}
+
+	var user User
+	result := db.First(&user, id)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil
+		}
+		return nil
+	}
+
+	return &user
+}
+
 func ResetDatabase() {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
