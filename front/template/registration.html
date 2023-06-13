@@ -6,7 +6,7 @@
     <title>Registration - ExplorEUr</title>
 </head>
 <body>
-<form class="content" method="POST">
+<form action="/register" class="content" method="POST">
     <div class="container">
         <img class="image" src="../static/image/utilisateur.png">
         <input class="input" type="text" name="nickname" autocomplete="off" placeholder="Enter a nickname" required>
@@ -27,10 +27,19 @@
         <input class="input" type="password" name="confirmation"  autocomplete="off" placeholder="Confirm your password"required>
     </div>
     <button class="registerButton" type="submit">Register</button>
+    <p id="errorText">
     <div class="redirection">
         <label>Already have an account?</label>
         <a class="login" href="/login">Log in</a>
     </div>
 </form>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+    document.getElementById("errorText").innerHTML=error;
+    document.getElementById("errorText").style.textAlign="center";
+    document.getElementById("errorText").style.color="red";
+</script>
 </body>
 </html>
+
