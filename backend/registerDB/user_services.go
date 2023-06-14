@@ -11,6 +11,7 @@ type User struct {
 	gorm.Model
 	Nickname string
 	Email    string
+
 	Password []byte
 	PostID   int
 	Role     string
