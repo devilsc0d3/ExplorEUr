@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -28,13 +29,10 @@ func Router() {
 
 func Server() {
 	Router()
-	fmt.Println("Listening on http://localhost:" + port)
+	fmt.Println("Listening on https://localhost:" + port)
 	Reset()
-	err := http.ListenAndServe(":"+port, nil)
-	if err != nil {
-		return
-	}
-	//log.Fatal(http.ListenAndServeTLS(":"+port, "./localhost.crt", "localhost.key", nil))
+	err := http.ListenAndServeTLS(":8080", "cert.pem", "key.pem", nil)
+	log.Fatal(err)
 }
 
 func Reset() {
