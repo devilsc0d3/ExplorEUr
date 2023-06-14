@@ -38,7 +38,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("nickname") != "" && r.FormValue("password") != "" {
 		isok, user := register.CheckNicknameAndPassword(r.FormValue("nickname"), r.FormValue("password"))
 		if isok {
-
 			token, err := register.CreateJWTToken(user.Nickname, user.Role)
 			if err != nil {
 				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
