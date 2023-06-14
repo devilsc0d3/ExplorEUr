@@ -47,3 +47,18 @@ func CreateJWTToken(nickname, user string) (string, error) {
 	}
 	return token, nil
 }
+
+func DecodeJWTToken(token string) (string, string, error) {
+	jwtSecret := GetEnv("JWT_SECRET")
+	var claims = JwtClaims{}
+	tk, err := jwt.ParseWithClaims(token, &claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtSecret), nil
+	})
+	if err != nil {
+		return "", "", err
+	}
+	if !tk.Valid {
+		return "", "", err
+	}
+	return claims.Nickname, claims.Role, nil
+}
