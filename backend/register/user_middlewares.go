@@ -46,14 +46,14 @@ func CheckPassword(password string) bool {
 
 }
 
-func CheckNicknameAndPassword(nickname string, password string) bool {
+func CheckNicknameAndPassword(nickname string, password string) (bool, *User) {
 	if IfNicknameExist(nickname) {
 		id, _ := GetIDByNickname(nickname)
 		user := GetUserByID(id)
 		err := bcrypt.CompareHashAndPassword(user.Password, []byte(password))
 		if err == nil {
-			return true
+			return true, user
 		}
 	}
-	return false
+	return false, nil
 }

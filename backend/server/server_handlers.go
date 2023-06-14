@@ -13,9 +13,10 @@ func Router() {
 	http.HandleFunc("/category", CategoryHandler)
 	http.HandleFunc("/login", LoginHandler)
 	http.HandleFunc("/registration", RegistrationHandler)
+	http.HandleFunc("/logout", LogoutHandler)
 }
 
-func HomeHandler(w http.ResponseWriter, _ *http.Request) {
+func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/home.html")
 	err := page.ExecuteTemplate(w, "home.html", nil)
 	if err != nil {
@@ -35,13 +36,22 @@ func CategoryHandler(w http.ResponseWriter, _ *http.Request) {
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/login.html")
 	if r.FormValue("nickname") != "" && r.FormValue("password") != "" {
-		user1 := register.CheckNicknameAndPassword(r.FormValue("nickname"), r.FormValue("password"))
-		if user1 == true {
-			http.Redirect(w, r, "/", 303)
+		isok, user := register.CheckNicknameAndPassword(r.FormValue("nickname"), r.FormValue("password"))
+		if isok {
+
+			token, err := register.CreateJWTToken(user.Nickname, user.Role)
+			if err != nil {
+				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+				return
+			}
+			register.CreateCookie(w, token)
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
 		}
 	}
 	err := page.ExecuteTemplate(w, "login.html", nil)
 	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 }
@@ -58,4 +68,9 @@ func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
+}
+
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+	register.DeleteCookie(w)
+	http.Redirect(w, r, "/", http.StatusFound)
 }

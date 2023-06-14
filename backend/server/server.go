@@ -9,7 +9,7 @@ const port = "8080"
 
 func Server() {
 	Router()
-	fmt.Println("Listening on https://localhost:" + port)
+	fmt.Println("Listening on http://localhost:" + port)
 	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		return
