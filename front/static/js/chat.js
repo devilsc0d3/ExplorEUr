@@ -49,12 +49,16 @@ export function grid() {
     document.body.append(form);
 
     let txt = document.createElement('textarea');
+    txt.name = "test"
     form.appendChild(txt);
 
     let sub = document.createElement("button");
     sub.type = "submit";
+    sub.name = "post";
     sub.innerHTML = "Share gossip!";
     form.appendChild(sub);
+
+
 
     form.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -64,11 +68,4 @@ export function grid() {
         form.insertAdjacentElement('afterend', newDiv);
         form.reset();
     });
-
-    // for (let i = 0 ; i < gossips.length; i++) {
-    //     let div = document.createElement('div');
-    //     div.innerHTML = gossips[i];
-    //     div.classList.add('gossip')
-    //     document.body.append(div)
-    // }
 }

@@ -1,4 +1,4 @@
-package register
+package post
 
 import (
 	"gorm.io/driver/postgres"
@@ -21,7 +21,7 @@ func Init() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	err = db.AutoMigrate(&User{})
+	err = db.AutoMigrate(&Post{})
 	if err != nil {
 		return
 	}

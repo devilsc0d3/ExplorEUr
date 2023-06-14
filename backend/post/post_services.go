@@ -2,7 +2,8 @@ package post
 
 import (
 	"errors"
-	"exploreur/backend/database"
+	"exploreur/backend/register"
+	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -16,15 +17,17 @@ type Post struct {
 var post = &Post{}
 
 func AddPost(content string) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
+	fmt.Println("test1")
 	db.Create(&Post{Content: content})
+	fmt.Println("test2")
 }
 
 func DeletePost(id int) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -32,7 +35,7 @@ func DeletePost(id int) {
 }
 
 func UpdatePost(content string, id int) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -40,7 +43,7 @@ func UpdatePost(content string, id int) {
 }
 
 func GetPost(content string) (int, error) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}

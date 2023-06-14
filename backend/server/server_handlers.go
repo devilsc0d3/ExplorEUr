@@ -38,11 +38,17 @@ func Registration(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
-func Chat(w http.ResponseWriter, _ *http.Request) {
+func Chat(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/chat.html")
-	var users []register.User
-	register.Db.Table("users").Find(&users)
-	err := page.ExecuteTemplate(w, "chat.html", users)
+	var contents []string
+	register.Db.Table("posts").Pluck("content", &contents)
+
+	if r.FormValue("post") != "" {
+		print("test3")
+		//post.AddPost(r.FormValue("post"))
+	}
+
+	err := page.ExecuteTemplate(w, "chat.html", contents)
 	if err != nil {
 		return
 	}
