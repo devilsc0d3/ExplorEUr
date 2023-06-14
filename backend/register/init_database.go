@@ -7,11 +7,8 @@ import (
 )
 
 func GetEnv(key string) string {
-	value, isValid := os.LookupEnv(key)
-	if !isValid {
-		panic("Not found")
-	}
-	return value
+	env := os.Getenv(key)
+	return env
 }
 
 func Init() {
