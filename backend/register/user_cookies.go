@@ -31,6 +31,14 @@ type JwtClaims struct {
 	jwt.RegisteredClaims
 }
 
+func GetTokenFromCookie(r *http.Request) (string, error) {
+	cookie, err := r.Cookie("token")
+	if err != nil {
+		return "", err
+	}
+	return cookie.Value, nil
+}
+
 func CreateJWTToken(nickname, user string) (string, error) {
 	jwtSecret := GetEnv("JWT_SECRET")
 	var claims = JwtClaims{
@@ -38,6 +46,23 @@ func CreateJWTToken(nickname, user string) (string, error) {
 		Role:     user,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24)),
+		},
+	}
+	tk := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token, err := tk.SignedString([]byte(jwtSecret))
+	if err != nil {
+		return "", err
+	}
+	return token, nil
+}
+
+func CreateJWTTokenRememberMe(nickname, user string) (string, error) {
+	jwtSecret := GetEnv("JWT_SECRET")
+	var claims = JwtClaims{
+		Nickname: nickname,
+		Role:     user,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: nil,
 		},
 	}
 	tk := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
