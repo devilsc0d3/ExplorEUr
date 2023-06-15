@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -20,6 +19,7 @@ func Router() {
 	http.HandleFunc("/login", LoginHandler)
 	http.HandleFunc("/register", Register)
 	http.HandleFunc("/registration", RegistrationHandler)
+	http.HandleFunc("/logout", LogoutHandler)
 
 	for i := 0; i < len(data); i++ {
 		http.HandleFunc("/"+strings.ToLower(data[i]), Chat)
@@ -33,6 +33,7 @@ func Server() {
 	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		return
+	}
 }
 
 func Reset() {
