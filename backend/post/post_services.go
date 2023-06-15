@@ -16,12 +16,12 @@ type Post struct {
 
 var post = &Post{}
 
-func AddPost(content string) {
+func AddPost(id int, content string) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Create(&Post{Content: content})
+	db.Create(&Post{UserID: id, Content: content})
 }
 
 func DeletePost(id int) {

@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+var Token = ""
+
 func CreateCookie(w http.ResponseWriter, token string) {
 	cookie := &http.Cookie{
 		Name:  "token",

@@ -26,15 +26,12 @@ func Router() {
 		http.HandleFunc("/"+strings.ToLower(data[i]), Chat)
 		registeredPaths[data[i]] = true // Mark path as registered
 	}
+	//Reset()
 }
 
 func Server() {
 	Router()
 	fmt.Println("Listening on http://localhost:" + port)
-	//err := http.ListenAndServe(":"+port, nil)
-	//if err != nil {
-	//	return
-	//}
 	log.Fatal(http.ListenAndServeTLS(":"+port, "cert.pem", "key.pem", nil))
 
 }

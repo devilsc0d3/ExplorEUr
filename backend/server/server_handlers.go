@@ -2,6 +2,7 @@ package server
 
 import (
 	"exploreur/backend/register"
+	"exploreur/backend/roles/user"
 	"html/template"
 	"net/http"
 )
@@ -28,12 +29,12 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("nickname") != "" && r.FormValue("password") != "" {
 		isok, user := register.CheckNicknameAndPassword(r.FormValue("nickname"), r.FormValue("password"))
 		if isok {
-			token, err := register.CreateJWTToken(user.Nickname, user.Role)
+			Token, err := register.CreateJWTToken(user.Nickname, user.Role)
 			if err != nil {
 				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 				return
 			}
-			register.CreateCookie(w, token)
+			register.CreateCookie(w, Token)
 			http.Redirect(w, r, "/", http.StatusFound)
 			return
 		}
@@ -80,12 +81,9 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/chat.html")
 	var contents []string
 	register.Db.Table("posts").Pluck("content", &contents)
-
 	if r.FormValue("post") != "" {
-		print("test3")
-		//post.AddPost(r.FormValue("post"))
+		user.AddPostByUserController(r.FormValue("post"))
 	}
-
 	err := page.ExecuteTemplate(w, "chat.html", contents)
 	if err != nil {
 		return
