@@ -3,7 +3,7 @@ package post
 import (
 	"errors"
 	"exploreur/backend/register"
-	"fmt"
+	_ "exploreur/backend/register"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
