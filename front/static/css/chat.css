@@ -104,6 +104,19 @@ button {
     animation: fade-in 0.75s;
 }
 
+.form_comment {
+    background-color: white;
+    color: black;
+    margin-top: 5px;
+}
+
+.comment {
+    background-color: mediumseagreen;
+    color: black;
+    margin-top: 5px;
+}
+
+
 @keyframes fade-in {
     from {
         opacity: 0%;

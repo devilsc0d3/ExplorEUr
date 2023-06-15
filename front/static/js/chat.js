@@ -1,4 +1,4 @@
-export function grid() {
+function range() {
     let content = document.createElement('div');
     content.classList.add('ranges')
     document.body.append(content)
@@ -43,29 +43,77 @@ export function grid() {
         }
     })
     content.appendChild(range3)
+}
 
+function newPost() {
     let form = document.createElement('form');
     form.classList.add('gossip');
     document.body.append(form);
 
     let txt = document.createElement('textarea');
-    txt.name = "test"
     form.appendChild(txt);
 
     let sub = document.createElement("button");
     sub.type = "submit";
     sub.name = "post";
-    sub.innerHTML = "Share gossip!";
+    sub.innerHTML = "Share";
     form.appendChild(sub);
-
-
 
     form.addEventListener("submit", (event) => {
         event.preventDefault();
         let newDiv = document.createElement("div");
         newDiv.innerHTML = txt.value;
         newDiv.classList.add("gossip");
+        let form_comment = document.createElement("form");
+        let txt_comment = document.createElement('textarea');
+        txt_comment.className = 'form_comment';
+        form_comment.appendChild(txt_comment);
+        let sub_comment = document.createElement("button");
+        sub_comment.type = "submit";
+        sub_comment.name = "post";
+        sub_comment.innerHTML = "Comment";
+        form_comment.appendChild(sub_comment);
+        newDiv.appendChild(form_comment);
         form.insertAdjacentElement('afterend', newDiv);
         form.reset();
+
+        form_comment.addEventListener("submit", (event) => {
+            event.preventDefault();
+            let newDiv_comment = document.createElement("div");
+            newDiv_comment.innerHTML = txt_comment.value;
+            newDiv_comment.classList.add('comment');
+            form_comment.insertAdjacentElement('beforebegin', newDiv_comment);
+            form_comment.reset();
+        });
     });
+}
+
+function oldPost() {
+    let post = document.getElementsByClassName("gossip");
+    for (let i = 0; i < post.length; i++) {
+        let form = document.createElement("form");
+        let txt_comment = document.createElement('textarea');
+        txt_comment.className = 'form_comment';
+        form.appendChild(txt_comment);
+        let sub_comment = document.createElement("button");
+        sub_comment.type = "submit";
+        sub_comment.name = "post";
+        sub_comment.innerHTML = "Comment";
+        form.appendChild(sub_comment);
+        post[i].appendChild(form);
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            let newDiv_comment = document.createElement("div");
+            newDiv_comment.innerHTML = txt_comment.value;
+            newDiv_comment.classList.add('comment');
+            form.insertAdjacentElement('beforebegin', newDiv_comment);
+            form.reset();
+        });
+    }
+}
+
+export function chat() {
+    oldPost();
+    range();
+    newPost();
 }

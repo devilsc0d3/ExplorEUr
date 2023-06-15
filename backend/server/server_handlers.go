@@ -81,10 +81,10 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	var contents []string
 	register.Db.Table("posts").Pluck("content", &contents)
 
-	if r.FormValue("post") != "" {
-		print("test3")
-		//post.AddPost(r.FormValue("post"))
-	}
+	//if r.FormValue("post") != "" {
+	//	print("test3")
+	//	//post.AddPost(r.FormValue("post"))
+	//}
 
 	err := page.ExecuteTemplate(w, "chat.html", contents)
 	if err != nil {
