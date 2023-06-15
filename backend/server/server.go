@@ -29,10 +29,10 @@ func Router() {
 
 func Server() {
 	Router()
-	fmt.Println("Listening on https://localhost:" + port)
-	Reset()
-	err := http.ListenAndServeTLS(":8080", "cert.pem", "key.pem", nil)
-	log.Fatal(err)
+	fmt.Println("Listening on http://localhost:" + port)
+	err := http.ListenAndServe(":"+port, nil)
+	if err != nil {
+		return
 }
 
 func Reset() {

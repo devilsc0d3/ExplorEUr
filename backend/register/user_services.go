@@ -109,6 +109,10 @@ func GetUserByID(id int) *User {
 	return &user
 }
 
+func GetIDByUser(user *User) int {
+	return int(user.ID)
+}
+
 func ResetDatabase() {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {

@@ -24,10 +24,24 @@ func CategoryHandler(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
-func LoginHandler(w http.ResponseWriter, _ *http.Request) {
+func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/login.html")
+	if r.FormValue("nickname") != "" && r.FormValue("password") != "" {
+		isok, user := register.CheckNicknameAndPassword(r.FormValue("nickname"), r.FormValue("password"))
+		if isok {
+			token, err := register.CreateJWTToken(user.Nickname, user.Role)
+			if err != nil {
+				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+				return
+			}
+			register.CreateCookie(w, token)
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
+		}
+	}
 	err := page.ExecuteTemplate(w, "login.html", nil)
 	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 }
@@ -69,4 +83,9 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
+}
+
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+	register.DeleteCookie(w)
+	http.Redirect(w, r, "/", http.StatusFound)
 }
