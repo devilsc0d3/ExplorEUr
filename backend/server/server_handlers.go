@@ -2,7 +2,6 @@ package server
 
 import (
 	"exploreur/backend/register"
-	_ "exploreur/backend/register"
 	"html/template"
 	"net/http"
 )
@@ -79,7 +78,15 @@ func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 
 func Chat(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/chat.html")
-	err := page.ExecuteTemplate(w, "registration.html", nil)
+	var contents []string
+	register.Db.Table("posts").Pluck("content", &contents)
+
+	if r.FormValue("post") != "" {
+		print("test3")
+		//post.AddPost(r.FormValue("post"))
+	}
+
+	err := page.ExecuteTemplate(w, "chat.html", contents)
 	if err != nil {
 		return
 	}

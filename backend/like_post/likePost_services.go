@@ -1,7 +1,7 @@
 package like_post
 
 import (
-	"exploreur/backend/database"
+	"exploreur/backend/register"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -17,7 +17,7 @@ type LikePost struct {
 var likePost = &LikePost{}
 
 func AddLikePost(isLike bool, isDislike bool) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -25,7 +25,7 @@ func AddLikePost(isLike bool, isDislike bool) {
 }
 
 func DeleteLikePost(id int) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -33,7 +33,7 @@ func DeleteLikePost(id int) {
 }
 
 func UpdateLikePostIsLike(isLike bool, id int) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -41,7 +41,7 @@ func UpdateLikePostIsLike(isLike bool, id int) {
 }
 
 func UpdateLikePostIsDislike(isDislike bool, id int) {
-	db, err := gorm.Open(postgres.Open(database.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}

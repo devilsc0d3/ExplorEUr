@@ -1,4 +1,4 @@
-package register
+package post
 
 import (
 	"gorm.io/driver/postgres"
@@ -7,8 +7,11 @@ import (
 )
 
 func GetEnv(key string) string {
-	env := os.Getenv(key)
-	return env
+	value, isValid := os.LookupEnv(key)
+	if !isValid {
+		panic("Not found")
+	}
+	return value
 }
 
 var Db *gorm.DB
@@ -18,7 +21,7 @@ func Init() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	err = db.AutoMigrate(&User{})
+	err = db.AutoMigrate(&Post{})
 	if err != nil {
 		return
 	}
