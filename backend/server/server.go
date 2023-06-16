@@ -21,6 +21,7 @@ func Router() {
 	http.HandleFunc("/register", Register)
 	http.HandleFunc("/registration", RegistrationHandler)
 	http.HandleFunc("/logout", LogoutHandler)
+	http.HandleFunc("/easter_egg", EasterEgg)
 
 	for i := 0; i < len(data); i++ {
 		http.HandleFunc("/"+strings.ToLower(data[i]), Chat)

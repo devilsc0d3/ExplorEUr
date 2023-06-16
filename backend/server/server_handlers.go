@@ -94,3 +94,11 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	register.DeleteCookie(w)
 	http.Redirect(w, r, "/", http.StatusFound)
 }
+
+func EasterEgg(w http.ResponseWriter, r *http.Request) {
+	page, _ := template.ParseFiles("./front/template/easter_egg.html")
+	err := page.ExecuteTemplate(w, "easter_egg.html", nil)
+	if err != nil {
+		return
+	}
+}
