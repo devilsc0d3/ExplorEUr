@@ -50,7 +50,6 @@ func UpdateUserPassword(password string, id int) {
 	}
 	db.Model(&User{}).Where("id = ?", id).Update("password", password)
 }
-
 func UpdateUserRole(role string, id int) {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {

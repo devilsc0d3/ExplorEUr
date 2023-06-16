@@ -15,12 +15,31 @@ func HomeHandler(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
-func CategoryHandler(w http.ResponseWriter, _ *http.Request) {
+func CategoryHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/category.html")
-	dataTest := []string{"place", "Tools", "information", "+"}
-	err := page.ExecuteTemplate(w, "category.html", dataTest)
+	cookie, err := r.Cookie("token")
 	if err != nil {
-		return
+		fmt.Println("Erreur lors de la récupération du cookie:", err)
+	}
+	if err == nil {
+		_, role, err := register.DecodeJWTToken(cookie.Value)
+		if err != nil {
+			return
+		}
+		fmt.Println(role)
+		if role == "admin" {
+			dataTest := []string{"place", "Tools", "information", "+"}
+			err := page.ExecuteTemplate(w, "category.html", dataTest)
+			if err != nil {
+				return
+			}
+		}
+	} else {
+		dataTest := []string{"place", "Tools", "information"}
+		err := page.ExecuteTemplate(w, "category.html", dataTest)
+		if err != nil {
+			return
+		}
 	}
 }
 
