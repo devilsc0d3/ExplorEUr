@@ -1,0 +1,32 @@
+body {
+    text-align: center;
+    background: url("http://localhost:8080/static/image/background.jpg");
+    background-size: cover;
+}
+
+.cat {
+    text-align: center;
+    height: 50px;
+    margin: 50px;
+    background: rgba(80, 40, 42, 0.27);
+    border-radius: 16px;
+    /*box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);*/
+    backdrop-filter: blur(3px);
+    border: 1px solid rgba(255, 255, 255, 1);
+}
+
+.txt {
+    margin: 0px;
+    font-size: 40px;
+    text-align: center;
+    color: #ffffff;
+    font-weight: 600;
+
+}
+
+h1 {
+    color: #ffffff;
+    font-family: "Arial Narrow",serif;
+    font-size: 50px;
+    font-weight: 900;
+}

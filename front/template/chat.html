@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Forum</title>
+    <link rel="stylesheet" href="../static/css/chat.css">
+</head>
+<body>
+{{range .}}
+<div class="gossip">
+    <p>{{.}}</p>
+</div>
+{{end}}
+
+<script type="module">
+
+    import { grid } from '../static/js/chat.js'
+
+    grid()
+
+</script>
+</body>
+</html>

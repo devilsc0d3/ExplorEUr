@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ExploreUr</title>
+    <link rel="stylesheet" href="../static/css/category.css">
+</head>
+<body>
+<h1> Category </h1>
+{{range .}}
+<a class={{.}}>
+    <div class="cat">
+        <p class="txt">{{.}}</p>
+    </div>
+</a>
+{{end}}
+<script>
+    const aCategory = document.querySelectorAll("a")
+    for (let i = 0; i < aCategory.length; i++) {
+        aCategory[i].href = `/${(aCategory[i].className).toLowerCase()}`
+    }
+</script>
+</body>
+</html>

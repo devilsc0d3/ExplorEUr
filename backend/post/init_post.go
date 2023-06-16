@@ -1,7 +1,6 @@
-package database
+package post
 
 import (
-	"exploreur/backend/database/user"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"os"
@@ -15,10 +14,17 @@ func GetEnv(key string) string {
 	return value
 }
 
+var Db *gorm.DB
+
 func Init() {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.AutoMigrate(user.User{})
+	err = db.AutoMigrate(&Post{})
+	if err != nil {
+		return
+	}
+
+	Db = db
 }

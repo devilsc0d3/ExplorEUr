@@ -5,6 +5,11 @@ services:
     build: .
     environment:
       DATABASE_URL: ${DATABASE_URL}
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./cert.pem:/app/cert.pem
+      - ./key.pem:/app/key.pem
 
   db:
     image: postgres

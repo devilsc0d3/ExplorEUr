@@ -1,0 +1,91 @@
+body {
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-content: center;
+    display: flex;
+    /*background: url("http://localhost:8080/static/image/background.jpg");*/
+    /*background-size: cover;*/
+    background: #bb73e6;
+}
+
+form {
+    background-color: #ffffff;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 21vh;
+    border: 3px solid black;
+    border-radius: 7%;
+}
+
+.container {
+    margin-top: 4.5vh;
+    display: flex;
+}
+
+.image {
+    height: 5.3vh;
+    width: 2.6vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+.input {
+    height: 5vh;
+    width: 15vw;
+    margin-bottom: 0.4vh;
+    margin-right: 2vw;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.redirection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+}
+
+.login {
+    margin-left: 0.5vw;
+    font-weight: bold;
+    color: blue;
+    text-decoration: none;
+}
+
+.login:hover {
+    color: #90ee90;
+}
+
+.registerButton{
+    text-align: center;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    height: 4vh;
+    margin-bottom: 2.5vh;
+    box-shadow: 0px 0px 10px #000,
+    0px 0px 20px RGB(144,238,144);
+    border-radius: 10px;
+    border-color: lightgreen;
+    margin-top: 4vh;
+}
+
+.registerButton:hover{
+    background-color: lightgreen;
+}
+
+.password-info {
+    text-align: center;
+    margin-left: 5vh;
+    height: 0.1vh;
+    margin-bottom: 0.5vh;
+}
+
+.password-description {
+    height: 0.1vh;
+    font-size: 0.6rem;
+    color: #888;
+}
