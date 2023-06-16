@@ -78,7 +78,7 @@ function newPost() {
         form.insertAdjacentElement('afterend', newDiv);
         const sendData = async () => {
 
-            await fetch('http://localhost:8080/info', {
+            await fetch('https://localhost:8080/info', {
                 method: 'POST',
                 body: new URLSearchParams({
                     postContent: txt.value,

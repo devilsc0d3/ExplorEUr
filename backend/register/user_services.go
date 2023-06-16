@@ -96,7 +96,6 @@ func GetUserByID(id int) *User {
 	if err != nil {
 		return nil
 	}
-
 	var user User
 	result := db.First(&user, id)
 	if result.Error != nil {
@@ -105,7 +104,6 @@ func GetUserByID(id int) *User {
 		}
 		return nil
 	}
-
 	return &user
 }
 
