@@ -3,13 +3,16 @@ package server
 import (
 	"exploreur/backend/register"
 	"exploreur/backend/roles/user"
+	"fmt"
 	"html/template"
 	"net/http"
 )
 
-func HomeHandler(w http.ResponseWriter, _ *http.Request) {
+func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/home.html")
-	err := page.ExecuteTemplate(w, "home.html", nil)
+	cookie, err := r.Cookie("token")
+	register.Token = cookie.Value
+	err = page.ExecuteTemplate(w, "home.html", nil)
 	if err != nil {
 		return
 	}
@@ -18,6 +21,7 @@ func HomeHandler(w http.ResponseWriter, _ *http.Request) {
 func CategoryHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/category.html")
 	cookie, err := r.Cookie("token")
+	register.Token = cookie.Value
 	if err != nil {
 		fmt.Println("Erreur lors de la récupération du cookie:", err)
 	}
@@ -105,16 +109,20 @@ func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 
 func Chat(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/chat.html")
+	cookie, err := r.Cookie("token")
+	register.Token = cookie.Value
 	var contents []string
 	register.Db.Table("posts").Pluck("content", &contents)
-	err := page.ExecuteTemplate(w, "chat.html", contents)
+	err = page.ExecuteTemplate(w, "chat.html", contents)
 	if err != nil {
 		return
 	}
 }
 
 func Info(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
+	cookie, err := r.Cookie("token")
+	register.Token = cookie.Value
+	err = r.ParseForm()
 	if err != nil {
 		return
 	}

@@ -1,8 +1,8 @@
 package user
 
 import (
+	"exploreur/backend/post"
 	"exploreur/backend/register"
-	"fmt"
 )
 
 func AddPostByUserController(input string) string {
@@ -12,10 +12,8 @@ func AddPostByUserController(input string) string {
 	if !CheckLength(input) {
 		return "the text are too long"
 	}
-	fmt.Println(register.DecodeJWTToken(register.Token))
-	//fmt.Printf("NICKNAME:", nickname)
-	//fmt.Printf("ROLE:", role)
-	//id, _ := register.GetIDByNickname(nickname)
-	//post.AddPost(id, input)
+	nickname, _, _ := register.DecodeJWTToken(register.Token)
+	id, _ := register.GetIDByNickname(nickname)
+	post.AddPost(id, input)
 	return ""
 }
