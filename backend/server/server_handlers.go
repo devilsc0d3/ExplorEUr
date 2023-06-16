@@ -2,6 +2,7 @@ package server
 
 import (
 	"exploreur/backend/register"
+	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -81,10 +82,11 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	var contents []string
 	register.Db.Table("posts").Pluck("content", &contents)
 
-	//if r.FormValue("post") != "" {
-	//	print("test3")
-	//	//post.AddPost(r.FormValue("post"))
-	//}
+	if r.Method != "POST" {
+		postValue := r.FormValue("post")
+		fmt.Println("Contenu du champ 'post' :", postValue)
+		// Effectuez les opérations souhaitées avec la valeur récupérée
+	}
 
 	err := page.ExecuteTemplate(w, "chat.html", contents)
 	if err != nil {
