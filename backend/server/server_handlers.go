@@ -1,6 +1,7 @@
 package server
 
 import (
+	"exploreur/backend/post"
 	"exploreur/backend/register"
 	"fmt"
 	"html/template"
@@ -62,5 +63,5 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	}
 	postContent := r.FormValue("postContent")
 	fmt.Println("postContent", postContent)
-	w.Write([]byte(postContent))
+	post.AddPost(postContent)
 }

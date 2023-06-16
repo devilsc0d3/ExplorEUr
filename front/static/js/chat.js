@@ -51,7 +51,7 @@ function newPost() {
     document.body.append(form);
 
     let txt = document.createElement('textarea');
-    txt.setAttribute("name","test")
+    txt.setAttribute("name","postContent")
     form.appendChild(txt);
 
     let sub = document.createElement("button");
@@ -76,10 +76,19 @@ function newPost() {
         formComment.appendChild(subComment);
         newDiv.appendChild(formComment);
         form.insertAdjacentElement('afterend', newDiv);
-        fetch("http://localhost:8080/info", {
-            method: "POST",
+        const sendData = async () => {
 
-        })
+            await fetch('http://localhost:8080/info', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    postContent: txt.value,
+                })
+            });
+        };
+
+        sendData().then(res => res.json()).catch(res => Promise.fail({error:res}));
+
+
         form.reset();
 
         formComment.addEventListener("submit", (event) => {
