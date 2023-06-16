@@ -45,6 +45,16 @@ function range() {
     content.appendChild(range3)
 }
 
+const sendData = async (txt) => {
+
+    await fetch('http://localhost:8080/info', {
+        method: 'POST',
+        body: new URLSearchParams({
+            postContent: txt,
+        })
+    });
+};
+
 function newPost() {
     let form = document.createElement('form');
     form.classList.add('gossip');
@@ -76,18 +86,8 @@ function newPost() {
         formComment.appendChild(subComment);
         newDiv.appendChild(formComment);
         form.insertAdjacentElement('afterend', newDiv);
-        const sendData = async () => {
 
-            await fetch('http://localhost:8080/info', {
-                method: 'POST',
-                body: new URLSearchParams({
-                    postContent: txt.value,
-                })
-            });
-        };
-
-        sendData().then(res => res.json()).catch(res => Promise.fail({error:res}));
-
+        sendData(txt.value).then(res => res.json()).catch(res => Promise.fail({error:res}));
 
         form.reset();
 
