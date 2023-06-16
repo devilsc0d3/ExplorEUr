@@ -1,4 +1,4 @@
-export function grid() {
+function range() {
     let content = document.createElement('div');
     content.classList.add('ranges')
     document.body.append(content)
@@ -43,29 +43,91 @@ export function grid() {
         }
     })
     content.appendChild(range3)
+}
 
+function newPost() {
     let form = document.createElement('form');
     form.classList.add('gossip');
     document.body.append(form);
 
     let txt = document.createElement('textarea');
-    txt.name = "test"
+    txt.setAttribute("name","postContent")
     form.appendChild(txt);
 
     let sub = document.createElement("button");
     sub.type = "submit";
     sub.name = "post";
-    sub.innerHTML = "Share gossip!";
+    sub.innerHTML = "Share";
     form.appendChild(sub);
-
-
 
     form.addEventListener("submit", (event) => {
         event.preventDefault();
         let newDiv = document.createElement("div");
         newDiv.innerHTML = txt.value;
         newDiv.classList.add("gossip");
+        let formComment = document.createElement("form");
+        let txtComment = document.createElement('textarea');
+        txtComment.className = 'form_comment';
+        formComment.appendChild(txtComment);
+        let subComment = document.createElement("button");
+        subComment.type = "submit";
+        subComment.name = "post";
+        subComment.innerHTML = "Comment";
+        formComment.appendChild(subComment);
+        newDiv.appendChild(formComment);
         form.insertAdjacentElement('afterend', newDiv);
+        const sendData = async () => {
+
+            await fetch('http://localhost:8080/info', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    postContent: txt.value,
+                })
+            });
+        };
+
+        sendData().then(res => res.json()).catch(res => Promise.fail({error:res}));
+
+
         form.reset();
+
+        formComment.addEventListener("submit", (event) => {
+            event.preventDefault();
+            let newDivComment = document.createElement("div");
+            newDivComment.innerHTML = txtComment.value;
+            newDivComment.classList.add('comment');
+            formComment.insertAdjacentElement('beforebegin', newDivComment);
+            formComment.reset();
+        });
     });
+}
+
+function oldPost() {
+    let post = document.getElementsByClassName("gossip");
+    for (let i = 0; i < post.length; i++) {
+        let form = document.createElement("form");
+        let txtComment = document.createElement('textarea');
+        txtComment.className = 'form_comment';
+        form.appendChild(txtComment);
+        let subComment = document.createElement("button");
+        subComment.type = "submit";
+        subComment.name = "post";
+        subComment.innerHTML = "Comment";
+        form.appendChild(subComment);
+        post[i].appendChild(form);
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            let newDivComment = document.createElement("div");
+            newDivComment.innerHTML = txtComment.value;
+            newDivComment.classList.add('comment');
+            form.insertAdjacentElement('beforebegin', newDivComment);
+            form.reset();
+        });
+    }
+}
+
+export function chat() {
+    oldPost();
+    range();
+    newPost();
 }

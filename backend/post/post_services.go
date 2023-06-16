@@ -32,6 +32,10 @@ func DeletePost(id int) {
 	db.Delete(&Post{}, id)
 }
 
+func Clear() {
+	register.Db.Exec("DROP TABLE posts")
+}
+
 func UpdatePost(content string, id int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {

@@ -1,8 +1,10 @@
 package server
 
 import (
+	"exploreur/backend/post"
 	"exploreur/backend/register"
 	"exploreur/backend/roles/user"
+	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -88,6 +90,16 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
+}
+
+func Info(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		return
+	}
+	postContent := r.FormValue("postContent")
+	fmt.Println("postContent", postContent)
+	post.AddPost(postContent)
 }
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {

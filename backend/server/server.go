@@ -22,12 +22,14 @@ func Router() {
 	http.HandleFunc("/registration", RegistrationHandler)
 	http.HandleFunc("/logout", LogoutHandler)
 	http.HandleFunc("/easter_egg", EasterEgg)
+	http.HandleFunc("/info", Info)
 
 	for i := 0; i < len(data); i++ {
 		http.HandleFunc("/"+strings.ToLower(data[i]), Chat)
 		registeredPaths[data[i]] = true // Mark path as registered
 	}
 	//Reset()
+
 }
 
 func Server() {
@@ -35,6 +37,7 @@ func Server() {
 	fmt.Println("Listening on http://localhost:" + port)
 	log.Fatal(http.ListenAndServeTLS(":"+port, "cert.pem", "key.pem", nil))
 
+	//log.Fatal(http.ListenAndServeTLS(":"+port, "./localhost.crt", "localhost.key", nil))
 }
 
 func Reset() {
