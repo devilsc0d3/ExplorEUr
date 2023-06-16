@@ -16,6 +16,7 @@ func router() {
 	http.HandleFunc("/login", Login)
 	http.HandleFunc("/registration", Registration)
 	http.HandleFunc("/category", category)
+	http.HandleFunc("/info", Info)
 
 	for i := 0; i < len(data); i++ {
 		http.HandleFunc("/"+strings.ToLower(data[i]), Chat)

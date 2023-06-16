@@ -2,6 +2,7 @@ package server
 
 import (
 	"exploreur/backend/register"
+	"fmt"
 	"html/template"
 	"net/http"
 )
@@ -43,7 +44,7 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	var contents []string
 	register.Db.Table("posts").Pluck("content", &contents)
 
-	//if r.FormValue("post") != "" {
+	//if r.FormValue("test") != "" {
 	//	print("test3")
 	//	//post.AddPost(r.FormValue("post"))
 	//}
@@ -52,4 +53,14 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
+}
+
+func Info(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		return
+	}
+	postContent := r.FormValue("postContent")
+	fmt.Println("postContent", postContent)
+	w.Write([]byte(postContent))
 }

@@ -51,6 +51,7 @@ function newPost() {
     document.body.append(form);
 
     let txt = document.createElement('textarea');
+    txt.setAttribute("name","test")
     form.appendChild(txt);
 
     let sub = document.createElement("button");
@@ -64,26 +65,30 @@ function newPost() {
         let newDiv = document.createElement("div");
         newDiv.innerHTML = txt.value;
         newDiv.classList.add("gossip");
-        let form_comment = document.createElement("form");
-        let txt_comment = document.createElement('textarea');
-        txt_comment.className = 'form_comment';
-        form_comment.appendChild(txt_comment);
-        let sub_comment = document.createElement("button");
-        sub_comment.type = "submit";
-        sub_comment.name = "post";
-        sub_comment.innerHTML = "Comment";
-        form_comment.appendChild(sub_comment);
-        newDiv.appendChild(form_comment);
+        let formComment = document.createElement("form");
+        let txtComment = document.createElement('textarea');
+        txtComment.className = 'form_comment';
+        formComment.appendChild(txtComment);
+        let subComment = document.createElement("button");
+        subComment.type = "submit";
+        subComment.name = "post";
+        subComment.innerHTML = "Comment";
+        formComment.appendChild(subComment);
+        newDiv.appendChild(formComment);
         form.insertAdjacentElement('afterend', newDiv);
+        fetch("http://localhost:8080/info", {
+            method: "POST",
+
+        })
         form.reset();
 
-        form_comment.addEventListener("submit", (event) => {
+        formComment.addEventListener("submit", (event) => {
             event.preventDefault();
-            let newDiv_comment = document.createElement("div");
-            newDiv_comment.innerHTML = txt_comment.value;
-            newDiv_comment.classList.add('comment');
-            form_comment.insertAdjacentElement('beforebegin', newDiv_comment);
-            form_comment.reset();
+            let newDivComment = document.createElement("div");
+            newDivComment.innerHTML = txtComment.value;
+            newDivComment.classList.add('comment');
+            formComment.insertAdjacentElement('beforebegin', newDivComment);
+            formComment.reset();
         });
     });
 }
@@ -92,21 +97,21 @@ function oldPost() {
     let post = document.getElementsByClassName("gossip");
     for (let i = 0; i < post.length; i++) {
         let form = document.createElement("form");
-        let txt_comment = document.createElement('textarea');
-        txt_comment.className = 'form_comment';
-        form.appendChild(txt_comment);
-        let sub_comment = document.createElement("button");
-        sub_comment.type = "submit";
-        sub_comment.name = "post";
-        sub_comment.innerHTML = "Comment";
-        form.appendChild(sub_comment);
+        let txtComment = document.createElement('textarea');
+        txtComment.className = 'form_comment';
+        form.appendChild(txtComment);
+        let subComment = document.createElement("button");
+        subComment.type = "submit";
+        subComment.name = "post";
+        subComment.innerHTML = "Comment";
+        form.appendChild(subComment);
         post[i].appendChild(form);
         form.addEventListener("submit", (event) => {
             event.preventDefault();
-            let newDiv_comment = document.createElement("div");
-            newDiv_comment.innerHTML = txt_comment.value;
-            newDiv_comment.classList.add('comment');
-            form.insertAdjacentElement('beforebegin', newDiv_comment);
+            let newDivComment = document.createElement("div");
+            newDivComment.innerHTML = txtComment.value;
+            newDivComment.classList.add('comment');
+            form.insertAdjacentElement('beforebegin', newDivComment);
             form.reset();
         });
     }
