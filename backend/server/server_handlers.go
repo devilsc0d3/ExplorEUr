@@ -3,16 +3,22 @@ package server
 import (
 	"exploreur/backend/register"
 	"exploreur/backend/roles/user"
-	"fmt"
 	"html/template"
 	"net/http"
 )
 
+var isConnected = false
+
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/home.html")
-	cookie, err := r.Cookie("token")
-	register.Token = cookie.Value
-	err = page.ExecuteTemplate(w, "home.html", nil)
+	if isConnected {
+		cookie, err := r.Cookie("token")
+		if err != nil {
+			panic("cookie recuperation error")
+		}
+		register.Token = cookie.Value
+	}
+	err := page.ExecuteTemplate(w, "home.html", nil)
 	if err != nil {
 		return
 	}
@@ -20,31 +26,31 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 
 func CategoryHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/category.html")
-	cookie, err := r.Cookie("token")
-	register.Token = cookie.Value
-	if err != nil {
-		fmt.Println("Erreur lors de la récupération du cookie:", err)
-	}
-	if err == nil {
+	if isConnected {
+		cookie, err := r.Cookie("token")
+		if err != nil {
+			panic("cookie recuperation error")
+		}
+		register.Token = cookie.Value
 		_, role, err := register.DecodeJWTToken(cookie.Value)
 		if err != nil {
-			return
+			panic("decode token error")
 		}
-		fmt.Println(role)
 		if role == "admin" {
+			// il faut que ce soit des bouttons en js non ?
 			dataTest := []string{"place", "Tools", "information", "+"}
 			err := page.ExecuteTemplate(w, "category.html", dataTest)
 			if err != nil {
-				return
+				panic("execute template error")
 			}
 		}
-	} else {
-		dataTest := []string{"place", "Tools", "information"}
-		err := page.ExecuteTemplate(w, "category.html", dataTest)
-		if err != nil {
-			return
-		}
 	}
+	dataTest := []string{"place", "Tools", "information"}
+	err := page.ExecuteTemplate(w, "category.html", dataTest)
+	if err != nil {
+		panic("execute template error")
+	}
+
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -65,6 +71,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			register.CreateCookie(w, token)
 			register.Token = token
+			isConnected = true
 			http.Redirect(w, r, "/", http.StatusFound)
 			return
 		}
@@ -79,9 +86,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 func Register(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("nickname") != "" && r.FormValue("email") != "" && r.FormValue("password") != "" && r.FormValue("confirmation") == r.FormValue("password") {
 		userError := register.AddUserController(r.FormValue("nickname"), r.FormValue("email"), r.FormValue("password"))
-		if userError == "" {
-			http.Redirect(w, r, "/login", 303)
-		} else if userError != "" {
+		if userError != "" {
 			if register.IfNicknameExist(r.FormValue("nickname")) {
 				http.Redirect(w, r, "/registration?error=nickname-already-used", 303)
 			}
@@ -94,6 +99,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			if !register.CheckPassword(r.FormValue("password")) {
 				http.Redirect(w, r, "/registration?error=password-not-valid", 303)
 			}
+		} else if userError == "" {
+			http.Redirect(w, r, "/login", 303)
 		}
 	}
 	http.Redirect(w, r, "/registration", 303)
@@ -103,26 +110,36 @@ func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/registration.html")
 	err := page.ExecuteTemplate(w, "registration.html", nil)
 	if err != nil {
-		return
+		panic("execute template error")
 	}
 }
 
 func Chat(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/chat.html")
-	cookie, err := r.Cookie("token")
-	register.Token = cookie.Value
+	if isConnected {
+		cookie, err := r.Cookie("token")
+		if err != nil {
+			panic("cookie recuperation error")
+		}
+		register.Token = cookie.Value
+	}
 	var contents []string
 	register.Db.Table("posts").Pluck("content", &contents)
-	err = page.ExecuteTemplate(w, "chat.html", contents)
+	err := page.ExecuteTemplate(w, "chat.html", contents)
 	if err != nil {
 		return
 	}
 }
 
 func Info(w http.ResponseWriter, r *http.Request) {
-	cookie, err := r.Cookie("token")
-	register.Token = cookie.Value
-	err = r.ParseForm()
+	if isConnected {
+		cookie, err := r.Cookie("token")
+		if err != nil {
+			panic("cookie recuperation error")
+		}
+		register.Token = cookie.Value
+	}
+	err := r.ParseForm()
 	if err != nil {
 		return
 	}
@@ -136,6 +153,7 @@ func Info(w http.ResponseWriter, r *http.Request) {
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	register.DeleteCookie(w)
+	isConnected = false
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 

@@ -12,8 +12,22 @@ func AddPostByUserController(input string) string {
 	if !CheckLength(input) {
 		return "the text are too long"
 	}
-	nickname, _, _ := register.DecodeJWTToken(register.Token)
+	nickname, _, err := register.DecodeJWTToken(register.Token)
+	if err != nil {
+		panic("token error")
+	}
 	id, _ := register.GetIDByNickname(nickname)
 	post.AddPost(id, input)
 	return ""
+}
+
+func DeletePostByUserController() {
+	nickname, role, err := register.DecodeJWTToken(register.Token)
+	if err != nil {
+		panic("token error")
+	}
+	if role == "user" {
+		id, _ := register.GetIDByNickname(nickname)
+		post.DeletePost(id)
+	}
 }
