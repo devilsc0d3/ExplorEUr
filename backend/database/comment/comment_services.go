@@ -3,6 +3,7 @@ package comment
 import (
 	"errors"
 	"exploreur/backend/register"
+	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -12,13 +13,13 @@ type Comment struct {
 	Message string
 }
 
-var comment = &Comment{}
-
 func AddComment(message string) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
+
+	fmt.Println("tst1")
 
 	db.Create(&Comment{Message: message})
 }

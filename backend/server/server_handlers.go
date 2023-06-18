@@ -1,11 +1,14 @@
 package server
 
 import (
+	"exploreur/backend/database/comment"
 	"exploreur/backend/post"
 	"exploreur/backend/register"
 	"fmt"
 	"html/template"
 	"net/http"
+	"regexp"
+	"strconv"
 )
 
 func home(w http.ResponseWriter, _ *http.Request) {
@@ -40,15 +43,18 @@ func Registration(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
+var catId int
+
 func Chat(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/chat.html")
-	var contents []string
-	register.Db.Table("posts").Pluck("content", &contents)
 
-	//if r.FormValue("test") != "" {
-	//	print("test3")
-	//	//post.AddPost(r.FormValue("post"))
-	//}
+	//get id
+	compile := regexp.MustCompile(`[^/]`)
+	catId, _ = strconv.Atoi(compile.FindString(r.URL.String()))
+
+	//get content
+	var contents []string
+	register.Db.Table("posts").Where("category_id = ?", catId).Pluck("content", &contents)
 
 	err := page.ExecuteTemplate(w, "chat.html", contents)
 	if err != nil {
@@ -56,12 +62,22 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Info get info to front chat page
 func Info(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		return
 	}
+
+	//add post
 	postContent := r.FormValue("postContent")
-	fmt.Println("postContent", postContent)
-	post.AddPost(postContent)
+	post.AddPost(postContent, catId)
+
+	//add comment
+	if r.FormValue("comment") != "" {
+		commentContent := r.FormValue("comment")
+		fmt.Println(commentContent)
+		comment.AddComment(commentContent)
+	}
+
 }

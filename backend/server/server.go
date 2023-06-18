@@ -3,11 +3,11 @@ package server
 import (
 	"fmt"
 	"net/http"
-	"strings"
+	"strconv"
 )
 
-var data = []string{"Place", "Tools", "Information", "+"}
-var registeredPaths = make(map[string]bool) // Map to track registered paths
+var data = map[int]string{0: "Place", 1: "Tools", 2: "Information", 3: "+"}
+var registeredPaths = make(map[int]bool) // Map to track registered paths
 
 func router() {
 	fs := http.FileServer(http.Dir("./front/static"))
@@ -18,9 +18,9 @@ func router() {
 	http.HandleFunc("/category", category)
 	http.HandleFunc("/info", Info)
 
-	for i := 0; i < len(data); i++ {
-		http.HandleFunc("/"+strings.ToLower(data[i]), Chat)
-		registeredPaths[data[i]] = true // Mark path as registered
+	for id := range data {
+		http.HandleFunc("/"+strconv.Itoa(id), Chat)
+		registeredPaths[id] = true // Mark path as registered
 	}
 	//Reset()
 
@@ -41,11 +41,13 @@ func Server() {
 
 func Reset() {
 
-	data = append(data, "test")
-	for i := 0; i < len(data); i++ {
-		if !registeredPaths[data[i]] { // Check if path is already registered
-			http.HandleFunc("/"+strings.ToLower(data[i]), Chat)
-			registeredPaths[data[i]] = true // Mark path as registered
+	ID := 5
+	categoryTitle := ""
+	data[ID] = categoryTitle
+	for id := range data {
+		if !registeredPaths[id] { // Check if path is already registered
+			http.HandleFunc("/"+strconv.Itoa(id), Chat)
+			registeredPaths[id] = true // Mark path as registered
 		}
 	}
 }

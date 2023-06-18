@@ -58,7 +58,7 @@ const sendData = async (txt) => {
 function newPost() {
     let form = document.createElement('form');
     form.classList.add('gossip');
-    document.body.append(form);
+    document.body.insertAdjacentElement('afterbegin', form);
 
     let txt = document.createElement('textarea');
     txt.setAttribute("name","postContent")
@@ -77,6 +77,7 @@ function newPost() {
         newDiv.classList.add("gossip");
         let formComment = document.createElement("form");
         let txtComment = document.createElement('textarea');
+        txtComment.setAttribute("name","comment")
         txtComment.className = 'form_comment';
         formComment.appendChild(txtComment);
         let subComment = document.createElement("button");
@@ -86,9 +87,7 @@ function newPost() {
         formComment.appendChild(subComment);
         newDiv.appendChild(formComment);
         form.insertAdjacentElement('afterend', newDiv);
-
         sendData(txt.value).then(res => res.json()).catch(res => Promise.fail({error:res}));
-
         form.reset();
 
         formComment.addEventListener("submit", (event) => {
@@ -97,6 +96,7 @@ function newPost() {
             newDivComment.innerHTML = txtComment.value;
             newDivComment.classList.add('comment');
             formComment.insertAdjacentElement('beforebegin', newDivComment);
+            sendData(txtComment.value).then(res => res.json()).catch(res => Promise.fail({error:res}));
             formComment.reset();
         });
     });
@@ -107,6 +107,7 @@ function oldPost() {
     for (let i = 0; i < post.length; i++) {
         let form = document.createElement("form");
         let txtComment = document.createElement('textarea');
+        txtComment.setAttribute("name","comment")
         txtComment.className = 'form_comment';
         form.appendChild(txtComment);
         let subComment = document.createElement("button");
@@ -121,6 +122,7 @@ function oldPost() {
             newDivComment.innerHTML = txtComment.value;
             newDivComment.classList.add('comment');
             form.insertAdjacentElement('beforebegin', newDivComment);
+            sendData(txtComment.value).then(res => res.json()).catch(res => Promise.fail({error:res}));
             form.reset();
         });
     }

@@ -3,27 +3,25 @@ package post
 import (
 	"errors"
 	"exploreur/backend/register"
-	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 type Post struct {
 	gorm.Model
-	Content string
-	UserID  int
+	Content    string
+	UserID     int
+	CategoryID int
 }
 
 var post = &Post{}
 
-func AddPost(content string) {
+func AddPost(content string, categoryID int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	fmt.Println("test1")
-	db.Create(&Post{Content: content})
-	fmt.Println("test2")
+	db.Create(&Post{Content: content, CategoryID: categoryID})
 }
 
 func DeletePost(id int) {
