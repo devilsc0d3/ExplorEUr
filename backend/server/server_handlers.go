@@ -142,8 +142,16 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
+
 	if r.FormValue("postContent") != "" {
 		postErr := user.AddPostByUserController(r.FormValue("postContent"))
+		if postErr != "" {
+			panic("post error")
+		}
+	}
+
+	if r.FormValue("postID") != "" {
+		postErr := user.AddPostByUserController(r.FormValue("postID"))
 		if postErr != "" {
 			panic("post error")
 		}

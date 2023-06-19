@@ -182,3 +182,7 @@ func CancelDislikeCommentByUserController(commentID int) {
 		like_comment.DeleteLikeComment(commentID)
 	}
 }
+
+func AskToBeAModerator() {
+
+}
