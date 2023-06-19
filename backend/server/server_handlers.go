@@ -50,7 +50,6 @@ func CategoryHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic("execute template error")
 	}
-
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {

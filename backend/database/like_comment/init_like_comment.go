@@ -1,4 +1,4 @@
-package likeComment
+package like_comment
 
 import (
 	"gorm.io/driver/postgres"

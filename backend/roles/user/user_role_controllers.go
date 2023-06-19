@@ -2,6 +2,7 @@ package user
 
 import (
 	"exploreur/backend/database/comment"
+	"exploreur/backend/database/like_comment"
 	"exploreur/backend/like_post"
 	"exploreur/backend/post"
 	"exploreur/backend/register"
@@ -128,5 +129,56 @@ func CancelDislikePostByUserController(postID int) {
 	}
 	if role != "" {
 		like_post.DeleteLikePost(postID)
+	}
+}
+
+func AddLikeCommentByUserController(commentID int) {
+	nickname, role, err := register.DecodeJWTToken(register.Token)
+	if err != nil {
+		panic("token error")
+	}
+	if role != "" {
+		id, err := register.GetIDByNickname(nickname)
+		if err != nil {
+			panic("GetIDByNickname error")
+		}
+		like_comment.AddLikeComment(true, false, id, commentID)
+		//idk if it's bullshit or not, need to test
+		//like_comment.CancelDislikeComment(false, commentID)
+	}
+}
+
+func CancelLikeCommentByUserController(commentID int) {
+	_, role, err := register.DecodeJWTToken(register.Token)
+	if err != nil {
+		panic("token error")
+	}
+	if role != "" {
+		like_comment.DeleteLikeComment(commentID)
+	}
+}
+
+func AddDislikeCommentByUserController(commentID int) {
+	nickname, role, err := register.DecodeJWTToken(register.Token)
+	if err != nil {
+		panic("token error")
+	}
+	if role != "" {
+		id, err := register.GetIDByNickname(nickname)
+		if err != nil {
+			panic("GetIDByNickname error")
+		}
+		like_comment.AddLikeComment(false, true, id, commentID)
+		//like_comment.CancelLikeComment(false, commentID)
+	}
+}
+
+func CancelDislikeCommentByUserController(commentID int) {
+	_, role, err := register.DecodeJWTToken(register.Token)
+	if err != nil {
+		panic("token error")
+	}
+	if role != "" {
+		like_comment.DeleteLikeComment(commentID)
 	}
 }
