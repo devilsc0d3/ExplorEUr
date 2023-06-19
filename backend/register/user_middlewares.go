@@ -1,6 +1,7 @@
 package register
 
 import (
+	"golang.org/x/crypto/bcrypt"
 	"regexp"
 )
 
@@ -35,11 +36,24 @@ func CheckPassword(password string) bool {
 
 	check1, _ := regexp.MatchString(`[^\w]`, password)
 	check2, _ := regexp.MatchString(`[\w]`, password)
+	check3 := len(password) >= 8
 
-	if check1 && check2 {
+	if check1 && check2 && check3 {
 		return true
 	} else {
 		return false
 	}
 
+}
+
+func CheckNicknameAndPassword(nickname string, password string) (bool, *User) {
+	if IfNicknameExist(nickname) {
+		id, _ := GetIDByNickname(nickname)
+		user := GetUserByID(id)
+		err := bcrypt.CompareHashAndPassword(user.Password, []byte(password))
+		if err == nil {
+			return true, user
+		}
+	}
+	return false, nil
 }

@@ -50,7 +50,6 @@ func UpdateUserPassword(password string, id int) {
 	}
 	db.Model(&User{}).Where("id = ?", id).Update("password", password)
 }
-
 func UpdateUserRole(role string, id int) {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
@@ -89,6 +88,26 @@ func GetIDByEmail(email string) (int, error) {
 		return -1, result.Error
 	}
 	return int(singleUser.ID), nil
+}
+
+func GetUserByID(id int) *User {
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
+	if err != nil {
+		return nil
+	}
+	var user User
+	result := db.First(&user, id)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil
+		}
+		return nil
+	}
+	return &user
+}
+
+func GetIDByUser(user *User) int {
+	return int(user.ID)
 }
 
 func ResetDatabase() {

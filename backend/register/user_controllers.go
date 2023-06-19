@@ -41,7 +41,6 @@ func UpdateUserNicknameController(nickname string, newNickname string) {
 	} else {
 		fmt.Println("the nickname already exist")
 	}
-
 }
 
 func UpdateUserPasswordController(nickname string, password string) {
@@ -51,5 +50,4 @@ func UpdateUserPasswordController(nickname string, password string) {
 	} else {
 		fmt.Println("the password is incorrect") //+bonne pratique
 	}
-
 }

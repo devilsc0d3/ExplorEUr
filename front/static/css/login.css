@@ -4,6 +4,8 @@ body {
     justify-content: center;
     align-content: center;
     display: flex;
+    background: url("http://localhost:8080/static/image/background.jpg");
+    background-size: cover;
 }
 
 .content {
@@ -50,6 +52,12 @@ body {
     margin-top: 1.4vh;
 }
 
+form {
+    background: rgba(239, 188, 190, 0.27);
+    border-radius: 16px;
+    /*box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);*/
+    backdrop-filter: blur(3px);
+}
 
 .registration {
     text-align: center;

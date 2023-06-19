@@ -9,13 +9,16 @@ import (
 var data = map[int]string{0: "Place", 1: "Tools", 2: "Information", 3: "+"}
 var registeredPaths = make(map[int]bool) // Map to track registered paths
 
-func router() {
-	fs := http.FileServer(http.Dir("./front/static"))
+func Router() {
+	fs := http.FileServer(http.Dir("./front/static/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	http.HandleFunc("/", home)
-	http.HandleFunc("/login", Login)
-	http.HandleFunc("/registration", Registration)
-	http.HandleFunc("/category", category)
+	http.HandleFunc("/", HomeHandler)
+	http.HandleFunc("/category", CategoryHandler)
+	http.HandleFunc("/login", LoginHandler)
+	http.HandleFunc("/register", Register)
+	http.HandleFunc("/registration", RegistrationHandler)
+	http.HandleFunc("/logout", LogoutHandler)
+	http.HandleFunc("/easter_egg", EasterEgg)
 	http.HandleFunc("/info", Info)
 
 	for id := range data {
@@ -29,14 +32,14 @@ func router() {
 const port = "8080"
 
 func Server() {
-	router()
+	Router()
 	fmt.Println("Listening on http://localhost:" + port)
 	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		return
 	}
 
-	//log.Fatal(http.ListenAndServeTLS(":"+port, "./localhost.crt", "localhost.key", nil))
+	//log.Fatal(http.ListenAndServeTLS(":"+port, "cert.pem", "key.pem", nil))
 }
 
 func Reset() {

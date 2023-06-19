@@ -64,3 +64,8 @@ header {
 .white {
     color: white;
 }
+
+.easter_egg{
+    color: white;
+    text-decoration: none;
+}
