@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-var data = map[int]string{0: "Place", 1: "Tools", 2: "Information", 3: "+"}
+var data = map[int]string{0: "Place", 1: "Tools", 2: "Information"}
 var registeredPaths = make(map[int]bool) // Map to track registered paths
 
 func Router() {

@@ -1,5 +1,4 @@
 :root {
-    --background: hsl(0, 0%, 12%);
     --text: hsl(0, 0%, 80%);
     --clear: hsl(0, 0%, 65%);
     --disabled: hsl(0, 0%, 35%);
@@ -15,7 +14,8 @@
 body {
     font-family: sans-serif;
     letter-spacing: 1.5px;
-    background: var(--background);
+    background: url("http://localhost:8080/static/image/background.jpg");
+    background-size: cover;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

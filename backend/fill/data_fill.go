@@ -8,4 +8,5 @@ func DataFill() {
 	//post.AddPost("La terre est plate!", 0)
 	//post.AddPost("L'eau c'est de l'alcool", 1)
 	//post.AddPost("jesus transforme l'eau en vin", 1)
+	//comment.Clear()
 }

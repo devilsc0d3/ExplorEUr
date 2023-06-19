@@ -45,12 +45,23 @@ function range() {
     content.appendChild(range3)
 }
 
-const sendData = async (txt) => {
+const sendDataPost = async (txt) => {
 
     await fetch('http://localhost:8080/info', {
         method: 'POST',
         body: new URLSearchParams({
             postContent: txt,
+        })
+    });
+};
+
+const sendDataComment = async (txt, postId) => {
+
+    await fetch('http://localhost:8080/info', {
+        method: 'POST',
+        body: new URLSearchParams({
+            comment: txt,
+            postID: postId,
         })
     });
 };
@@ -82,12 +93,12 @@ function newPost() {
         formComment.appendChild(txtComment);
         let subComment = document.createElement("button");
         subComment.type = "submit";
-        subComment.name = "post";
+        subComment.name = "comment";
         subComment.innerHTML = "Comment";
         formComment.appendChild(subComment);
         newDiv.appendChild(formComment);
         form.insertAdjacentElement('afterend', newDiv);
-        sendData(txt.value).then(res => res.json()).catch(res => Promise.fail({error:res}));
+        sendDataPost(txt.value).then(res => res.json()).catch(res => Promise.fail({error:res}));
         form.reset();
 
         formComment.addEventListener("submit", (event) => {
@@ -95,16 +106,17 @@ function newPost() {
             let newDivComment = document.createElement("div");
             newDivComment.innerHTML = txtComment.value;
             newDivComment.classList.add('comment');
+            const postId = formComment.parentNode.dataset.id;
             formComment.insertAdjacentElement('beforebegin', newDivComment);
-            sendData(txtComment.value).then(res => res.json()).catch(res => Promise.fail({error:res}));
+            sendDataComment(txtComment.value, postId).then(res => res.json());
             formComment.reset();
         });
     });
 }
 
 function oldPost() {
-    let post = document.getElementsByClassName("gossip");
-    for (let i = 0; i < post.length; i++) {
+    let posts = document.getElementsByClassName("gossip");
+    for (let i = 0; i < posts.length; i++) {
         let form = document.createElement("form");
         let txtComment = document.createElement('textarea');
         txtComment.setAttribute("name","comment")
@@ -112,17 +124,20 @@ function oldPost() {
         form.appendChild(txtComment);
         let subComment = document.createElement("button");
         subComment.type = "submit";
-        subComment.name = "post";
+        subComment.name = "comment";
         subComment.innerHTML = "Comment";
         form.appendChild(subComment);
-        post[i].appendChild(form);
+        posts[i].appendChild(form);
         form.addEventListener("submit", (event) => {
             event.preventDefault();
             let newDivComment = document.createElement("div");
             newDivComment.innerHTML = txtComment.value;
             newDivComment.classList.add('comment');
+            const postId = form.parentNode.dataset.id;
             form.insertAdjacentElement('beforebegin', newDivComment);
-            sendData(txtComment.value).then(res => res.json()).catch(res => Promise.fail({error:res}));
+
+            sendDataComment(txtComment.value, postId).then(res => res.json());
+
             form.reset();
         });
     }
