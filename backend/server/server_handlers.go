@@ -1,7 +1,6 @@
 package server
 
 import (
-	"exploreur/backend/database/comment"
 	"exploreur/backend/register"
 	"exploreur/backend/roles/user"
 	"fmt"
@@ -216,7 +215,7 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("comment") != "" {
 		commentContent := r.FormValue("comment")
 		postID, _ := strconv.Atoi(r.FormValue("postID"))
-		comment.AddComment(commentContent, postID, catId)
+		user.AddCommentByUserController(postID, commentContent, catId)
 	}
 }
 

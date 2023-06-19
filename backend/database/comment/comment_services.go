@@ -15,12 +15,12 @@ type Comment struct {
 	PostID     int
 }
 
-func AddComment(message string, postID int, categoryID int) {
+func AddComment(message string, categoryID int, userID int, postID int) {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Create(&Comment{Message: message, CategoryID: categoryID, PostID: postID})
+	db.Create(&Comment{Message: message, CategoryID: categoryID, UserID: userID, PostID: postID})
 }
 
 func DeleteComment(id int) {

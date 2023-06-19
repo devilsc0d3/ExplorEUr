@@ -46,7 +46,7 @@ func DeletePostByUserController(postID int) {
 func UpdatePostByUserController() {
 }
 
-func AddCommentByUserController(postID int, input string) string {
+func AddCommentByUserController(postID int, input string, categoryID int) string {
 	if !CheckInsults(input) {
 		return "there is at least one insult in the text"
 	}
@@ -62,7 +62,7 @@ func AddCommentByUserController(postID int, input string) string {
 		if err != nil {
 			panic("GetIDByNickname error")
 		}
-		comment.AddComment(postID, id, input)
+		comment.AddComment(input, categoryID, id, postID)
 		return ""
 	}
 	return "guest mod"
