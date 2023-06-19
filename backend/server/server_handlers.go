@@ -2,9 +2,9 @@ package server
 
 import (
 	"exploreur/backend/database/comment"
-	"exploreur/backend/post"
 	"exploreur/backend/register"
 	"exploreur/backend/roles/user"
+	"fmt"
 	"html/template"
 	"net/http"
 	"regexp"

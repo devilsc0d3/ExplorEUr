@@ -5,7 +5,7 @@ import (
 	"exploreur/backend/register"
 )
 
-func AddPostByUserController(input string) string {
+func AddPostByUserController(input string, categoryID int) string {
 	if !CheckInsults(input) {
 		return "there is at least one insult in the text"
 	}
@@ -17,7 +17,7 @@ func AddPostByUserController(input string) string {
 		panic("token error")
 	}
 	id, _ := register.GetIDByNickname(nickname)
-	post.AddPost(id, input)
+	post.AddPost(input, id, categoryID)
 	return ""
 }
 

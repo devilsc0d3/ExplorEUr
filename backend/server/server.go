@@ -25,7 +25,7 @@ func Router() {
 		http.HandleFunc("/"+strconv.Itoa(id), Chat)
 		registeredPaths[id] = true // Mark path as registered
 	}
-	//Reset()
+	//AddCategory()
 
 }
 
@@ -42,10 +42,7 @@ func Server() {
 	//log.Fatal(http.ListenAndServeTLS(":"+port, "cert.pem", "key.pem", nil))
 }
 
-func Reset() {
-
-	ID := 5
-	categoryTitle := ""
+func AddCategory(ID int, categoryTitle string) {
 	data[ID] = categoryTitle
 	for id := range data {
 		if !registeredPaths[id] { // Check if path is already registered

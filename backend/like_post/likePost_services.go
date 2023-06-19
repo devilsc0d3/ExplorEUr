@@ -14,8 +14,6 @@ type LikePost struct {
 	PostID    int
 }
 
-var likePost = &LikePost{}
-
 func AddLikePost(isLike bool, isDislike bool) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
