@@ -1,75 +1,63 @@
-package post
+package like_post
 
 import (
-	"errors"
 	"exploreur/backend/register"
-	_ "exploreur/backend/register"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-type Post struct {
+type LikePost struct {
 	gorm.Model
-	Content string
-	UserID  int
+	IsLike    bool
+	IsDislike bool
+	UserID    int
+	PostID    int
 }
 
-var post = &Post{}
+var likePost = &LikePost{}
 
-func AddPost(userID int, content string) {
+func AddLikePost(isLike bool, isDislike bool, userID int, postID int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Create(&Post{UserID: userID, Content: content})
+	db.Create(&LikePost{IsLike: isLike, IsDislike: isDislike, UserID: userID, PostID: postID})
 }
 
-func DeletePost(postID int) {
+func DeleteLikePost(likePostID int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Delete(&Post{}, postID)
+	db.Delete(&LikePost{}, likePost)
 }
 
-func Clear() {
-	register.Db.Exec("DROP TABLE posts")
-}
-
-func UpdatePost(content string, postID int) {
+func CancelLikePost(isLike bool, likePostID int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Model(&Post{}).Where("id = ?", postID).Update("content", content)
+	db.Model(&LikePost{}).Where("id = ?", likePostID).Update("isLike", isLike)
 }
 
-func GetPost(content string) (int, error) {
+func CancelDislikePost(isDislike bool, likePostID int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	var singlePost Post
-	result := db.Select("id").Where("content = ?", content).First(&singlePost)
-	if result.Error != nil {
-		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			panic("post not found")
-		}
-		return 0, result.Error
-	}
-	return int(singlePost.ID), nil
+	db.Model(&LikePost{}).Where("id = ?", likePostID).Update("isDislike", isDislike)
 }
 
-func ResetPostTable() {
+func ResetLikePostTable() {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	err = db.Migrator().DropTable(&Post{})
+	err = db.Migrator().DropTable(&LikePost{})
 	if err != nil {
-		panic("problem to delete post table")
+		panic("problem to delete likePost table")
 	}
-	err = db.AutoMigrate(&Post{})
+	err = db.AutoMigrate(&LikePost{})
 	if err != nil {
 		panic("failed to auto migrate: ")
 	}

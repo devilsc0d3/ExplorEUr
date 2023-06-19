@@ -23,26 +23,41 @@ func AddLikeComment(isLike bool, isDislike bool) {
 	db.Create(&LikeComment{isLike: isLike, isDislike: isDislike})
 }
 
-func DeleteLikeComment(id int) {
+func DeleteLikeComment(likeCommentID int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Delete(&LikeComment{}, id)
+	db.Delete(&LikeComment{}, likeCommentID)
 }
 
-func UpdateLikeCommentIsLike(isLike bool, id int) {
+func CancelLikeCommentIsLike(isLike bool, likeCommentID int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Model(&LikeComment{}).Where("id = ?", id).Update("isLike", isLike)
+	db.Model(&LikeComment{}).Where("id = ?", likeCommentID).Update("isLike", isLike)
 }
 
-func UpdateLikeCommentIsDislike(isDislike bool, id int) {
+func CancelLikeCommentIsDislike(isDislike bool, likeCommentID int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Model(&LikeComment{}).Where("id = ?", id).Update("isDislike", isDislike)
+	db.Model(&LikeComment{}).Where("id = ?", likeCommentID).Update("isDislike", isDislike)
+}
+
+func ResetLikeCommentTable() {
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	err = db.Migrator().DropTable(&LikeComment{})
+	if err != nil {
+		panic("problem to delete likeComment table")
+	}
+	err = db.AutoMigrate(&LikeComment{})
+	if err != nil {
+		panic("failed to auto migrate: ")
+	}
 }

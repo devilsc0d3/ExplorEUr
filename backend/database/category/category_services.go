@@ -24,20 +24,20 @@ func AddCategory(name string) {
 	db.Create(&Category{Name: name})
 }
 
-func DeleteCategory(id int) {
+func DeleteCategory(categoryID int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Delete(&Category{}, id)
+	db.Delete(&Category{}, categoryID)
 }
 
-func UpdateCategoryName(name string, id int) {
+func UpdateCategoryName(name string, categoryID int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Model(&Category{}).Where("id = ?", id).Update("name", name)
+	db.Model(&Category{}).Where("id = ?", categoryID).Update("name", name)
 }
 
 func GetCategory(name string) (int, error) {
