@@ -58,3 +58,18 @@ func GetComment(comment string) (int, error) {
 	}
 	return int(singleComment.ID), nil
 }
+
+func ResetCommentTable() {
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	err = db.Migrator().DropTable(&Comment{})
+	if err != nil {
+		panic("problem to delete comment table")
+	}
+	err = db.AutoMigrate(&Comment{})
+	if err != nil {
+		panic("failed to auto migrate: ")
+	}
+}

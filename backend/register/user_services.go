@@ -108,7 +108,7 @@ func GetIDByUser(user *User) int {
 	return int(user.ID)
 }
 
-func ResetDatabase() {
+func ResetUserTable() {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")

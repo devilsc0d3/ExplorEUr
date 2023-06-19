@@ -1,4 +1,4 @@
-package post
+package like_post
 
 import (
 	"gorm.io/driver/postgres"
@@ -21,7 +21,7 @@ func Init() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	err = db.AutoMigrate(&Post{})
+	err = db.AutoMigrate(&LikePost{})
 	if err != nil {
 		return
 	}

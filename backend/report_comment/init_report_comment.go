@@ -1,4 +1,4 @@
-package post
+package report_comment
 
 import (
 	"gorm.io/driver/postgres"
@@ -21,7 +21,7 @@ func Init() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	err = db.AutoMigrate(&Post{})
+	err = db.AutoMigrate(&ReportComment{})
 	if err != nil {
 		return
 	}

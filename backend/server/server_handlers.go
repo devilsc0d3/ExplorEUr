@@ -163,7 +163,7 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	database := ManageData(content, postId, message, postIdComment)
 	err = page.ExecuteTemplate(w, "chat.html", database)
 	if err != nil {
-		fmt.Println(err)
+		return
 	}
 }
 

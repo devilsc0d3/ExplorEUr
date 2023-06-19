@@ -3,6 +3,7 @@ package post
 import (
 	"errors"
 	"exploreur/backend/register"
+	_ "exploreur/backend/register"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -56,4 +57,19 @@ func GetPost(content string) (int, error) {
 		return 0, result.Error
 	}
 	return int(singlePost.ID), nil
+}
+
+func ResetPostTable() {
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	err = db.Migrator().DropTable(&Post{})
+	if err != nil {
+		panic("problem to delete post table")
+	}
+	err = db.AutoMigrate(&Post{})
+	if err != nil {
+		panic("failed to auto migrate: ")
+	}
 }
