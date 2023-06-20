@@ -9,4 +9,8 @@ func DataFill() {
 	//post.AddPost("L'eau c'est de l'alcool", 1)
 	//post.AddPost("jesus transforme l'eau en vin", 1)
 	//comment.Clear()
+	//category.AddCategory("Place")
+	//category.AddCategory("Tools")
+	//category.AddCategory("Information")
+	//category.Clear()
 }

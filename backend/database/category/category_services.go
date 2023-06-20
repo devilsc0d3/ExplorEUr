@@ -2,6 +2,7 @@ package category
 
 import (
 	"errors"
+	"exploreur/backend/register"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -27,6 +28,10 @@ func DeleteCategory(id int) {
 		panic("failed to connect database")
 	}
 	db.Delete(&Category{}, id)
+}
+
+func Clear() {
+	register.Db.Exec("DROP TABLE categories")
 }
 
 func UpdateCategoryName(name string, id int) {

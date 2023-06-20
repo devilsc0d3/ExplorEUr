@@ -1,6 +1,7 @@
 package main
 
 import (
+	"exploreur/backend/database/category"
 	"exploreur/backend/database/comment"
 	"exploreur/backend/database/like_comment"
 	"exploreur/backend/fill"
@@ -22,6 +23,7 @@ func main() {
 	like_post.Init()
 	like_comment.Init()
 	report_post.Init()
+	category.Init()
 	fill.DataFill()
 	server.Server()
 }

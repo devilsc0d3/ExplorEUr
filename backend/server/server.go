@@ -1,12 +1,13 @@
 package server
 
 import (
+	"exploreur/backend/register"
 	"fmt"
 	"net/http"
 	"strconv"
 )
 
-var data = map[int]string{0: "Place", 1: "Tools", 2: "Information"}
+var categoriesId []int
 var registeredPaths = make(map[int]bool) // Map to track registered paths
 
 func Router() {
@@ -21,11 +22,14 @@ func Router() {
 	http.HandleFunc("/easter_egg", EasterEgg)
 	http.HandleFunc("/info", Info)
 
-	for id := range data {
-		http.HandleFunc("/"+strconv.Itoa(id), Chat)
-		registeredPaths[id] = true // Mark path as registered
+	register.Db.Table("categories").Pluck("id", &categoriesId)
+	fmt.Println(categoriesId)
+
+	for i := 0; i < len(categoriesId); i++ {
+		http.HandleFunc("/"+strconv.Itoa(categoriesId[i]), Chat)
+		registeredPaths[categoriesId[i]] = true
 	}
-	//AddCategory()
+	//AddRouteCategory()
 
 }
 
@@ -42,12 +46,11 @@ func Server() {
 	//log.Fatal(http.ListenAndServeTLS(":"+port, "cert.pem", "key.pem", nil))
 }
 
-func AddCategory(ID int, categoryTitle string) {
-	data[ID] = categoryTitle
-	for id := range data {
-		if !registeredPaths[id] { // Check if path is already registered
-			http.HandleFunc("/"+strconv.Itoa(id), Chat)
-			registeredPaths[id] = true // Mark path as registered
+func AddRouteCategory() {
+	for i := 0; i < len(categoriesId); i++ {
+		if !registeredPaths[categoriesId[i]] { // Check if path is already registered
+			http.HandleFunc("/"+strconv.Itoa(categoriesId[i]), Chat)
+			registeredPaths[categoriesId[i]] = true // Mark path as registered
 		}
 	}
 }

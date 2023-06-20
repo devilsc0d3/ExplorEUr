@@ -48,7 +48,10 @@ func CategoryHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	err := page.ExecuteTemplate(w, "category.html", data)
+	var categoryName []string
+	register.Db.Table("categories").Pluck("name", &categoryName)
+
+	err := page.ExecuteTemplate(w, "category.html", categoryName)
 	if err != nil {
 		panic("execute template error")
 	}
