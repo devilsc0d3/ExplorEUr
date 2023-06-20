@@ -20,7 +20,7 @@ const sendDataComment = async (txt, postId) => {
 };
 
 function newPost() {
-    let form = document.createElement('form');
+    let form = document.querySelector(".newPost")
     form.classList.add('posts');
     const header = document.querySelector("header")
     header.insertAdjacentElement('afterend', form);

@@ -32,22 +32,13 @@
     {{end}}
 </header>
 
-<header>
-    <a href="http://localhost:8080/">
-        <img class="img_header" src="http://localhost:8080/static/image/logo.png">
-    </a>
-    <a class="a_header" href="http://localhost:8080/category">
-        <h1 class="headerLetter">Category</h1>
-    </a>
-    <a class="a_header" href="http://localhost:8080/register">
-        <h1 class="headerLetter">Register</h1>
-    </a>
-    <a class="a_header" href="http://localhost:8080/login">
-        <h1 class="headerLetter">Login</h1>
-    </a>
-</header>
+{{if ne .Role ""}}
+<form name="newPost">
 
-{{range .}}
+</form>
+{{end}}
+
+{{range .Database}}
 <div class="posts" data-id="{{.Id}}">
     <h5>{{.NicknameUser}}</h5>
     <p>{{.Content}}</p>

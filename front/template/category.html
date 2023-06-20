@@ -33,16 +33,18 @@
     </a>
 </header>
 
+<h1 class="title"> Category </h1>
+
 {{range .Category}}
-    <a class={{.}}>
+    <a class={{.}} data-name="category">
         <div class="cat">
             <p class="txt">{{.}}</p>
         </div>
     </a>
 {{end}}
 <script>
-    const aCategory = document.querySelectorAll("a")
-    let j = 1;
+    const aCategory = [...document.querySelectorAll('a')].filter(el => el.dataset.name === "category")
+    j=1
     for (let i = 0; i < aCategory.length; i++) {
         aCategory[i].href = `/${j}`
         j++

@@ -22,10 +22,10 @@ var dataHub DataHub
 var catId int
 
 type Posts struct {
-	Content  string
-	Id       int
-	Comments []string
-	UserId int
+	Content      string
+	Id           int
+	Comments     []string
+	UserId       int
 	NicknameUser string
 }
 
@@ -100,14 +100,14 @@ func CategoryHandler(w http.ResponseWriter, r *http.Request) {
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/login.html")
 	if r.FormValue("nickname") != "" && r.FormValue("password") != "" {
-		isok, user := register.CheckNicknameAndPassword(r.FormValue("nickname"), r.FormValue("password"))
+		isok, usr := register.CheckNicknameAndPassword(r.FormValue("nickname"), r.FormValue("password"))
 		if isok {
 			var token string
 			var err error
 			if r.FormValue("remember-me") == "1" {
-				token, err = register.CreateJWTTokenRememberMe(user.Nickname, user.Role)
+				token, err = register.CreateJWTTokenRememberMe(usr.Nickname, usr.Role)
 			} else {
-				token, err = register.CreateJWTToken(user.Nickname, user.Role)
+				token, err = register.CreateJWTToken(usr.Nickname, usr.Role)
 			}
 			if err != nil {
 				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
