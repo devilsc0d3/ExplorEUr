@@ -20,6 +20,8 @@ func AddCategory(name string) {
 	}
 
 	db.Create(&Category{Name: name})
+	//server.AddRouteCategory()
+
 }
 
 func DeleteCategory(id int) {

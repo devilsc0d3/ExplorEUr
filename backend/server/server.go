@@ -23,13 +23,11 @@ func Router() {
 	http.HandleFunc("/info", Info)
 
 	register.Db.Table("categories").Pluck("id", &categoriesId)
-	fmt.Println(categoriesId)
 
 	for i := 0; i < len(categoriesId); i++ {
 		http.HandleFunc("/"+strconv.Itoa(categoriesId[i]), Chat)
 		registeredPaths[categoriesId[i]] = true
 	}
-	//AddRouteCategory()
 
 }
 
