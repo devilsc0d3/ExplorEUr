@@ -13,5 +13,6 @@ func main() {
 		log.Fatal(err)
 	}
 	register.Init()
+	register.AddUser("Sasha", "azer@ty.ui", "1234", "admin")
 	server.Server()
 }
