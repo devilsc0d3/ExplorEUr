@@ -164,3 +164,44 @@ func EasterEgg(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func SettingsHandler(w http.ResponseWriter, r *http.Request) {
+	page, _ := template.ParseFiles("./front/template/settings.html")
+	err := page.ExecuteTemplate(w, "settings.html", nil)
+	if err != nil {
+		panic("execute template error")
+	}
+}
+
+func Params(w http.ResponseWriter, r *http.Request) {
+	if isConnected {
+		cookie, err := r.Cookie("token")
+		if err != nil {
+			panic("cookie recuperation error")
+		}
+		register.Token = cookie.Value
+		nickname, _, err := register.DecodeJWTToken(cookie.Value)
+		if err != nil {
+			panic("decode token error")
+		}
+		id, _ := register.GetIDByNickname(nickname)
+		user := register.GetUserByID(id)
+		if r.FormValue("oldemail") == user.Email && r.FormValue("email") != "" && register.CheckPassword(r.FormValue("oldpassword")) && r.FormValue("password") != "" && r.FormValue("confirmation") == r.FormValue("password") {
+			userError := register.UpdateUserController(r.FormValue("nickname"), r.FormValue("email"), r.FormValue("password"), id)
+			if userError != "" {
+				if register.IfEmailExist(r.FormValue("email")) {
+					http.Redirect(w, r, "/settings?error=email-already-used", 303)
+				}
+				if !register.CheckEmail(r.FormValue("email")) {
+					http.Redirect(w, r, "/settings?error=email-not-valid", 303)
+				}
+				if !register.CheckPassword(r.FormValue("password")) {
+					http.Redirect(w, r, "/settings?error=password-not-valid", 303)
+				}
+			} else if userError == "" {
+				http.Redirect(w, r, "/home", 303)
+			}
+		}
+	}
+	http.Redirect(w, r, "/settings", 303)
+}

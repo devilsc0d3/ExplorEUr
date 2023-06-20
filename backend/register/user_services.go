@@ -57,6 +57,13 @@ func UpdateUserRole(role string, id int) {
 	}
 	db.Model(&User{}).Where("id = ?", id).Update("role", role)
 }
+func UpdateUserEmail(email string, id int) {
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	db.Model(&User{}).Where("id = ?", id).Update("email", email)
+}
 
 func GetIDByNickname(nickname string) (int, error) {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
@@ -123,4 +130,20 @@ func ResetDatabase() {
 	if err != nil {
 		panic("failed to auto migrate: ")
 	}
+}
+
+func UpdateUserController(nickname string, email string, password string, id int) string {
+	if nickname != "" {
+		UpdateUserNickname(nickname, id)
+		return ""
+	}
+	if email != "" {
+		UpdateUserEmail(email, id)
+		return ""
+	}
+	if password != "" {
+		UpdateUserPassword(password, id)
+		return ""
+	}
+	return "Error"
 }

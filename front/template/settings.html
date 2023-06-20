@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="../static/css/registration.css">
+  <title>Registration - ExplorEUr</title>
+</head>
+<body>
+<form action="/register" class="content" method="POST">
+  <div class="container">
+    <img class="image" src="../static/image/email.png">
+    <input class="input" type="text" name="email" autocomplete="off" placeholder="Enter your old email" requirede>
+  </div>
+  <div class="container">
+    <img class="image" src="../static/image/email.png">
+    <input class="input" type="text" name="email" autocomplete="off" placeholder="Enter a new email" requirede>
+  </div>
+  <div class="container">
+    <img class="image" src="../static/image/cadenas.png">
+    <input class="input" type="password" name="password" autocomplete="off" placeholder="Enter your old password" required>
+  </div>
+  <div class="container">
+    <img class="image" src="../static/image/cadenas.png">
+    <input class="input" type="password" name="password" autocomplete="off" placeholder="Enter a new password" required>
+  </div>
+  <div class="password-info">
+    <p class="password-description">(The password must contain at least one lowercase letter, one uppercase letter, <br>one digit, one special character, and must be a minimum of 8 characters)</p>
+  </div>
+  <div class="container">
+    <img class="image" src="../static/image/cadenas.png">
+    <input class="input" type="password" name="confirmation"  autocomplete="off" placeholder="Confirm your password"required>
+  </div>
+  <button class="editButton" type="submit">Edit</button>
+  <p id="errorText">
+</form>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const error = urlParams.get('error');
+  document.getElementById("errorText").innerHTML=error;
+  document.getElementById("errorText").style.textAlign="center";
+  document.getElementById("errorText").style.color="red";
+</script>
+</body>
+</html>
+
