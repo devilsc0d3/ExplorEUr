@@ -10,18 +10,17 @@ import (
 
 type Post struct {
 	gorm.Model
-	Content string
-	UserID  int
+	Content    string
+	UserID     int
+	CategoryID int
 }
 
-var post = &Post{}
-
-func AddPost(content string) {
+func AddPost(content string, userID int, categoryID int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Create(&Post{Content: content})
+	db.Create(&Post{Content: content, UserID: userID, CategoryID: categoryID})
 }
 
 func DeletePost(id int) {
@@ -30,6 +29,10 @@ func DeletePost(id int) {
 		panic("failed to connect database")
 	}
 	db.Delete(&Post{}, id)
+}
+
+func Clear() {
+	register.Db.Exec("DROP TABLE posts")
 }
 
 func UpdatePost(content string, id int) {
@@ -54,4 +57,19 @@ func GetPost(content string) (int, error) {
 		return 0, result.Error
 	}
 	return int(singlePost.ID), nil
+}
+
+func ResetPostTable() {
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	err = db.Migrator().DropTable(&Post{})
+	if err != nil {
+		panic("problem to delete post table")
+	}
+	err = db.AutoMigrate(&Post{})
+	if err != nil {
+		panic("failed to auto migrate: ")
+	}
 }

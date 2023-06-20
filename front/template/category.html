@@ -16,10 +16,11 @@
 {{end}}
 <script>
     const aCategory = document.querySelectorAll("a")
+    let j = 1;
     for (let i = 0; i < aCategory.length; i++) {
-        aCategory[i].href = `/${(aCategory[i].className).toLowerCase()}`
+        aCategory[i].href = `/${j}`
+        j++
     }
-
 </script>
 </body>
 </html>

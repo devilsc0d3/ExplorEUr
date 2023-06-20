@@ -1,4 +1,4 @@
-package post
+package image
 
 import (
 	"gorm.io/driver/postgres"
@@ -21,7 +21,7 @@ func Init() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	err = db.AutoMigrate(&Post{})
+	err = db.AutoMigrate(&Image{})
 	if err != nil {
 		return
 	}

@@ -13,27 +13,31 @@ type Category struct {
 	PostID int
 }
 
-var category = &Category{}
-
 func AddCategory(name string) {
-	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
 
 	db.Create(&Category{Name: name})
+	//server.AddRouteCategory()
+
 }
 
 func DeleteCategory(id int) {
-	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
 	db.Delete(&Category{}, id)
 }
 
+func Clear() {
+	register.Db.Exec("DROP TABLE categories")
+}
+
 func UpdateCategoryName(name string, id int) {
-	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -41,7 +45,7 @@ func UpdateCategoryName(name string, id int) {
 }
 
 func GetCategory(name string) (int, error) {
-	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}

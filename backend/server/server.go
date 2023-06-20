@@ -1,15 +1,14 @@
 package server
 
 import (
+	"exploreur/backend/register"
 	"fmt"
 	"net/http"
-	"strings"
+	"strconv"
 )
 
-const port = "8080"
-
-var data = []string{"Place", "Tools", "Information", "+"}
-var registeredPaths = make(map[string]bool) // Map to track registered paths
+var categoriesId []int
+var registeredPaths = make(map[int]bool) // Map to track registered paths
 
 func Router() {
 	fs := http.FileServer(http.Dir("./front/static/"))
@@ -20,30 +19,36 @@ func Router() {
 	http.HandleFunc("/register", Register)
 	http.HandleFunc("/registration", RegistrationHandler)
 	http.HandleFunc("/logout", LogoutHandler)
+	http.HandleFunc("/easter_egg", EasterEgg)
+	http.HandleFunc("/info", Info)
 
-	for i := 0; i < len(data); i++ {
-		http.HandleFunc("/"+strings.ToLower(data[i]), Chat)
-		registeredPaths[data[i]] = true // Mark path as registered
+	register.Db.Table("categories").Pluck("id", &categoriesId)
+
+	for i := 0; i < len(categoriesId); i++ {
+		http.HandleFunc("/"+strconv.Itoa(categoriesId[i]), Chat)
+		registeredPaths[categoriesId[i]] = true
 	}
+
 }
+
+const port = "8080"
 
 func Server() {
 	Router()
-	fmt.Println("Listening on https://localhost:" + port)
+	fmt.Println("Listening on http://localhost:" + port)
 	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		return
 	}
-	//log.Fatal(http.ListenAndServeTLS(":"+port, "cert.pem", "key.pem", nil))
 
+	//log.Fatal(http.ListenAndServeTLS(":"+port, "cert.pem", "key.pem", nil))
 }
 
-func Reset() {
-	data = append(data, "test")
-	for i := 0; i < len(data); i++ {
-		if !registeredPaths[data[i]] { // Check if path is already registered
-			http.HandleFunc("/"+strings.ToLower(data[i]), Chat)
-			registeredPaths[data[i]] = true // Mark path as registered
+func AddRouteCategory() {
+	for i := 0; i < len(categoriesId); i++ {
+		if !registeredPaths[categoriesId[i]] { // Check if path is already registered
+			http.HandleFunc("/"+strconv.Itoa(categoriesId[i]), Chat)
+			registeredPaths[categoriesId[i]] = true // Mark path as registered
 		}
 	}
 }

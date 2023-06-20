@@ -16,8 +16,6 @@ type User struct {
 	Role     string
 }
 
-var user = &User{}
-
 func AddUser(nickname string, email string, password string, role string) {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
@@ -50,7 +48,6 @@ func UpdateUserPassword(password string, id int) {
 	}
 	db.Model(&User{}).Where("id = ?", id).Update("password", password)
 }
-
 func UpdateUserRole(role string, id int) {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
@@ -96,7 +93,6 @@ func GetUserByID(id int) *User {
 	if err != nil {
 		return nil
 	}
-
 	var user User
 	result := db.First(&user, id)
 	if result.Error != nil {
@@ -105,7 +101,6 @@ func GetUserByID(id int) *User {
 		}
 		return nil
 	}
-
 	return &user
 }
 
@@ -113,7 +108,7 @@ func GetIDByUser(user *User) int {
 	return int(user.ID)
 }
 
-func ResetDatabase() {
+func ResetUserTable() {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")

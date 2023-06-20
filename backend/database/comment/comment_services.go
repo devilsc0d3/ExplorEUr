@@ -9,30 +9,34 @@ import (
 
 type Comment struct {
 	gorm.Model
-	Message string
+	Message    string
+	CategoryID int
+	UserID     int
+	PostID     int
 }
 
-var comment = &Comment{}
-
-func AddComment(message string) {
-	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
+func AddComment(message string, categoryID int, userID int, postID int) {
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-
-	db.Create(&Comment{Message: message})
+	db.Create(&Comment{Message: message, CategoryID: categoryID, UserID: userID, PostID: postID})
 }
 
 func DeleteComment(id int) {
-	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
 	db.Delete(&Comment{}, id)
 }
 
+func Clear() {
+	register.Db.Exec("DROP TABLE comments")
+}
+
 func UpdateCommentMessage(comment string, id int) {
-	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -40,7 +44,7 @@ func UpdateCommentMessage(comment string, id int) {
 }
 
 func GetComment(comment string) (int, error) {
-	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -53,4 +57,19 @@ func GetComment(comment string) (int, error) {
 		return 0, result.Error
 	}
 	return int(singleComment.ID), nil
+}
+
+func ResetCommentTable() {
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
+	}
+	err = db.Migrator().DropTable(&Comment{})
+	if err != nil {
+		panic("problem to delete comment table")
+	}
+	err = db.AutoMigrate(&Comment{})
+	if err != nil {
+		panic("failed to auto migrate: ")
+	}
 }
