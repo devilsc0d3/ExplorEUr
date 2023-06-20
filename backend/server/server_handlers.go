@@ -12,6 +12,16 @@ import (
 
 var isConnected = false
 
+var catId int
+
+type Posts struct {
+	Content      string
+	Id           int
+	Comments     []string
+	UserId       int
+	NicknameUser string
+}
+
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/home.html")
 	if isConnected {
@@ -119,21 +129,6 @@ func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-var catId int
-
-type Posts struct {
-	Content []string
-	Id      []int
-}
-
-type Posts2 struct {
-	Content  string
-	Id       int
-	Comments []string
-}
-
-var text Posts
-
 func Chat(w http.ResponseWriter, r *http.Request) {
 	page, err := template.ParseFiles("./front/template/chat.html")
 	if err != nil {
@@ -151,31 +146,34 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	compile := regexp.MustCompile(`[^/]`)
 	catId, _ = strconv.Atoi(compile.FindString(r.URL.String()))
 
-	//get content
+	//get info posts for put to struct
 	var content []string
 	var postId []int
 	var message []string
 	var postIdComment []int
+	var userId []int
 
 	register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("content", &content)
 	register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("id", &postId)
+	register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("user_id", &userId)
 	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("message", &message)
 	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("post_id", &postIdComment)
 
-	database := ManageData(content, postId, message, postIdComment)
+	database := ManageData(content, postId, message, postIdComment, userId)
 	err = page.ExecuteTemplate(w, "chat.html", database)
 	if err != nil {
 		return
 	}
 }
 
-func ManageData(content []string, postId []int, message []string, postIdComment []int) []Posts2 {
-	var database []Posts2
+func ManageData(content []string, postId []int, message []string, postIdComment []int, userId []int) []Posts {
+	var database []Posts
 
 	for i := 0; i < len(content); i++ {
-		var temp Posts2
+		var temp Posts
 		temp.Content = content[i]
 		temp.Id = postId[i]
+		temp.UserId = userId[i]
 
 		database = append(database, temp)
 	}
@@ -189,6 +187,16 @@ func ManageData(content []string, postId []int, message []string, postIdComment 
 		}
 	}
 
+	for i := 0; i < len(userId); i++ {
+		nickname, _ := register.GetNicknameByID(userId[i])
+		for k := 0; k < len(database); k++ {
+			nicknameDB, _ := register.GetNicknameByID(database[k].UserId)
+			if nickname == nicknameDB {
+				database[k].NicknameUser = nickname
+				break
+			}
+		}
+	}
 	return database
 }
 

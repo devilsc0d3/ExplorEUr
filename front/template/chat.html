@@ -27,6 +27,7 @@
 
 {{range .}}
 <div class="posts" data-id="{{.Id}}">
+    <h5>{{.NicknameUser}}</h5>
     <p>{{.Content}}</p>
     {{range .Comments}}
     <div class="comment">
