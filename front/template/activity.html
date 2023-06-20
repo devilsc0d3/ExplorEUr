@@ -2,13 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Category - ExploreUr</title>
-    <link rel="stylesheet" href="../static/css/category.css">
-    <link rel="stylesheet" href="../static/css/header.css">
-    <link rel="icon" type="image/x-icon" href="http://localhost:8080/static/image/logo.png">
+    <title>Activity - ExplorEUr</title>
+    <link rel="stylesheet" href="../static/css/activity.css">
 </head>
 <body>
-
 <header>
     <a href="http://localhost:8080/">
         <img class="img_header" src="http://localhost:8080/static/image/logo.png">
@@ -22,31 +19,14 @@
         </a>
     {{end}}
     {{if not .IsConnected}}
-        <a class="a_header" href="http://localhost:8080/login">
+        <a href="http://localhost:8080/login">
             <h1 class="headerLetter">Sign in / Sign up</h1>
         </a>
     {{else if .IsConnected}}
-        <a class="a_header" href="http://localhost:8080/logout">
+        <a href="http://localhost:8080/logout">
             <h1 class="headerLetter">Logout</h1>
         </a>
     {{end}}
-    </a>
 </header>
-
-{{range .Category}}
-    <a class={{.}}>
-        <div class="cat">
-            <p class="txt">{{.}}</p>
-        </div>
-    </a>
-{{end}}
-<script>
-    const aCategory = document.querySelectorAll("a")
-    let j = 1;
-    for (let i = 0; i < aCategory.length; i++) {
-        aCategory[i].href = `/${j}`
-        j++
-    }
-</script>
 </body>
 </html>

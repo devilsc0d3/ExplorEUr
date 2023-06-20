@@ -9,6 +9,28 @@
 </head>
 
 <body>
+<header>
+    <a href="http://localhost:8080/">
+        <img class="img_header" src="http://localhost:8080/static/image/logo.png">
+    </a>
+    <a class="a_header" href="http://localhost:8080/category">
+        <h1 class="headerLetter">Category</h1>
+    </a>
+    {{if ne .Role ""}}
+        <a class="a_header" href="http://localhost:8080/activity">
+            <h1 class="headerLetter">Activity</h1>
+        </a>
+    {{end}}
+    {{if not .IsConnected}}
+        <a href="http://localhost:8080/login">
+            <h1 class="headerLetter">Sign in / Sign up</h1>
+        </a>
+    {{else if .IsConnected}}
+        <a href="http://localhost:8080/logout">
+            <h1 class="headerLetter">Logout</h1>
+        </a>
+    {{end}}
+</header>
 
 <header>
     <a href="http://localhost:8080/">

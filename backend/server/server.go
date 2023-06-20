@@ -21,6 +21,8 @@ func Router() {
 	http.HandleFunc("/logout", LogoutHandler)
 	http.HandleFunc("/easter_egg", EasterEgg)
 	http.HandleFunc("/info", Info)
+	http.HandleFunc("/activity", ActivityHandler)
+	http.HandleFunc("/recover_password", RecoverHandler)
 
 	register.Db.Table("categories").Pluck("id", &categoriesId)
 

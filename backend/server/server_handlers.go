@@ -10,28 +10,57 @@ import (
 	"strconv"
 )
 
-var isConnected = false
+type DataHub struct {
+	Role        string
+	Database    []Posts
+	Category    []string
+	IsConnected bool
+}
+
+var dataHub DataHub
 
 var catId int
 
 type Posts struct {
-	Content      string
-	Id           int
-	Comments     []string
-	UserId       int
+	Content  string
+	Id       int
+	Comments []string
+	UserId int
 	NicknameUser string
+}
+
+func InitRole(token string) {
+	_, connectedRole, err := register.DecodeJWTToken(token)
+	if err != nil {
+		panic("decode token error")
+	}
+	switch connectedRole {
+	case "":
+		dataHub.Role = ""
+		break
+	case "user":
+		dataHub.Role = "user"
+		break
+	case "moderator":
+		dataHub.Role = "moderator"
+		break
+	case "administrator":
+		dataHub.Role = "administrator"
+		break
+	}
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/home.html")
-	if isConnected {
+	if dataHub.IsConnected {
 		cookie, err := r.Cookie("token")
 		if err != nil {
 			panic("cookie recuperation error")
 		}
 		register.Token = cookie.Value
+		InitRole(register.Token)
 	}
-	err := page.ExecuteTemplate(w, "home.html", nil)
+	err := page.ExecuteTemplate(w, "home.html", dataHub)
 	if err != nil {
 		return
 	}
@@ -39,12 +68,13 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 
 func CategoryHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/category.html")
-	if isConnected {
+	if dataHub.IsConnected {
 		cookie, err := r.Cookie("token")
 		if err != nil {
 			panic("cookie recuperation error")
 		}
 		register.Token = cookie.Value
+		InitRole(register.Token)
 		_, role, err := register.DecodeJWTToken(cookie.Value)
 		if err != nil {
 			panic("decode token error")
@@ -60,12 +90,11 @@ func CategoryHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	var categoryName []string
 	register.Db.Table("categories").Pluck("name", &categoryName)
-
-	err := page.ExecuteTemplate(w, "category.html", categoryName)
+	dataHub.Category = categoryName
+	err := page.ExecuteTemplate(w, "category.html", dataHub)
 	if err != nil {
 		panic("execute template error")
 	}
-
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -86,7 +115,8 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			register.CreateCookie(w, token)
 			register.Token = token
-			isConnected = true
+			InitRole(register.Token)
+			dataHub.IsConnected = true
 			http.Redirect(w, r, "/", http.StatusFound)
 			return
 		}
@@ -134,12 +164,13 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	if isConnected {
+	if dataHub.IsConnected {
 		cookie, err := r.Cookie("token")
 		if err != nil {
 			panic("cookie recuperation error")
 		}
 		register.Token = cookie.Value
+		InitRole(register.Token)
 	}
 
 	//get category_id
@@ -160,7 +191,8 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("post_id", &postIdComment)
 
 	database := ManageData(content, postId, message, postIdComment, userId)
-	err = page.ExecuteTemplate(w, "chat.html", database)
+	dataHub.Database = database
+	err = page.ExecuteTemplate(w, "chat.html", dataHub)
 	if err != nil {
 		return
 	}
@@ -202,12 +234,13 @@ func ManageData(content []string, postId []int, message []string, postIdComment 
 
 // Info get info to front chat page
 func Info(w http.ResponseWriter, r *http.Request) {
-	if isConnected {
+	if dataHub.IsConnected {
 		cookie, err := r.Cookie("token")
 		if err != nil {
 			panic("cookie recuperation error")
 		}
 		register.Token = cookie.Value
+		InitRole(register.Token)
 	}
 	err := r.ParseForm()
 	if err != nil {
@@ -232,7 +265,7 @@ func Info(w http.ResponseWriter, r *http.Request) {
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	register.DeleteCookie(w)
-	isConnected = false
+	dataHub.IsConnected = false
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
@@ -240,6 +273,30 @@ func EasterEgg(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/easter_egg.html")
 	err := page.ExecuteTemplate(w, "easter_egg.html", nil)
 	if err != nil {
-		return
+		panic("execute template error")
+	}
+}
+
+func ActivityHandler(w http.ResponseWriter, r *http.Request) {
+	page, _ := template.ParseFiles("./front/template/activity.html")
+	if dataHub.IsConnected {
+		cookie, err := r.Cookie("token")
+		if err != nil {
+			panic("cookie recuperation error")
+		}
+		register.Token = cookie.Value
+		InitRole(register.Token)
+	}
+	err := page.ExecuteTemplate(w, "activity.html", dataHub)
+	if err != nil {
+		panic("execute template error")
+	}
+}
+
+func RecoverHandler(w http.ResponseWriter, r *http.Request) {
+	page, _ := template.ParseFiles("./front/template/recovering_password.html")
+	err := page.ExecuteTemplate(w, "recovering_password.html", nil)
+	if err != nil {
+		panic("execute template error")
 	}
 }

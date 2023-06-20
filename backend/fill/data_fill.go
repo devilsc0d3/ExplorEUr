@@ -1,5 +1,16 @@
 package fill
 
+import (
+	"exploreur/backend/database/category"
+	"exploreur/backend/database/comment"
+	"exploreur/backend/database/like_comment"
+	"exploreur/backend/like_post"
+	"exploreur/backend/post"
+	"exploreur/backend/register"
+	"exploreur/backend/report_post"
+	"exploreur/backend/server"
+)
+
 func DataFill() {
 	//post.Clear()
 	//register.AddUserController("jean", "jean.eude@hotmial.com", "Passw0rd.")
@@ -13,4 +24,12 @@ func DataFill() {
 	//category.AddCategory("Tools")
 	//category.AddCategory("Information")
 	//category.Clear()
+	register.Init()
+	post.Init()
+	comment.Init()
+	like_post.Init()
+	like_comment.Init()
+	report_post.Init()
+	category.Init()
+	server.Server()
 }
