@@ -14,6 +14,9 @@ var isConnected = false
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/home.html")
+	if r.URL.Path != "/" {
+		http.Redirect(w, r, "/404Error", http.StatusSeeOther)
+	}
 	if isConnected {
 		cookie, err := r.Cookie("token")
 		if err != nil {
@@ -231,6 +234,14 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 func EasterEgg(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/easter_egg.html")
 	err := page.ExecuteTemplate(w, "easter_egg.html", nil)
+	if err != nil {
+		return
+	}
+}
+
+func ErrorHandler(w http.ResponseWriter, r *http.Request) {
+	page, _ := template.ParseFiles("./front/template/error.html")
+	err := page.ExecuteTemplate(w, "error.html", nil)
 	if err != nil {
 		return
 	}
