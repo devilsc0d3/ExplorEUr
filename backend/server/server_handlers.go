@@ -186,7 +186,7 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 
 	register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("content", &content)
 	register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("id", &postId)
-	register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("user_id", &userId)
+	register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
 	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("message", &message)
 	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("post_id", &postIdComment)
 

@@ -33,9 +33,9 @@
 </header>
 
 {{if ne .Role ""}}
-<form name="newPost">
+    <form name="newPost">
 
-</form>
+    </form>
 {{end}}
 
 {{range .Database}}
@@ -47,6 +47,11 @@
         <p>{{.}}</p>
     </div>
     {{end}}
+<!--    {{if ne $.Role ""}}-->
+<!--    <form name="newComment">-->
+
+<!--    </form>-->
+<!--    {{end}}-->
 </div>
 {{end}}
 
