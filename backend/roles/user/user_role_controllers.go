@@ -95,7 +95,7 @@ func AddLikePostByUserController(postID int) {
 			panic("GetIDByNickname error")
 		}
 		like_post.AddLikePost(true, false, id, postID)
-		//idk if it's bullshit or not, need to test
+		//IDK if it's bullshit or not, need to test
 		//like_post.CancelDislikePost(false, postID)
 	}
 }
@@ -146,7 +146,7 @@ func AddLikeCommentByUserController(commentID int) {
 			panic("GetIDByNickname error")
 		}
 		like_comment.AddLikeComment(true, false, id, commentID)
-		//idk if it's bullshit or not, need to test
+		//IDK if it's bullshit or not, need to test
 		//like_comment.CancelDislikeComment(false, commentID)
 	}
 }

@@ -42,8 +42,6 @@ func Server() {
 	if err != nil {
 		return
 	}
-
-	//log.Fatal(http.ListenAndServeTLS(":"+port, "cert.pem", "key.pem", nil))
 }
 
 func AddRouteCategory() {

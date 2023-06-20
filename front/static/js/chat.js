@@ -8,7 +8,7 @@ function range() {
     range1.setAttribute('min','200')
     range1.setAttribute('max','800')
     range1.id ='width'
-    range1.addEventListener("input", (event) => {
+    range1.addEventListener("input", () => {
         let el = document.querySelectorAll('.gossip')
         for (let i = 0 ; i< el.length; i++) {
             el[i].style.width = range1.value + 'px'
@@ -22,7 +22,7 @@ function range() {
     range2.setAttribute('min','20')
     range2.setAttribute('max','40')
     range2.id ='fontSize'
-    range2.addEventListener("input", (event) => {
+    range2.addEventListener("input", () => {
         let el = document.querySelectorAll('.gossip')
         for (let i = 0 ; i< el.length; i++) {
             el[i].style.fontSize = range2.value + 'px'
@@ -36,7 +36,7 @@ function range() {
     range3.setAttribute('type','range')
     range3.setAttribute('min','20')
     range3.setAttribute('max','75')
-    range3.addEventListener("input", (event) => {
+    range3.addEventListener("input", () => {
         let el = document.querySelectorAll('.gossip')
         for (let i = 0 ; i< el.length; i++) {
             el[i].style.background = 'hsl(280,50%,'+ range3.value + '%)'
@@ -84,7 +84,19 @@ function newPost() {
     form.addEventListener("submit", (event) => {
         event.preventDefault();
         let newDiv = document.createElement("div");
-        newDiv.innerHTML = txt.value;
+
+        const txtContent = txt.value;
+        const insults = ["fuck", "fuck off", "mother fucker", "bitch", "bastar", "bastard", "suck", "suck my dick", "fuck you", "fuck your mother", "shit"];
+        const regex = new RegExp("\\b(" + insults.join("|") + ")\\b", "gi");
+
+        const filteredText = txtContent.replace(regex, function (match) {
+            return '*'.repeat(match.length);
+        });
+
+        newDiv.innerHTML = filteredText;
+
+
+
         newDiv.classList.add("gossip");
         let formComment = document.createElement("form");
         let txtComment = document.createElement('textarea');
@@ -98,7 +110,7 @@ function newPost() {
         formComment.appendChild(subComment);
         newDiv.appendChild(formComment);
         form.insertAdjacentElement('afterend', newDiv);
-        sendDataPost(txt.value).then(res => res.json()).catch(res => Promise.fail({error:res}));
+        sendDataPost(txt.value).then(res => res.json());
         form.reset();
 
         formComment.addEventListener("submit", (event) => {

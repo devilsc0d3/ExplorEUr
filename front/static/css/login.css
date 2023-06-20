@@ -80,8 +80,8 @@ form {
     margin-right: 5vw;
     height: 4vh;
     margin-bottom: 5vh;
-    box-shadow: 0px 0px 10px #000,
-    0px 0px 20px RGB(144,238,144);
+    box-shadow: 0 0 10px #000,
+    0 0 20px RGB(144,238,144);
     border-radius: 10px;
     border-color: lightgreen;
 }

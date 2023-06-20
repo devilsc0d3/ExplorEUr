@@ -135,8 +135,6 @@ type Posts2 struct {
 	Comments []string
 }
 
-var text Posts
-
 func Chat(w http.ResponseWriter, r *http.Request) {
 	page, err := template.ParseFiles("./front/template/chat.html")
 	if err != nil {
