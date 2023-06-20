@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
-    <link rel="stylesheet" href="http://localhost:8080/static/css/home.css">
+    <link rel="stylesheet" href="../static/css/home.css">
+    <link rel="stylesheet" href="../static/css/header.css">
     <link rel="icon" type="image/x-icon" href="http://localhost:8080/static/image/logo.png">
 </head>
 <body class="center">
+
 <header>
     <a href="http://localhost:8080/">
         <img class="img_header" src="http://localhost:8080/static/image/logo.png">
@@ -14,6 +16,7 @@
     <a class="a_header" href="http://localhost:8080/category">
         <h1 class="headerLetter">Category</h1>
     </a>
+    <a class="a_header" href="http://localhost:8080/register">
     {{if ne .ModRole ""}}
         <a class="a_header" href="http://localhost:8080/activity">
             <h1 class="headerLetter">Activity</h1>
@@ -22,7 +25,7 @@
     <a href="http://localhost:8080/register">
         <h1 class="headerLetter">Register</h1>
     </a>
-    <a href="http://localhost:8080/login">
+    <a class="a_header" href="http://localhost:8080/login">
         <h1 class="headerLetter">Login</h1>
     </a>
     <a href="http://localhost:8080/logout">

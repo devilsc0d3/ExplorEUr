@@ -4,18 +4,36 @@
     <meta charset="UTF-8">
     <title>ExploreUr</title>
     <link rel="stylesheet" href="../static/css/category.css">
+    <link rel="stylesheet" href="../static/css/header.css">
+    <link rel="icon" type="image/x-icon" href="http://localhost:8080/static/image/logo.png">
 </head>
 <body>
-<h1> Category </h1>
+
+<header>
+    <a href="http://localhost:8080/">
+        <img class="img_header" src="http://localhost:8080/static/image/logo.png">
+    </a>
+    <a class="a_header" href="http://localhost:8080/category">
+        <h1 class="headerLetter">Category</h1>
+    </a>
+    <a class="a_header" href="http://localhost:8080/register">
+        <h1 class="headerLetter">Register</h1>
+    </a>
+    <a class="a_header" href="http://localhost:8080/login">
+        <h1 class="headerLetter">Login</h1>
+    </a>
+</header>
+
+<h1 class="title"> Category </h1>
 {{range .}}
-<a class={{.}}>
+<a class={{.}} data-name="category">
     <div class="cat">
         <p class="txt">{{.}}</p>
     </div>
 </a>
 {{end}}
 <script>
-    const aCategory = document.querySelectorAll("a")
+    const aCategory = [...document.querySelectorAll('a')].filter(el => el.dataset.name === "category")
     let j = 1;
     for (let i = 0; i < aCategory.length; i++) {
         aCategory[i].href = `/${j}`
