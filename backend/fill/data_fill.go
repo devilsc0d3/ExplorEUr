@@ -1,6 +1,15 @@
 package fill
 
-import "exploreur/backend/database/category"
+import (
+	"exploreur/backend/database/category"
+	"exploreur/backend/database/comment"
+	"exploreur/backend/database/like_comment"
+	"exploreur/backend/like_post"
+	"exploreur/backend/post"
+	"exploreur/backend/register"
+	"exploreur/backend/report_post"
+	"exploreur/backend/server"
+)
 
 func DataFill() {
 	//post.Clear()
@@ -11,8 +20,16 @@ func DataFill() {
 	//post.AddPost("L'eau c'est de l'alcool", 1)
 	//post.AddPost("jesus transforme l'eau en vin", 1)
 	//comment.Clear()
-	category.AddCategory("Place")
-	category.AddCategory("Tools")
-	category.AddCategory("Information")
+	//category.AddCategory("Place")
+	//category.AddCategory("Tools")
+	//category.AddCategory("Information")
 	//category.Clear()
+	register.Init()
+	post.Init()
+	comment.Init()
+	like_post.Init()
+	like_comment.Init()
+	report_post.Init()
+	category.Init()
+	server.Server()
 }

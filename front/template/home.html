@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Home - ExplorEUr</title>
     <link rel="stylesheet" href="../static/css/home.css">
     <link rel="stylesheet" href="../static/css/header.css">
     <link rel="icon" type="image/x-icon" href="http://localhost:8080/static/image/logo.png">
@@ -16,20 +16,20 @@
     <a class="a_header" href="http://localhost:8080/category">
         <h1 class="headerLetter">Category</h1>
     </a>
-    <a class="a_header" href="http://localhost:8080/register">
-    {{if ne .ModRole ""}}
+    {{if ne .Role ""}}
         <a class="a_header" href="http://localhost:8080/activity">
             <h1 class="headerLetter">Activity</h1>
         </a>
     {{end}}
-    <a href="http://localhost:8080/register">
-        <h1 class="headerLetter">Register</h1>
-    </a>
-    <a class="a_header" href="http://localhost:8080/login">
-        <h1 class="headerLetter">Login</h1>
-    </a>
-    <a href="http://localhost:8080/logout">
-        <h1 class="headerLetter">Logout</h1>
+    {{if not .IsConnected}}
+        <a class="a_header" href="http://localhost:8080/login">
+            <h1 class="headerLetter">Sign in / Sign up</h1>
+        </a>
+    {{else if .IsConnected}}
+        <a class="a_header" href="http://localhost:8080/logout">
+            <h1 class="headerLetter">Logout</h1>
+        </a>
+    {{end}}
     </a>
 </header>
 
@@ -58,6 +58,7 @@
             always remember to act responsibly and legally.</p>
     </div>
 </section>
-<h3 class="white">We wish you great urban discoveries and fruitful discussions within the ExpleUr community<a class="easter_egg" href="http://localhost:8080/easter_egg">!</a></h3>
+<h3 class="white">We wish you great urban discoveries and fruitful discussions within the ExpleUr community<a
+            class="easter_egg" href="http://localhost:8080/easter_egg">!</a></h3>
 </body>
 </html>
