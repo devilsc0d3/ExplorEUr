@@ -4,11 +4,29 @@
     <meta charset="UTF-8">
     <title>Forum</title>
     <link rel="stylesheet" href="../static/css/chat.css">
+    <link rel="stylesheet" href="../static/css/header.css">
+    <link rel="icon" type="image/x-icon" href="http://localhost:8080/static/image/logo.png">
 </head>
+
 <body>
 
+<header>
+    <a href="http://localhost:8080/">
+        <img class="img_header" src="http://localhost:8080/static/image/logo.png">
+    </a>
+    <a class="a_header" href="http://localhost:8080/category">
+        <h1 class="headerLetter">Category</h1>
+    </a>
+    <a class="a_header" href="http://localhost:8080/register">
+        <h1 class="headerLetter">Register</h1>
+    </a>
+    <a class="a_header" href="http://localhost:8080/login">
+        <h1 class="headerLetter">Login</h1>
+    </a>
+</header>
+
 {{range .}}
-<div class="gossip" data-id="{{.Id}}">
+<div class="posts" data-id="{{.Id}}">
     <p>{{.Content}}</p>
     {{range .Comments}}
     <div class="comment">
