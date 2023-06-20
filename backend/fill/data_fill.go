@@ -1,5 +1,7 @@
 package fill
 
+import "exploreur/backend/database/category"
+
 func DataFill() {
 	//post.Clear()
 	//register.AddUserController("jean", "jean.eude@hotmial.com", "Passw0rd.")
@@ -9,8 +11,8 @@ func DataFill() {
 	//post.AddPost("L'eau c'est de l'alcool", 1)
 	//post.AddPost("jesus transforme l'eau en vin", 1)
 	//comment.Clear()
-	//category.AddCategory("Place")
-	//category.AddCategory("Tools")
-	//category.AddCategory("Information")
+	category.AddCategory("Place")
+	category.AddCategory("Tools")
+	category.AddCategory("Information")
 	//category.Clear()
 }
