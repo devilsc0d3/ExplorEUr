@@ -3,8 +3,11 @@ package server
 import (
 	"exploreur/backend/register"
 	"exploreur/backend/roles/user"
+	"fmt"
 	"html/template"
 	"net/http"
+	"regexp"
+	"strconv"
 )
 
 var isConnected = false
@@ -45,11 +48,14 @@ func CategoryHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	dataTest := []string{"place", "Tools", "information"}
-	err := page.ExecuteTemplate(w, "category.html", dataTest)
+	var categoryName []string
+	register.Db.Table("categories").Pluck("name", &categoryName)
+
+	err := page.ExecuteTemplate(w, "category.html", categoryName)
 	if err != nil {
 		panic("execute template error")
 	}
+
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -113,8 +119,26 @@ func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+var catId int
+
+type Posts struct {
+	Content []string
+	Id      []int
+}
+
+type Posts2 struct {
+	Content  string
+	Id       int
+	Comments []string
+}
+
+var text Posts
+
 func Chat(w http.ResponseWriter, r *http.Request) {
-	page, _ := template.ParseFiles("./front/template/chat.html")
+	page, err := template.ParseFiles("./front/template/chat.html")
+	if err != nil {
+		fmt.Println(err)
+	}
 	if isConnected {
 		cookie, err := r.Cookie("token")
 		if err != nil {
@@ -122,14 +146,53 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 		}
 		register.Token = cookie.Value
 	}
-	var contents []string
-	register.Db.Table("posts").Pluck("content", &contents)
-	err := page.ExecuteTemplate(w, "chat.html", contents)
+
+	//get category_id
+	compile := regexp.MustCompile(`[^/]`)
+	catId, _ = strconv.Atoi(compile.FindString(r.URL.String()))
+
+	//get content
+	var content []string
+	var postId []int
+	var message []string
+	var postIdComment []int
+
+	register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("content", &content)
+	register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("id", &postId)
+	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("message", &message)
+	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("post_id", &postIdComment)
+
+	database := ManageData(content, postId, message, postIdComment)
+	err = page.ExecuteTemplate(w, "chat.html", database)
 	if err != nil {
 		return
 	}
 }
 
+func ManageData(content []string, postId []int, message []string, postIdComment []int) []Posts2 {
+	var database []Posts2
+
+	for i := 0; i < len(content); i++ {
+		var temp Posts2
+		temp.Content = content[i]
+		temp.Id = postId[i]
+
+		database = append(database, temp)
+	}
+
+	for j := 0; j < len(message); j++ {
+		for k := 0; k < len(database); k++ {
+			if postIdComment[j] == database[k].Id {
+				database[k].Comments = append(database[k].Comments, message[j])
+				break
+			}
+		}
+	}
+
+	return database
+}
+
+// Info get info to front chat page
 func Info(w http.ResponseWriter, r *http.Request) {
 	if isConnected {
 		cookie, err := r.Cookie("token")
@@ -143,18 +206,19 @@ func Info(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	//add post
 	if r.FormValue("postContent") != "" {
-		postErr := user.AddPostByUserController(r.FormValue("postContent"))
+		postErr := user.AddPostByUserController(r.FormValue("postContent"), catId)
 		if postErr != "" {
 			panic("post error")
 		}
 	}
 
-	if r.FormValue("postID") != "" {
-		postErr := user.AddPostByUserController(r.FormValue("postID"))
-		if postErr != "" {
-			panic("post error")
-		}
+	//add comment
+	if r.FormValue("comment") != "" {
+		commentContent := r.FormValue("comment")
+		postID, _ := strconv.Atoi(r.FormValue("postID"))
+		user.AddCommentByUserController(postID, commentContent, catId)
 	}
 }
 

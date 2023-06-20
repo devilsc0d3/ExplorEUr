@@ -16,8 +16,6 @@ type User struct {
 	Role     string
 }
 
-var user = &User{}
-
 func AddUser(nickname string, email string, password string, role string) {
 	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {

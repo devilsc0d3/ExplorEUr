@@ -10,38 +10,37 @@ import (
 
 type Post struct {
 	gorm.Model
-	Content string
-	UserID  int
+	Content    string
+	UserID     int
+	CategoryID int
 }
 
-var post = &Post{}
-
-func AddPost(userID int, content string) {
+func AddPost(content string, userID int, categoryID int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Create(&Post{UserID: userID, Content: content})
+	db.Create(&Post{Content: content, UserID: userID, CategoryID: categoryID})
 }
 
-func DeletePost(postID int) {
+func DeletePost(id int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Delete(&Post{}, postID)
+	db.Delete(&Post{}, id)
 }
 
 func Clear() {
 	register.Db.Exec("DROP TABLE posts")
 }
 
-func UpdatePost(content string, postID int) {
+func UpdatePost(content string, id int) {
 	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Model(&Post{}).Where("id = ?", postID).Update("content", content)
+	db.Model(&Post{}).Where("id = ?", id).Update("content", content)
 }
 
 func GetPost(content string) (int, error) {

@@ -25,5 +25,6 @@ func Init() {
 	if err != nil {
 		return
 	}
+
 	Db = db
 }

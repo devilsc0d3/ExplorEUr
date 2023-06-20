@@ -9,39 +9,42 @@ import (
 
 type Comment struct {
 	gorm.Model
-	Message string
-	UserID  int
-	PostID  int
+	Message    string
+	CategoryID int
+	UserID     int
+	PostID     int
 }
 
-var comment = &Comment{}
-
-func AddComment(postID int, userID int, message string) {
-	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
+func AddComment(message string, categoryID int, userID int, postID int) {
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Create(&Comment{PostID: postID, UserID: userID, Message: message})
+	db.Create(&Comment{Message: message, CategoryID: categoryID, UserID: userID, PostID: postID})
 }
 
-func DeleteComment(commentID int) {
-	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
+func DeleteComment(id int) {
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Delete(&Comment{}, commentID)
+	db.Delete(&Comment{}, id)
 }
 
-func UpdateCommentMessage(comment string, commentID int) {
-	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
+func Clear() {
+	register.Db.Exec("DROP TABLE comments")
+}
+
+func UpdateCommentMessage(comment string, id int) {
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.Model(&Comment{}).Where("id = ?", commentID).Update("comment", comment)
+	db.Model(&Comment{}).Where("id = ?", id).Update("comment", comment)
 }
 
 func GetComment(comment string) (int, error) {
-	db, err := gorm.Open(postgres.Open(register.GetEnv("DATABASE_URL")), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
