@@ -1,6 +1,7 @@
 package server
 
 import (
+	"exploreur/backend/database/category"
 	"exploreur/backend/register"
 	"exploreur/backend/roles/user"
 	"fmt"
@@ -44,8 +45,8 @@ func InitRole(token string) {
 	case "moderator":
 		dataHub.Role = "moderator"
 		break
-	case "administrator":
-		dataHub.Role = "administrator"
+	case "admin":
+		dataHub.Role = "admin"
 		break
 	}
 }
@@ -67,11 +68,14 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func CategoryHandler(w http.ResponseWriter, r *http.Request) {
-	page, _ := template.ParseFiles("./front/template/category.html")
+	page, err := template.ParseFiles("./front/template/category.html")
+	if err != nil {
+		panic("failed to parse template")
+	}
 	if dataHub.IsConnected {
 		cookie, err := r.Cookie("token")
 		if err != nil {
-			panic("cookie recuperation error")
+			panic("cookie retrieval error")
 		}
 		register.Token = cookie.Value
 		InitRole(register.Token)
@@ -79,9 +83,10 @@ func CategoryHandler(w http.ResponseWriter, r *http.Request) {
 	var categoryName []string
 	register.Db.Table("categories").Pluck("name", &categoryName)
 	dataHub.Category = categoryName
-	err := page.ExecuteTemplate(w, "category.html", dataHub)
+	fmt.Println(dataHub)
+	err = page.ExecuteTemplate(w, "category.html", dataHub)
 	if err != nil {
-		panic("execute template error")
+		panic("failed to execute template")
 	}
 }
 
@@ -226,6 +231,12 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		return
+	}
+
+	//add category
+	if r.FormValue("categoryName") != "" {
+		fmt.Println(r.FormValue("categoryName"))
+		category.AddCategory(r.FormValue("categoryName"))
 	}
 
 	//add post
