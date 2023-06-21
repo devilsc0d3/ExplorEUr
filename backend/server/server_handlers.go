@@ -196,19 +196,18 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
 	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("message", &message)
 	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("post_id", &postIdComment)
-	register.Db.Table("comments").Where("category_id = ?", catId).Pluck("user_id = ?", &userIdComment)
+	register.Db.Table("comments").Where("category_id = ?", catId).Pluck("user_id", &userIdComment)
 
-	database := ManageData(content, postId, message, postIdComment, userId)
+	database := ManageData(content, postId, message, postIdComment, userId, userIdComment)
 	dataHub.Database = database
-	fmt.Println(database)
-	fmt.Println(dataHub)
+
 	err = page.ExecuteTemplate(w, "chat.html", dataHub)
 	if err != nil {
 		return
 	}
 }
 
-func ManageData(content []string, postId []int, message []string, postIdComment []int, userId []int) []Posts {
+func ManageData(content []string, postId []int, message []string, postIdComment []int, userId []int, userIdComment []int) []Posts {
 	var database []Posts
 
 	for i := 0; i < len(content); i++ {
@@ -216,10 +215,6 @@ func ManageData(content []string, postId []int, message []string, postIdComment 
 		temp.Content = content[i]
 		temp.Id = postId[i]
 		temp.UserId = userId[i]
-
-		//if temp.Id == postIdComment[i] {
-		//	temp.Comments[i].PostId = postIdComment[i]
-		//}
 
 		temp.NicknamePost, _ = register.GetNicknameByID(userId[i])
 
@@ -232,6 +227,7 @@ func ManageData(content []string, postId []int, message []string, postIdComment 
 			if postIdComment[i] == database[j].Id {
 				temp2.Message = message[i]
 				temp2.PostId = postIdComment[i]
+				temp2.NicknameComment, _ = register.GetNicknameByID(userIdComment[i])
 				database[j].Comments = append(database[j].Comments, temp2)
 				break
 			}
