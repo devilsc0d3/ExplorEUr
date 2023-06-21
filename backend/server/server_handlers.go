@@ -180,6 +180,7 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 
 	database := ManageData(content, postId, message, postIdComment, userId)
 	dataHub.Database = database
+	fmt.Println(database)
 	err = page.ExecuteTemplate(w, "chat.html", dataHub)
 	if err != nil {
 		return
@@ -195,6 +196,8 @@ func ManageData(content []string, postId []int, message []string, postIdComment 
 		temp.Id = postId[i]
 		temp.UserId = userId[i]
 
+		temp.NicknameUser, _ = register.GetNicknameByID(userId[i])
+
 		database = append(database, temp)
 	}
 
@@ -207,16 +210,6 @@ func ManageData(content []string, postId []int, message []string, postIdComment 
 		}
 	}
 
-	for i := 0; i < len(userId); i++ {
-		nickname, _ := register.GetNicknameByID(userId[i])
-		for k := 0; k < len(database); k++ {
-			nicknameDB, _ := register.GetNicknameByID(database[k].UserId)
-			if nickname == nicknameDB {
-				database[k].NicknameUser = nickname
-				break
-			}
-		}
-	}
 	return database
 }
 

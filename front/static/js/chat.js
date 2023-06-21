@@ -1,3 +1,4 @@
+
 const sendDataPost = async (txt) => {
 
     await fetch('http://localhost:8080/info', {
@@ -71,12 +72,16 @@ function newPost() {
 
 function oldPost() {
     let posts = document.getElementsByClassName("posts");
+
     for (let i = 0; i < posts.length; i++) {
-        let form = document.createElement("form");
+        // let form = document.createElement("form");
+        let form = posts[i].querySelector("[name='newComment']");
+
         let txtComment = document.createElement('textarea');
         txtComment.setAttribute("name","comment")
         txtComment.className = 'form_comment';
         form.appendChild(txtComment);
+
         let subComment = document.createElement("button");
         subComment.type = "submit";
         subComment.name = "comment";
@@ -97,6 +102,8 @@ function oldPost() {
         });
     }
 }
+
+
 
 export function chat() {
     oldPost();

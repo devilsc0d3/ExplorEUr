@@ -12,12 +12,6 @@ func AddPostByUserController(input string, categoryID int) string {
 
 	input = FilterInsults2(input)
 
-	if !CheckInsults(input) {
-		return "there is at least one insult in the text"
-	}
-	//if !CheckLength(input) {
-	//	return "the text are too long"
-	//}
 	nickname, role, err := register.DecodeJWTToken(register.Token)
 	if err != nil {
 		panic("token error")
