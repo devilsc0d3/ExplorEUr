@@ -27,6 +27,7 @@ type Posts struct {
 	Comments     []Comment
 	UserId       int
 	NicknamePost string
+	CountLike    int
 }
 
 type Comment struct {
@@ -178,6 +179,7 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	var postIdComment []int
 	var userId []int
 	var userIdComment []int
+	var postIdLike []int
 
 	register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("content", &content)
 	register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("id", &postId)
@@ -185,27 +187,36 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("message", &message)
 	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("post_id", &postIdComment)
 	register.Db.Table("comments").Where("category_id = ?", catId).Pluck("user_id", &userIdComment)
+	register.Db.Table("like_posts").Where("is_like = ?", true).Pluck("post_id", &postIdLike)
 
-	database := ManageData(content, postId, message, postIdComment, userId, userIdComment)
+	fmt.Println(postIdLike)
+
+	database := ManageData(content, postId, message, postIdComment, userId, userIdComment, postIdLike)
 	dataHub.Database = database
 
+	fmt.Println(database)
 	err = page.ExecuteTemplate(w, "chat.html", dataHub)
 	if err != nil {
 		return
 	}
 }
 
-func ManageData(content []string, postId []int, message []string, postIdComment []int, userId []int, userIdComment []int) []Posts {
+func ManageData(content []string, postId []int, message []string, postIdComment []int, userId []int, userIdComment []int, postIdLike []int) []Posts {
 	var database []Posts
-
+	countLike := CountLike(postIdLike)
 	for i := 0; i < len(content); i++ {
 		var temp Posts
 		temp.Content = content[i]
 		temp.Id = postId[i]
 		temp.UserId = userId[i]
-
 		temp.NicknamePost, _ = register.GetNicknameByID(userId[i])
 
+		for idPost, nbrLike := range countLike {
+			if idPost == postId[i] {
+				temp.CountLike = nbrLike
+				fmt.Println(temp.CountLike)
+			}
+		}
 		database = append(database, temp)
 	}
 
@@ -223,6 +234,16 @@ func ManageData(content []string, postId []int, message []string, postIdComment 
 	}
 
 	return database
+}
+
+func CountLike(postId []int) map[int]int {
+	counts := make(map[int]int)
+
+	for _, idPost := range postId {
+		counts[idPost]++
+	}
+
+	return counts
 }
 
 // Info get info to front chat page

@@ -178,6 +178,11 @@ function oldPost() {
         imgLike.src = "http://localhost:8080/static/image/likeFALSE.png";
         imgLike.classList.add("img_like");
         buttonLike.appendChild(imgLike);
+        let countLike = posts[i].dataset.like;
+        let nbrLike = document.createElement("h6");
+        nbrLike.innerHTML = countLike;
+        posts[i].appendChild(nbrLike)
+
         let buttonDislike = document.createElement("button");
         buttonDislike.classList.add("dislike");
         posts[i].appendChild(buttonDislike);

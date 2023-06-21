@@ -37,7 +37,7 @@
 {{end}}
 
 {{range .Database}}
-<div class="posts" data-id="{{.Id}}">
+<div class="posts" data-id="{{.Id}}" data-like="{{.CountLike}}">
     <h5>{{.NicknamePost}}</h5>
     <p>{{.Content}}</p>
     {{range .Comments}}
@@ -46,11 +46,11 @@
         <p>{{.Message}}</p>
     </div>
     {{end}}
-        {{if ne $.Role ""}}
+    {{if ne $.Role ""}}
         <form name="newComment">
 
         </form>
-        {{end}}
+    {{end}}
 </div>
 {{end}}
 
