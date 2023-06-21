@@ -2,6 +2,7 @@ package server
 
 import (
 	"exploreur/backend/register"
+	"exploreur/backend/roles/moderator"
 	"exploreur/backend/roles/user"
 	"fmt"
 	"html/template"
@@ -11,10 +12,11 @@ import (
 )
 
 type DataHub struct {
-	Role        string
-	Database    []Posts
-	Category    []string
-	IsConnected bool
+	Role              string
+	Database          []Posts
+	Category          []string
+	IsConnected       bool
+	ReportPostContent string
 }
 
 var dataHub DataHub
@@ -219,7 +221,25 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
+	/*fmt.Println("test")
+	var reportPostContent string
+	fmt.Println("a", reportPostContent)
+	if reportPostContent == "" {
 
+	}*/
+
+	if dataHub.ReportPostContent == "" {
+		dataHub.ReportPostContent = r.FormValue("textReport")
+	}
+	//report post
+	if r.FormValue("reportPost") != "" {
+		postID, _ := strconv.Atoi(r.FormValue("postID"))
+		var userId int
+		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
+		nicknameUser, _ := register.GetNicknameByID(userId)
+		moderator.ReportPostByModeratorController(postID, nicknameUser, dataHub.ReportPostContent, catId)
+	}
+	//fmt.Println("b", reportPostContent)
 	//add post
 	if r.FormValue("postContent") != "" {
 		postErr := user.AddPostByUserController(r.FormValue("postContent"), catId)
@@ -233,6 +253,11 @@ func Info(w http.ResponseWriter, r *http.Request) {
 		commentContent := r.FormValue("comment")
 		postID, _ := strconv.Atoi(r.FormValue("postID"))
 		user.AddCommentByUserController(postID, commentContent, catId)
+	}
+
+	//report comment
+	if r.FormValue("reportComment") != "" {
+		fmt.Println("good comment")
 	}
 }
 

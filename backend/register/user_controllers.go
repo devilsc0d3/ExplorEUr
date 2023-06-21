@@ -9,7 +9,7 @@ func AddUserController(nickname string, email string, password string) string {
 		if !IfEmailExist(email) {
 			if CheckPassword(password) {
 				if CheckEmail(email) {
-					AddUser(nickname, email, password, "user")
+					AddUser(nickname, email, password, "moderator")
 					return ""
 				} else {
 					return "the email is incorrect"
