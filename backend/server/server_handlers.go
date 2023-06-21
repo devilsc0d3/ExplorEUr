@@ -75,18 +75,6 @@ func CategoryHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		register.Token = cookie.Value
 		InitRole(register.Token)
-		_, role, err := register.DecodeJWTToken(cookie.Value)
-		if err != nil {
-			panic("decode token error")
-		}
-		if role == "admin" {
-			// il faut que ce soit des bouttons en js non ?
-			dataTest := []string{"place", "Tools", "information", "+"}
-			err := page.ExecuteTemplate(w, "category.html", dataTest)
-			if err != nil {
-				panic("execute template error")
-			}
-		}
 	}
 	var categoryName []string
 	register.Db.Table("categories").Pluck("name", &categoryName)
