@@ -41,7 +41,7 @@
 {{end}}
 <script>
     const aCategory = [...document.querySelectorAll('a')].filter(el => el.dataset.name === "category")
-    j=1
+    let j=1
     for (let i = 0; i < aCategory.length; i++) {
         aCategory[i].href = `/${j}`
         j++

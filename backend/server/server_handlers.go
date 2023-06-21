@@ -254,6 +254,20 @@ func Info(w http.ResponseWriter, r *http.Request) {
 		postID, _ := strconv.Atoi(r.FormValue("postID"))
 		user.AddCommentByUserController(postID, commentContent, catId)
 	}
+
+	//add like/dislike post
+	if r.FormValue("like") != "" {
+		like := r.FormValue("like")
+		dislike := r.FormValue("dislike")
+		postID, _ := strconv.Atoi(r.FormValue("postId"))
+		if like == "true" {
+			user.AddLikePostByUserController(postID)
+		}
+		if dislike == "true" {
+			user.AddDislikePostByUserController(postID)
+		}
+
+	}
 }
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {

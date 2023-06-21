@@ -19,7 +19,24 @@ const sendDataComment = async (txt, postId) => {
     });
 };
 
+const sendDataLike = async (like, dislike, postId) => {
+
+    await fetch('http://localhost:8080/info', {
+        method: 'POST',
+        body: new URLSearchParams({
+            like: like,
+            dislike: dislike,
+            postId: postId
+        })
+    });
+};
+
 function newPost() {
+    let like = false;
+    let dislike = false;
+    let countClickLike = 0;
+    let countClickDislike = 0;
+
     //add input for new post
     let form = document.querySelector('[name="newPost"]')
     console.log(form)
@@ -62,12 +79,20 @@ function newPost() {
         newDiv.appendChild(formComment);
 
         //add button like/dislike
-        let buttonLike = document.createElement("button");
-        buttonLike.classList.add("like");
-        newDiv.appendChild(buttonLike);
-        let buttonDislike = document.createElement("button");
-        buttonDislike.classList.add("dislike");
-        newDiv.appendChild(buttonDislike);
+        let buttonLike2 = document.createElement("button");
+        buttonLike2.classList.add("like");
+        newDiv.appendChild(buttonLike2);
+        let imgLike = document.createElement("img");
+        imgLike.src = "http://localhost:8080/static/image/likeFALSE.png";
+        imgLike.classList.add("img_like");
+        buttonLike2.appendChild(imgLike);
+        let buttonDislike2 = document.createElement("button");
+        buttonDislike2.classList.add("dislike");
+        newDiv.appendChild(buttonDislike2);
+        let imgDislike = document.createElement("img");
+        imgDislike.src = "http://localhost:8080/static/image/dislikeFALSE.png";
+        imgDislike.classList.add("img_like");
+        buttonDislike2.appendChild(imgDislike);
 
         form.insertAdjacentElement('afterend', newDiv);
         sendDataPost(txt.value).then(res => res.json()).catch(res => Promise.fail({error: res}));
@@ -86,15 +111,37 @@ function newPost() {
         });
 
         //event when like
-        buttonLike.addEventListener("click", (event) => {
-            event.preventDefault();
-            buttonLike.style.backgroundImage = "http://localhost:8080/static/image/likeTRUE.png"
+        buttonLike2.addEventListener("click", (event2) => {
+            countClickLike++;
+            event2.preventDefault();
+            if (!dislike) {
+                if (countClickLike % 2 === 0) {
+                    imgLike.src = "http://localhost:8080/static/image/likeFALSE.png"
+                    like = false;
+                } else {
+                    imgLike.src = "http://localhost:8080/static/image/likeTRUE.png"
+                    like = true;
+                    const postId = formComment.parentNode.dataset.id;
+                    sendDataLike(like, dislike, postId).then(r => r != null);
+                }
+            }
         });
 
         //event when dislike
-        buttonDislike.addEventListener("click", (event) => {
-            event.preventDefault();
-            buttonDislike.style.backgroundImage = "http://localhost:8080/static/image/dislikeTRUE.png"
+        buttonDislike2.addEventListener("click", (event2) => {
+            countClickDislike++;
+            event2.preventDefault();
+            if (!like) {
+                if (countClickDislike % 2 === 0) {
+                    imgDislike.src = "http://localhost:8080/static/image/dislikeFALSE.png"
+                    dislike = false;
+                } else {
+                    imgDislike.src = "http://localhost:8080/static/image/dislikeTRUE.png"
+                    dislike = true;
+                    const postId = formComment.parentNode.dataset.id;
+                    sendDataLike(like, dislike, postId).then(r => r != null);
+                }
+            }
         });
     });
 }
@@ -165,6 +212,8 @@ function oldPost() {
                 } else {
                     imgLike.src = "http://localhost:8080/static/image/likeTRUE.png"
                     like = true;
+                    const postId = form.parentNode.dataset.id;
+                    sendDataLike(like, dislike, postId).then(r => r!=null)
                 }
             }
         });
@@ -180,6 +229,8 @@ function oldPost() {
                 } else {
                     imgDislike.src = "http://localhost:8080/static/image/dislikeTRUE.png"
                     dislike = true;
+                    const postId = form.parentNode.dataset.id;
+                    sendDataLike(like, dislike, postId).then(r => r!=null)
                 }
             }
         });
