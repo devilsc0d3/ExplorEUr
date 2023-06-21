@@ -17,50 +17,46 @@
         <h1 class="headerLetter">Category</h1>
     </a>
     {{if ne .Role ""}}
-        <a class="a_header" href="http://localhost:8080/activity">
-            <h1 class="headerLetter">Activity</h1>
-        </a>
+    <a class="a_header" href="http://localhost:8080/activity">
+        <h1 class="headerLetter">Activity</h1>
+    </a>
+    <div>
+        <!-- Contenu spécifique pour les utilisateurs avec un rôle défini -->
+        <p>Ce contenu est visible pour les utilisateurs ayant un rôle défini.</p>
+    </div>
     {{end}}
     {{if not .IsConnected}}
-        <a href="http://localhost:8080/login">
-            <h1 class="headerLetter">Sign in / Sign up</h1>
-        </a>
+    <a href="http://localhost:8080/login">
+        <h1 class="headerLetter">Sign in / Sign up</h1>
+    </a>
     {{else if .IsConnected}}
-        <a href="http://localhost:8080/logout">
-            <h1 class="headerLetter">Logout</h1>
-        </a>
+    <a href="http://localhost:8080/logout">
+        <h1 class="headerLetter">Logout</h1>
+    </a>
     {{end}}
 </header>
 
 {{if ne .Role ""}}
-    <form name="newPost">
+<form name="newPost">
 
-    </form>
+</form>
 {{end}}
 
 {{range .Database}}
 <div class="posts" data-id="{{.Id}}">
-    <h5>{{.NicknameUser}}</h5>
+    <h5>{{.NicknamePost}}</h5>
     <p>{{.Content}}</p>
     {{range .Comments}}
     <div class="comment">
-        <p>{{.}}</p>
+        <p>{{.Message}}</p>
     </div>
     {{end}}
-<!--    {{if ne $.Role ""}}-->
-<!--    <form name="newComment">-->
-
-<!--    </form>-->
-<!--    {{end}}-->
 </div>
 {{end}}
 
 <script type="module">
-
     import { chat } from '../static/js/chat.js'
-
     chat()
-
 </script>
 </body>
 </html>
