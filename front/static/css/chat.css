@@ -89,7 +89,7 @@ textarea::placeholder {
     color: rgba(255, 255, 255, 0.5);
 }
 
-button {
+.button {
     margin-top: 20px;
     text-align: right;
     border: solid 1px white;
@@ -114,10 +114,31 @@ button {
     margin-top: 5px;
 }
 
+.img_like{
+    width: 40px;
+    height: auto;
+}
+
+.like {
+    width: 40px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    margin: 10px;
+}
+
+.dislike {
+    width: 40px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}
 
 @keyframes fade-in {
     from {
-        opacity: 0%;
+        opacity: 0;
     }
     to {
         opacity: 100%;

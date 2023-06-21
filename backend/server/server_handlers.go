@@ -26,8 +26,12 @@ type Posts struct {
 	Id           int
 	Comments     []string
 	UserId       int
-	NicknameUser string
+	NicknamePost string
 }
+
+//type Comment struct {
+//	Message
+//}
 
 func InitRole(token string) {
 	_, connectedRole, err := register.DecodeJWTToken(token)
@@ -207,6 +211,8 @@ func ManageData(content []string, postId []int, message []string, postIdComment 
 		temp.Id = postId[i]
 		temp.UserId = userId[i]
 
+		temp.NicknamePost, _ = register.GetNicknameByID(userId[i])
+
 		database = append(database, temp)
 	}
 
@@ -219,16 +225,6 @@ func ManageData(content []string, postId []int, message []string, postIdComment 
 		}
 	}
 
-	for i := 0; i < len(userId); i++ {
-		nickname, _ := register.GetNicknameByID(userId[i])
-		for k := 0; k < len(database); k++ {
-			nicknameDB, _ := register.GetNicknameByID(database[k].UserId)
-			if nickname == nicknameDB {
-				database[k].NicknameUser = nickname
-				break
-			}
-		}
-	}
 	return database
 }
 
