@@ -36,6 +36,7 @@ func Router() {
 const port = "8080"
 
 func Server() {
+
 	Router()
 	fmt.Println("Listening on http://localhost:" + port)
 	err := http.ListenAndServe(":"+port, nil)

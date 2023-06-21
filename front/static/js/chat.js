@@ -105,14 +105,16 @@ function oldPost() {
     let countClickLike = 0;
     let countClickDislike = 0;
     let posts = document.getElementsByClassName("posts");
+
     for (let i = 0; i < posts.length; i++) {
 
         //add input for comment
-        let form = document.createElement("form");
+        let form = posts[i].querySelector("[name='newComment']");
         let txtComment = document.createElement('textarea');
         txtComment.setAttribute("name", "comment")
         txtComment.className = 'form_comment';
         form.appendChild(txtComment);
+
         let subComment = document.createElement("button");
         subComment.type = "submit";
         subComment.name = "comment";
