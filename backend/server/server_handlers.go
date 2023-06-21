@@ -189,12 +189,9 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	register.Db.Table("comments").Where("category_id = ?", catId).Pluck("user_id", &userIdComment)
 	register.Db.Table("like_posts").Where("is_like = ?", true).Pluck("post_id", &postIdLike)
 
-	fmt.Println(postIdLike)
-
 	database := ManageData(content, postId, message, postIdComment, userId, userIdComment, postIdLike)
 	dataHub.Database = database
 
-	fmt.Println(database)
 	err = page.ExecuteTemplate(w, "chat.html", dataHub)
 	if err != nil {
 		return
@@ -214,7 +211,6 @@ func ManageData(content []string, postId []int, message []string, postIdComment 
 		for idPost, nbrLike := range countLike {
 			if idPost == postId[i] {
 				temp.CountLike = nbrLike
-				fmt.Println(temp.CountLike)
 			}
 		}
 		database = append(database, temp)
