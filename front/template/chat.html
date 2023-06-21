@@ -31,35 +31,32 @@
 </header>
 
 {{if ne .Role ""}}
-<form name="newPost">
+    <form name="newPost">
 
-</form>
+    </form>
 {{end}}
 
 {{range .Database}}
-<div class="posts" data-id="{{.Id}}">
-    <h5>{{.NicknameUser}}</h5>
+<div class="posts" data-id="{{.Id}}" data-like="{{.CountLike}}">
+    <h5>{{.NicknamePost}}</h5>
     <p>{{.Content}}</p>
     {{range .Comments}}
     <div class="comment">
-        <p>{{.}}</p>
+        <h5>{{.NicknameComment}}</h5>
+        <p>{{.Message}}</p>
     </div>
     {{end}}
-        {{if ne $.Role ""}}
+    {{if ne $.Role ""}}
         <form name="newComment">
 
         </form>
-        {{end}}
+    {{end}}
 </div>
 {{end}}
 
-
 <script type="module">
-
-    import {chat} from '../static/js/chat.js'
-
+    import { chat } from '../static/js/chat.js'
     chat()
-
 </script>
 
 </body>
