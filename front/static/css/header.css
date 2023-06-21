@@ -1,0 +1,24 @@
+header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #81847d;
+    margin: 0;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.headerLetter {
+    /*margin-left: 10px;*/
+    color: black;
+    text-shadow: #7ddd5ccc  1px 1px, #7ddd5ccc  -1px 1px, #ffffff -1px -1px, #ffffff 1px -1px;
+}
+
+.a_header {
+    text-decoration: none;
+}
+
+.img_header {
+    width: 6vw;
+    height: auto;
+}

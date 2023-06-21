@@ -2,21 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ExploreUr</title>
+    <title>Category - ExploreUr</title>
     <link rel="stylesheet" href="../static/css/category.css">
+    <link rel="stylesheet" href="../static/css/header.css">
+    <link rel="icon" type="image/x-icon" href="http://localhost:8080/static/image/logo.png">
 </head>
 <body>
-<h1> Category </h1>
-{{range .}}
-<a class={{.}}>
-    <div class="cat">
-        <p class="txt">{{.}}</p>
-    </div>
-</a>
+
+<header>
+    <a href="http://localhost:8080/">
+        <img class="img_header" src="http://localhost:8080/static/image/logo.png">
+    </a>
+    <a class="a_header" href="http://localhost:8080/category">
+        <h1 class="headerLetter">Category</h1>
+    </a>
+    {{if ne .Role ""}}
+        <a class="a_header" href="http://localhost:8080/activity">
+            <h1 class="headerLetter">Activity</h1>
+        </a>
+    {{end}}
+    {{if not .IsConnected}}
+        <a class="a_header" href="http://localhost:8080/login">
+            <h1 class="headerLetter">Sign in / Sign up</h1>
+        </a>
+    {{else if .IsConnected}}
+        <a class="a_header" href="http://localhost:8080/logout">
+            <h1 class="headerLetter">Logout</h1>
+        </a>
+    {{end}}
+    </a>
+</header>
+
+<h1 class="title"> Category </h1>
+
+{{range .Category}}
+    <a class={{.}} data-name="category">
+        <div class="cat">
+            <p class="txt">{{.}}</p>
+        </div>
+    </a>
 {{end}}
 <script>
-    const aCategory = document.querySelectorAll("a")
-    let j = 1;
+    const aCategory = [...document.querySelectorAll('a')].filter(el => el.dataset.name === "category")
+    j=1
     for (let i = 0; i < aCategory.length; i++) {
         aCategory[i].href = `/${j}`
         j++

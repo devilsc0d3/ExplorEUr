@@ -2,12 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Forum</title>
-    <link rel="stylesheet" href="../static/css/chat.css">
-    <link rel="stylesheet" href="../static/css/header.css">
-    <link rel="icon" type="image/x-icon" href="http://localhost:8080/static/image/logo.png">
+    <title>Activity - ExplorEUr</title>
+    <link rel="stylesheet" href="../static/css/activity.css">
 </head>
-
 <body>
 <header>
     <a href="http://localhost:8080/">
@@ -31,36 +28,5 @@
         </a>
     {{end}}
 </header>
-
-{{if ne .Role ""}}
-    <form name="newPost">
-
-    </form>
-{{end}}
-
-{{range .Database}}
-<div class="posts" data-id="{{.Id}}">
-    <h5>{{.NicknameUser}}</h5>
-    <p>{{.Content}}</p>
-    {{range .Comments}}
-    <div class="comment">
-        <p>{{.}}</p>
-    </div>
-    {{end}}
-<!--    {{if ne $.Role ""}}-->
-<!--    <form name="newComment">-->
-
-<!--    </form>-->
-<!--    {{end}}-->
-</div>
-{{end}}
-
-<script type="module">
-
-    import { chat } from '../static/js/chat.js'
-
-    chat()
-
-</script>
 </body>
 </html>

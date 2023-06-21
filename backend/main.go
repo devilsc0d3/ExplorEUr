@@ -13,10 +13,6 @@ import (
 )
 
 func main() {
-	//err := godotenv.Load() // 👈 load .env file
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
 	register.Init()
 	post.Init()
 	comment.Init()
@@ -26,4 +22,5 @@ func main() {
 	category.Init()
 	fill.DataFill()
 	server.Server()
+
 }

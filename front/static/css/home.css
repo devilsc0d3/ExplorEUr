@@ -4,28 +4,6 @@ body {
     margin: 0;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    background-color: #90EE90;
-    margin: 0;
-}
-
-.headerLetter {
-    /*margin-left: 10px;*/
-    color: black;
-    text-shadow: #ffffff 1px 1px, #ffffff -1px 1px, #ffffff -1px -1px, #ffffff 1px -1px;
-}
-
-.a_header {
-    text-decoration: none;
-}
-
-.img_header {
-    width: 6vw;
-    height: auto;
-}
-
 .div_warning {
     width: 52vw;
     display: flex;
@@ -68,4 +46,17 @@ header {
 .easter_egg{
     color: white;
     text-decoration: none;
+}
+
+::-webkit-scrollbar{
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ffff;
+    border-radius: 50px;
 }

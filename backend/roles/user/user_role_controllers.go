@@ -41,9 +41,6 @@ func DeletePostByUserController(postID int) {
 	if role == "user" || role == "moderator" {
 		post.DeletePost(postID)
 	}
-	//} else if role == "administrator" {
-	//
-	//}
 }
 
 func UpdatePostByUserController() {

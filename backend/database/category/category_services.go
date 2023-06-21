@@ -3,6 +3,7 @@ package category
 import (
 	"errors"
 	"exploreur/backend/register"
+	"exploreur/backend/server"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -20,7 +21,7 @@ func AddCategory(name string) {
 	}
 
 	db.Create(&Category{Name: name})
-	//server.AddRouteCategory()
+	server.AddRouteCategory()
 
 }
 
