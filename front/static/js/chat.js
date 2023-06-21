@@ -1,3 +1,5 @@
+//add post ou commentaire
+
 const sendDataPost = async (txt) => {
 
     await fetch('http://localhost:8080/info', {
@@ -19,22 +21,44 @@ const sendDataComment = async (txt, postId) => {
     });
 };
 
+//button for report
+
 const sendDataReportPost = async (txt) => {
 
     await fetch('http://localhost:8080/info', {
         method: 'POST',
         body: new URLSearchParams({
-            reportPost: txt,
+            reportPostButton: txt,
         })
     });
 }
 
-const sendTextReport = async (txt) => {
+const sendDataReportComment = async (txt) => {
 
     await fetch('http://localhost:8080/info', {
         method: 'POST',
         body: new URLSearchParams({
-            textReport: txt,
+            reportCommentButton: txt,
+        })
+    });
+}
+
+//text inside when report
+
+const sendTextPostReport = async (txt) => {
+    await fetch('http://localhost:8080/info', {
+        method: 'POST',
+        body: new URLSearchParams({
+            textPostReport: txt,
+        })
+    });
+};
+
+const sendTextCommentReport = async (txt) => {
+    await fetch('http://localhost:8080/info', {
+        method: 'POST',
+        body: new URLSearchParams({
+            textCommentReport: txt,
         })
     });
 };
@@ -79,20 +103,22 @@ function newPost() {
             let newDivComment = document.createElement("div");
             newDivComment.innerHTML = txtComment.value;
             newDivComment.classList.add('comment');
-            let button = document.createElement("button");
-            newDivComment.appendChild(button);
-            button.addEventListener("click", () => {
-                sendDataReportPost(" ").then(r => r != null);
+            let button1 = document.querySelectorAll("[name = 'reportCommentButton']")[i];
+            newDivComment.appendChild(button1);
+            button1.addEventListener("click", () => {
+                let text = newDiv.querySelector("p");
+                sendTextCommentReport(text.innerHTML).then(r => r != null);
+                sendDataReportComment(" ").then(r => r != null);
             })
             const postId = formComment.parentNode.dataset.id;
             formComment.insertAdjacentElement('beforebegin', newDivComment);
             sendDataComment(txtComment.value, postId).then(res => res.json());
             formComment.reset();
         });
-        let button3 = document.querySelectorAll("[name = 'reportPost']")[i];
+        let button3 = document.querySelectorAll("[name = 'reportPostButton']")[i];
         button3.addEventListener("click", () => {
             let text = newDiv[+1].querySelector("p");
-            sendTextReport(text.innerHTML).then(r => r != null);
+            sendTextPostReport(text.innerHTML).then(r => r != null);
             sendDataReportPost(" ").then(r => r != null);
         })
     });
@@ -118,25 +144,22 @@ function oldPost() {
             let newDivComment2 = document.createElement("div");
             newDivComment2.innerHTML = txtComment.value;
             newDivComment2.classList.add('comment');
-            let button = document.createElement("button");
-            newDivComment2.appendChild(button);
-            button.addEventListener("click", () => {
-                sendTextReport(" ").then(r => r != null);
+            let button2 = document.querySelectorAll("[name = 'reportCommentButton']")[i];
+            newDivComment2.appendChild(button2);
+            button2.addEventListener("click", () => {
+                let text = posts[i + 1].querySelector("p");
+                        sendTextCommentReport(text.innerHTML).then(r => r != null);
+                sendDataReportComment(" ").then(r => r != null);
             })
             const postId = form.parentNode.dataset.id;
             form.insertAdjacentElement('beforebegin', newDivComment2);
-
             sendDataComment(txtComment.value, postId).then(res => res.json());
-
             form.reset();
         });
-        let button = document.querySelectorAll("[name = 'reportPost']")[i];
+        let button = document.querySelectorAll("[name = 'reportPostButton']")[i];
         button.addEventListener("click", () => {
             let text = posts[i + 1].querySelector("p");
-            console.log("innerhtml" + text.innerHTML)
-            console.log("text" + text)
-
-            sendTextReport(text.innerHTML).then(r => r != null);
+            sendTextPostReport(text.innerHTML).then(r => r != null);
             sendDataReportPost(" ").then(r => r != null);
         })
     }

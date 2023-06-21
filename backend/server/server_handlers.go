@@ -12,11 +12,12 @@ import (
 )
 
 type DataHub struct {
-	Role              string
-	Database          []Posts
-	Category          []string
-	IsConnected       bool
-	ReportPostContent string
+	Role                 string
+	Database             []Posts
+	Category             []string
+	IsConnected          bool
+	ReportPostContent    string
+	ReportCommentContent string
 }
 
 var dataHub DataHub
@@ -221,25 +222,17 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
-	/*fmt.Println("test")
-	var reportPostContent string
-	fmt.Println("a", reportPostContent)
-	if reportPostContent == "" {
 
-	}*/
-
+	//init textReport
 	if dataHub.ReportPostContent == "" {
-		dataHub.ReportPostContent = r.FormValue("textReport")
+		dataHub.ReportPostContent = r.FormValue("textPostReport")
 	}
-	//report post
-	if r.FormValue("reportPost") != "" {
-		postID, _ := strconv.Atoi(r.FormValue("postID"))
-		var userId int
-		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
-		nicknameUser, _ := register.GetNicknameByID(userId)
-		moderator.ReportPostByModeratorController(postID, nicknameUser, dataHub.ReportPostContent, catId)
+
+	//init commentReport
+	if dataHub.ReportCommentContent == "" {
+		dataHub.ReportCommentContent = r.FormValue("textCommentReport")
 	}
-	//fmt.Println("b", reportPostContent)
+
 	//add post
 	if r.FormValue("postContent") != "" {
 		postErr := user.AddPostByUserController(r.FormValue("postContent"), catId)
@@ -255,8 +248,18 @@ func Info(w http.ResponseWriter, r *http.Request) {
 		user.AddCommentByUserController(postID, commentContent, catId)
 	}
 
+	// maybe mettre les reports avant les adds
+	//report post
+	if r.FormValue("reportPostButton") != "" {
+		postID, _ := strconv.Atoi(r.FormValue("postID"))
+		var userId int
+		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
+		nicknameUser, _ := register.GetNicknameByID(userId)
+		moderator.ReportPostByModeratorController(postID, nicknameUser, dataHub.ReportPostContent, catId)
+	}
+
 	//report comment
-	if r.FormValue("reportComment") != "" {
+	if r.FormValue("reportCommentButton") != "" {
 		fmt.Println("good comment")
 	}
 }
