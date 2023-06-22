@@ -4,9 +4,8 @@ body {
     justify-content: center;
     align-content: center;
     display: flex;
-    /*background: url("http://localhost:8080/static/image/background.jpg");*/
-    /*background-size: cover;*/
-    background: #bb73e6;
+    background: url("https://localhost:8080/static/image/background.jpg");
+    background-size: cover;
 }
 
 form {

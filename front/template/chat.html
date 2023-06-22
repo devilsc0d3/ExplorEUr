@@ -5,26 +5,26 @@
     <title>Chatting - ExplorEUr</title>
     <link rel="stylesheet" href="../static/css/chat.css">
     <link rel="stylesheet" href="../static/css/header.css">
-    <link rel="icon" type="image/x-icon" href="http://localhost:8080/static/image/logo.png">
+    <link rel="icon" type="image/x-icon" href="https://localhost:8080/static/image/logo.png">
 </head>
 
 <body>
 <header>
-    <a href="http://localhost:8080/">
-        <img class="img_header" src="http://localhost:8080/static/image/logo.png">
+    <a href="https://localhost:8080/">
+        <img class="img_header" src="https://localhost:8080/static/image/logo.png">
     </a>
-    <a class="a_header" href="http://localhost:8080/category">
+    <a class="a_header" href="https://localhost:8080/category">
         <h1 class="headerLetter">Category</h1>
     </a>
     {{if not .IsConnected}}
-    <a class="a_header" href="http://localhost:8080/login">
+    <a class="a_header" href="https://localhost:8080/login">
         <h1 class="headerLetter">Sign in / Sign up</h1>
     </a>
     {{else if .IsConnected}}
-    <a class="a_header" href="http://localhost:8080/activity">
+    <a class="a_header" href="https://localhost:8080/activity">
         <h1 class="headerLetter">Activity</h1>
     </a>
-    <a class="a_header" href="http://localhost:8080/logout">
+    <a class="a_header" href="https://localhost:8080/logout">
         <h1 class="headerLetter">Logout</h1>
     </a>
     {{end}}

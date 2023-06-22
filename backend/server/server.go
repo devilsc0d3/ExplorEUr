@@ -34,13 +34,13 @@ func Router() {
 
 }
 
-const port = "8080"
+const port = "3000"
 
 func Server() {
 
 	Router()
-	fmt.Println("Listening on http://localhost:" + port)
-	err := http.ListenAndServe(":"+port, nil)
+	fmt.Println("Listening on https://localhost:" + port)
+	err := http.ListenAndServeTLS(":"+port, "cert.pem", "key.pem", nil)
 	if err != nil {
 		return
 	}
