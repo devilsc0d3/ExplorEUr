@@ -1,6 +1,7 @@
 package server
 
 import (
+	"exploreur/backend/database/category"
 	"exploreur/backend/register"
 	"exploreur/backend/roles/moderator"
 	"exploreur/backend/roles/user"
@@ -25,9 +26,18 @@ var dataHub DataHub
 var catId int
 
 type Posts struct {
-	Content  string
-	Id       int
-	Comments []string
+	Content      string
+	Id           int
+	Comments     []Comment
+	UserId       int
+	NicknamePost string
+	CountLike    int
+}
+
+type Comment struct {
+	Message         string
+	PostId          int
+	NicknameComment string
 }
 
 func InitRole(token string) {
@@ -45,8 +55,8 @@ func InitRole(token string) {
 	case "moderator":
 		dataHub.Role = "moderator"
 		break
-	case "administrator":
-		dataHub.Role = "administrator"
+	case "admin":
+		dataHub.Role = "admin"
 		break
 	}
 }
@@ -68,11 +78,14 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func CategoryHandler(w http.ResponseWriter, r *http.Request) {
-	page, _ := template.ParseFiles("./front/template/category.html")
+	page, err := template.ParseFiles("./front/template/category.html")
+	if err != nil {
+		panic("failed to parse template")
+	}
 	if dataHub.IsConnected {
 		cookie, err := r.Cookie("token")
 		if err != nil {
-			panic("cookie recuperation error")
+			panic("cookie retrieval error")
 		}
 		register.Token = cookie.Value
 		InitRole(register.Token)
@@ -80,23 +93,24 @@ func CategoryHandler(w http.ResponseWriter, r *http.Request) {
 	var categoryName []string
 	register.Db.Table("categories").Pluck("name", &categoryName)
 	dataHub.Category = categoryName
-	err := page.ExecuteTemplate(w, "category.html", dataHub)
+	fmt.Println(dataHub)
+	err = page.ExecuteTemplate(w, "category.html", dataHub)
 	if err != nil {
-		panic("execute template error")
+		panic("failed to execute template")
 	}
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/login.html")
 	if r.FormValue("nickname") != "" && r.FormValue("password") != "" {
-		isok, user := register.CheckNicknameAndPassword(r.FormValue("nickname"), r.FormValue("password"))
+		isok, usr := register.CheckNicknameAndPassword(r.FormValue("nickname"), r.FormValue("password"))
 		if isok {
 			var token string
 			var err error
 			if r.FormValue("remember-me") == "1" {
-				token, err = register.CreateJWTTokenRememberMe(user.Nickname, user.Role)
+				token, err = register.CreateJWTTokenRememberMe(usr.Nickname, usr.Role)
 			} else {
-				token, err = register.CreateJWTToken(user.Nickname, user.Role)
+				token, err = register.CreateJWTToken(usr.Nickname, usr.Role)
 			}
 			if err != nil {
 				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
@@ -166,46 +180,74 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	compile := regexp.MustCompile(`[^/]`)
 	catId, _ = strconv.Atoi(compile.FindString(r.URL.String()))
 
-	//get content
+	//get info posts for put to struct
 	var content []string
 	var postId []int
 	var message []string
 	var postIdComment []int
+	var userId []int
+	var userIdComment []int
+	var postIdLike []int
 
 	register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("content", &content)
 	register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("id", &postId)
+	register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
 	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("message", &message)
 	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("post_id", &postIdComment)
+	register.Db.Table("comments").Where("category_id = ?", catId).Pluck("user_id", &userIdComment)
+	register.Db.Table("like_posts").Where("is_like = ?", true).Pluck("post_id", &postIdLike)
 
-	database := ManageData(content, postId, message, postIdComment)
+	database := ManageData(content, postId, message, postIdComment, userId, userIdComment, postIdLike)
 	dataHub.Database = database
+
 	err = page.ExecuteTemplate(w, "chat.html", dataHub)
 	if err != nil {
 		return
 	}
 }
 
-func ManageData(content []string, postId []int, message []string, postIdComment []int) []Posts {
+func ManageData(content []string, postId []int, message []string, postIdComment []int, userId []int, userIdComment []int, postIdLike []int) []Posts {
 	var database []Posts
-
+	countLike := CountLike(postIdLike)
 	for i := 0; i < len(content); i++ {
 		var temp Posts
 		temp.Content = content[i]
 		temp.Id = postId[i]
+		temp.UserId = userId[i]
+		temp.NicknamePost, _ = register.GetNicknameByID(userId[i])
 
+		for idPost, nbrLike := range countLike {
+			if idPost == postId[i] {
+				temp.CountLike = nbrLike
+			}
+		}
 		database = append(database, temp)
 	}
 
-	for j := 0; j < len(message); j++ {
-		for k := 0; k < len(database); k++ {
-			if postIdComment[j] == database[k].Id {
-				database[k].Comments = append(database[k].Comments, message[j])
+	for i := 0; i < len(message); i++ {
+		var temp2 Comment
+		for j := 0; j < len(database); j++ {
+			if postIdComment[i] == database[j].Id {
+				temp2.Message = message[i]
+				temp2.PostId = postIdComment[i]
+				temp2.NicknameComment, _ = register.GetNicknameByID(userIdComment[i])
+				database[j].Comments = append(database[j].Comments, temp2)
 				break
 			}
 		}
 	}
 
 	return database
+}
+
+func CountLike(postId []int) map[int]int {
+	counts := make(map[int]int)
+
+	for _, idPost := range postId {
+		counts[idPost]++
+	}
+
+	return counts
 }
 
 // Info get info to front chat page
@@ -221,6 +263,12 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		return
+	}
+
+	//add category
+	if r.FormValue("categoryName") != "" {
+		fmt.Println(r.FormValue("categoryName"))
+		category.AddCategory(r.FormValue("categoryName"))
 	}
 
 	//init textReport
@@ -246,6 +294,20 @@ func Info(w http.ResponseWriter, r *http.Request) {
 		commentContent := r.FormValue("comment")
 		postID, _ := strconv.Atoi(r.FormValue("postID"))
 		user.AddCommentByUserController(postID, commentContent, catId)
+	}
+
+	//add like/dislike post
+	if r.FormValue("like") != "" {
+		like := r.FormValue("like")
+		dislike := r.FormValue("dislike")
+		postID, _ := strconv.Atoi(r.FormValue("postId"))
+		if like == "true" {
+			user.AddLikePostByUserController(postID)
+		}
+		if dislike == "true" {
+			user.AddDislikePostByUserController(postID)
+		}
+
 	}
 
 	// maybe mettre les reports avant les adds

@@ -7,8 +7,8 @@ import (
 	"strconv"
 )
 
-var categoriesId []int
-var registeredPaths = make(map[int]bool) // Map to track registered paths
+var CategoriesId []int
+var RegisteredPaths = make(map[int]bool) // Map to track registered paths
 
 func Router() {
 	fs := http.FileServer(http.Dir("./front/static/"))
@@ -24,11 +24,11 @@ func Router() {
 	http.HandleFunc("/activity", ActivityHandler)
 	http.HandleFunc("/recover_password", RecoverHandler)
 
-	register.Db.Table("categories").Pluck("id", &categoriesId)
+	register.Db.Table("categories").Pluck("id", &CategoriesId)
 
-	for i := 0; i < len(categoriesId); i++ {
-		http.HandleFunc("/"+strconv.Itoa(categoriesId[i]), Chat)
-		registeredPaths[categoriesId[i]] = true
+	for i := 0; i < len(CategoriesId); i++ {
+		http.HandleFunc("/"+strconv.Itoa(CategoriesId[i]), Chat)
+		RegisteredPaths[CategoriesId[i]] = true
 	}
 
 }
@@ -36,6 +36,7 @@ func Router() {
 const port = "8080"
 
 func Server() {
+
 	Router()
 	fmt.Println("Listening on http://localhost:" + port)
 	err := http.ListenAndServe(":"+port, nil)
@@ -46,11 +47,11 @@ func Server() {
 	//log.Fatal(http.ListenAndServeTLS(":"+port, "cert.pem", "key.pem", nil))
 }
 
-func AddRouteCategory() {
-	for i := 0; i < len(categoriesId); i++ {
-		if !registeredPaths[categoriesId[i]] { // Check if path is already registered
-			http.HandleFunc("/"+strconv.Itoa(categoriesId[i]), Chat)
-			registeredPaths[categoriesId[i]] = true // Mark path as registered
-		}
-	}
-}
+//func AddRouteCategory() {
+//	for i := 0; i < len(CategoriesId); i++ {
+//		if !RegisteredPaths[CategoriesId[i]] { // Check if path is already registered
+//			http.HandleFunc("/"+strconv.Itoa(CategoriesId[i]), Chat)
+//			RegisteredPaths[CategoriesId[i]] = true // Mark path as registered
+//		}
+//	}
+//}

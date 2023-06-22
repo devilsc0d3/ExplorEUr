@@ -1,39 +1,20 @@
 package fill
 
-import (
-	"exploreur/backend/database/category"
-	"exploreur/backend/database/comment"
-	"exploreur/backend/database/like_comment"
-	"exploreur/backend/like_post"
-	"exploreur/backend/post"
-	"exploreur/backend/register"
-	"exploreur/backend/report_comment"
-	"exploreur/backend/report_post"
-	"exploreur/backend/server"
-)
-
 func DataFill() {
-	//post.Clear()
-	//register.AddUserController("modo", "modo@hotmial.com", "Passw0rd.")
-	//register.AddUserController("adan", "adan135@gmail.fr", "Passw0rd.")
-	//post.AddPost("L'eau c'est mieux en cannette, et bas non !", 0)
-	//post.AddPost("La terre est plate!", 0)
-	//post.AddPost("L'eau c'est de l'alcool", 1)
-	//post.AddPost("jesus transforme l'eau en vin", 1)
 	//comment.Clear()
+	//post.Clear()
+	//category.Clear()
+
+	//register.AddUserController("admin", "admin@admin.fr", "Viol1418.")
+	//register.AddUserController("jean", "jean.eude@hotmial.com", "Passw0rd.")
+	//register.AddUserController("adan", "adan135@gmail.fr", "Passw0rd.")
+
+	//post.AddPost("L'eau c'est mieux en cannette, et bas non !", 0, 3)
+	//post.AddPost("La terre est plate!", 2, 1)
+	//post.AddPost("L'eau c'est de l'alcool", 1, 3)
+	//post.AddPost("jesus transforme l'eau en vin", 1, 2)
+
 	//category.AddCategory("Place")
 	//category.AddCategory("Tools")
 	//category.AddCategory("Information")
-	//category.Clear()
-	register.Init()
-	category.Init()
-	post.Init()
-	comment.Init()
-	like_post.Init()
-	like_comment.Init()
-	report_post.Init()
-	report_comment.Init()
-	//comment.Clear()
-	//post.Clear()
-	server.Server()
 }

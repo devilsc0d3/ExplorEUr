@@ -3,9 +3,11 @@ package category
 import (
 	"errors"
 	"exploreur/backend/register"
-	"exploreur/backend/server"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"html/template"
+	"net/http"
+	"strconv"
 )
 
 type Category struct {
@@ -21,8 +23,24 @@ func AddCategory(name string) {
 	}
 
 	db.Create(&Category{Name: name})
-	server.AddRouteCategory()
+	var id []int
+	Db.Table("categories").Order("created_at DESC").Pluck("id", &id)
+	AddRouteCategory(id[len(id)-1])
+	// Todo divide page
+	// Todo divide bdd
+}
 
+func HomeHandler2(w http.ResponseWriter, r *http.Request) {
+	page, _ := template.ParseFiles("./front/template/home.html")
+
+	err := page.ExecuteTemplate(w, "home.html", nil)
+	if err != nil {
+		return
+	}
+}
+
+func AddRouteCategory(CategoriesId int) {
+	http.HandleFunc("/"+strconv.Itoa(CategoriesId+1), HomeHandler2)
 }
 
 func DeleteCategory(id int) {

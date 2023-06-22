@@ -11,7 +11,7 @@
 
 <header>
     <a href="http://localhost:8080/">
-        <img class="img_header" src="http://localhost:8080/static/image/logo.png">
+        <img class="img_header" src="http://localhost:8080/static/image/logo.png" alt="">
     </a>
     <a class="a_header" href="http://localhost:8080/category">
         <h1 class="headerLetter">Category</h1>
@@ -30,20 +30,40 @@
     {{end}}
 </header>
 
+
+<h1 class="title"> Category </h1>
+
+    {{if eq .Role "admin"}}
+<div class="cat">
+    <form name="newCategory">
+        <label>
+            <input class="input" type="text" name="categoryName"  autocomplete="off" placeholder="Enter a category name" required>
+        </label>
+        <button name="submitButton" type="submit">Add</button>
+    </form>
+</div>
+    {{end}}
+
 {{range .Category}}
-    <a class={{.}} data-name="category">
-        <div class="cat">
-            <p class="txt">{{.}}</p>
-        </div>
-    </a>
+<a class={{.}} data-name="category">
+    <div class="cat">
+        <p class="txt">{{.}}</p>
+    </div>
+</a>
 {{end}}
-<script>
+
+<script type="module">
     const aCategory = [...document.querySelectorAll('a')].filter(el => el.dataset.name === "category")
-    j=1
+    let j=1
     for (let i = 0; i < aCategory.length; i++) {
         aCategory[i].href = `/${j}`
         j++
     }
+
+
+    import {category} from '../static/js/category.js'
+
+    category()
 </script>
 </body>
 </html>
