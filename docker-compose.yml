@@ -6,7 +6,7 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL}
     ports:
-      - "3000:3000"
+      - "8080:8080"
     volumes:
       - ./cert.pem:/app/cert.pem
       - ./key.pem:/app/key.pem
