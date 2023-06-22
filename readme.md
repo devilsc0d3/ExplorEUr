@@ -86,7 +86,7 @@ git clone
 ```
 - Launch the forum project :
 Run with the command : 
-```go
+```bash
 docker compose up --build
 ```
 
