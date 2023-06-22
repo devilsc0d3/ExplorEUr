@@ -120,21 +120,28 @@ function newPost() {
         formComment.appendChild(subComment);
         newDiv.appendChild(formComment);
 
+        //add div like/dislike
+        let div = document.createElement("div");
+        div.classList.add("divLike");
+
         //add button like/dislike
         let buttonLike2 = document.createElement("button");
         buttonLike2.classList.add("like");
-        newDiv.appendChild(buttonLike2);
+        div.appendChild(buttonLike2);
         let imgLike = document.createElement("img");
         imgLike.src = "http://localhost:8080/static/image/likeFALSE.png";
         imgLike.classList.add("img_like");
         buttonLike2.appendChild(imgLike);
         let buttonDislike2 = document.createElement("button");
         buttonDislike2.classList.add("dislike");
-        newDiv.appendChild(buttonDislike2);
+        div.appendChild(buttonDislike2);
         let imgDislike = document.createElement("img");
         imgDislike.src = "http://localhost:8080/static/image/dislikeFALSE.png";
         imgDislike.classList.add("img_like");
         buttonDislike2.appendChild(imgDislike);
+
+        newDiv.appendChild(div);
+
 
         form.insertAdjacentElement('afterend', newDiv);
         sendDataPost(txt.value).then(res => res.json());
@@ -230,11 +237,15 @@ function oldPost() {
             });
         });
 
+        //add div like/dislike
+        let div = document.createElement("div");
+        div.classList.add("divLike");
+
 
         //add button like/dislike
         let buttonLike = document.createElement("button");
         buttonLike.classList.add("like");
-        posts[i].appendChild(buttonLike);
+        div.appendChild(buttonLike);
         let imgLike = document.createElement("img");
         imgLike.src = "http://localhost:8080/static/image/likeFALSE.png";
         imgLike.classList.add("img_like");
@@ -242,11 +253,12 @@ function oldPost() {
         let countLike = posts[i].dataset.like;
         let nbrLike = document.createElement("h6");
         nbrLike.innerHTML = countLike;
-        posts[i].appendChild(nbrLike)
+        div.appendChild(nbrLike)
 
         let buttonDislike = document.createElement("button");
         buttonDislike.classList.add("dislike");
-        posts[i].appendChild(buttonDislike);
+        div.appendChild(buttonDislike);
+        posts[i].appendChild(div);
         let imgDislike = document.createElement("img");
         imgDislike.src = "http://localhost:8080/static/image/dislikeFALSE.png";
         imgDislike.classList.add("img_like");
