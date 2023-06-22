@@ -1,0 +1,21 @@
+body {
+    font-family: "Comic Sans MS", sans-serif;
+    padding: 0;
+    margin: 0;
+    background: url("../image/background.png");
+    background-size: cover;
+    box-shadow: inset 80px 80px 80px 80px rgba(0, 0, 0, 0.5) , inset -80px -80px 80px 80px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.button {
+    color: black;
+    margin-left: 38vw;
+    margin-top: 42.5vh;
+}
