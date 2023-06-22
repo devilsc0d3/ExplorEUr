@@ -25,9 +25,9 @@ func AddCategory(name string) {
 	db.Create(&Category{Name: name})
 	var id []int
 	Db.Table("categories").Order("created_at DESC").Pluck("id", &id)
-	AddRouteCategory(id[len(id)-1])
-	// Todo divide page
-	// Todo divide bdd
+	//AddRouteCategory(id[len(id)-1])
+	//// Todo divide page
+	//// Todo divide bdd
 }
 
 func HomeHandler2(w http.ResponseWriter, r *http.Request) {

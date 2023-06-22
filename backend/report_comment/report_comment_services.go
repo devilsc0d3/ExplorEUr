@@ -25,3 +25,7 @@ func ReportAComment(commentID int, nicknameModerator string, nicknameUser string
 	}
 	db.Create(&ReportComment{CommentID: commentID, NicknameModerator: nicknameModerator, NicknameUser: nicknameUser, CommentContent: commentContent, CategoryID: categoryID, PostID: postID})
 }
+
+func Clear() {
+	register.Db.Exec("DROP TABLE report_comments")
+}

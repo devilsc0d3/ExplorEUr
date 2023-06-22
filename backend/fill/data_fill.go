@@ -17,4 +17,8 @@ func DataFill() {
 	//category.AddCategory("Place")
 	//category.AddCategory("Tools")
 	//category.AddCategory("Information")
+	//post.Clear()
+	//comment.Clear()
+	//report_post.Clear()
+	//report_comment.Clear()
 }

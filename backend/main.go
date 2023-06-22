@@ -8,6 +8,7 @@ import (
 	"exploreur/backend/like_post"
 	"exploreur/backend/post"
 	"exploreur/backend/register"
+	"exploreur/backend/report_comment"
 	"exploreur/backend/report_post"
 	"exploreur/backend/server"
 )
@@ -19,6 +20,7 @@ func main() {
 	like_post.Init()
 	like_comment.Init()
 	report_post.Init()
+	report_comment.Init()
 	category.Init()
 	fill.DataFill()
 	server.Server()

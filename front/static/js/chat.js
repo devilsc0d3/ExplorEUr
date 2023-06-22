@@ -9,25 +9,25 @@ const sendDataPost = async (txt) => {
     });
 };
 
-const sendDataComment = async (txt, postID) => {
+const sendDataComment = async (txt, postId) => {
 
     await fetch('http://localhost:8080/info', {
         method: 'POST',
         body: new URLSearchParams({
             comment: txt,
-            postID: postID,
+            postID: postId,
         })
     });
 };
 
-const sendDataLike = async (like, dislike, postID) => {
+const sendDataLike = async (like, dislike, postId) => {
 
     await fetch('http://localhost:8080/info', {
         method: 'POST',
         body: new URLSearchParams({
             like: like,
             dislike: dislike,
-            postID: postID
+            postID: postId
         })
     });
 };
@@ -82,7 +82,6 @@ function newPost() {
 
     //add input for new post
     let form = document.querySelector('[name="newPost"]')
-    console.log(form)
     form.classList.add('posts');
     const header = document.querySelector("header")
     header.insertAdjacentElement('afterend', form);
@@ -147,9 +146,9 @@ function newPost() {
             let newDivComment = document.createElement("div");
             newDivComment.innerHTML = txtComment.value;
             newDivComment.classList.add('comment');
-            const postID = formComment.parentNode.dataset.id;
+            const postId = formComment.parentNode.dataset.id;
             formComment.insertAdjacentElement('beforebegin', newDivComment);
-            sendDataComment(txtComment.value, postID).then(res => res.json());
+            sendDataComment(txtComment.value, postId).then(res => res.json());
             formComment.reset();
         });
 
@@ -164,8 +163,8 @@ function newPost() {
                 } else {
                     imgLike.src = "http://localhost:8080/static/image/likeTRUE.png"
                     like = true;
-                    const postID = formComment.parentNode.dataset.id;
-                    sendDataLike(like, dislike, postID).then(r => r != null);
+                    const postId = formComment.parentNode.dataset.id;
+                    sendDataLike(like, dislike, postId).then(r => r != null);
                 }
             }
         });
@@ -181,8 +180,8 @@ function newPost() {
                 } else {
                     imgDislike.src = "http://localhost:8080/static/image/dislikeTRUE.png"
                     dislike = true;
-                    const postID = formComment.parentNode.dataset.id;
-                    sendDataLike(like, dislike, postID).then(r => r != null);
+                    const postId = formComment.parentNode.dataset.id;
+                    sendDataLike(like, dislike, postId).then(r => r != null);
                 }
             }
         });
@@ -205,25 +204,6 @@ function oldPost() {
         txtComment.className = 'form_comment';
         form.appendChild(txtComment);
 
-        // report post ?... postID qui déconne
-
-        let button = document.querySelectorAll("[name = 'reportPostButton']")[i];
-        button.addEventListener("click", () => {
-            let text = posts[i + 1].querySelector("p");
-            sendTextPostReport(text.innerHTML).then(r => r != null);
-            sendDataReportPost(" ").then(r => r != null);
-        })
-        const postID = form.parentNode.dataset.id;
-        button.addEventListener("click", () => {
-            // ...
-            sendDataReportPost(postID).then(r => r != null);
-        });
-        // const postID = form.parentNode.dataset.id;
-        // form.insertAdjacentElement('beforebegin', newDivComment2);
-        // sendDataComment(txtComment.value, postID).then(res => res.json());
-        // form.reset();
-
-
         let subComment = document.createElement("button");
         subComment.type = "submit";
         subComment.name = "comment";
@@ -231,6 +211,25 @@ function oldPost() {
         subComment.className = "button"
         form.appendChild(subComment);
         posts[i].appendChild(form);
+
+        // report post
+        let buttons = posts[i].querySelectorAll("[name='reportPostButton']");
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                let text = posts[i + 1].querySelector("p").innerHTML;
+                sendTextPostReport(text).then((response) => {
+                        sendDataReportPost(" ").then((response) => {
+                                const postId = form.parentNode.dataset.id;
+                                sendDataReportPost(postId).then((response) => {
+                                    if (response != null) {
+                                        // Code à exécuter après l'envoi réussi du signalement
+                                    }
+                                });
+                        });
+                });
+            });
+        });
+
 
         //add button like/dislike
         let buttonLike = document.createElement("button");
@@ -260,10 +259,29 @@ function oldPost() {
             let newDivComment = document.createElement("div");
             newDivComment.innerHTML = txtComment.value;
             newDivComment.classList.add('comment');
-            const postID = form.parentNode.dataset.id;
+            const postId = form.parentNode.dataset.id;
+
+            let buttons2 = newDivComment.querySelectorAll("[name='reportCommentButton']");
+            buttons2.forEach((button2) => {
+                button2.addEventListener("click", () => {
+                    let text = newDivComment.querySelector("p").innerHTML;
+                    sendTextCommentReport(text).then((response) => {
+                            sendDataReportComment(" ").then((response) => {
+                                    const postId = form.parentNode.dataset.id;
+                                    sendDataReportComment(postId).then((response) => {
+                                        if (response != null) {
+                                            // Code à exécuter après l'envoi réussi du signalement
+                                        }
+                                    });
+                            });
+                    });
+                });
+            });
+
+
             form.insertAdjacentElement('beforebegin', newDivComment);
 
-            sendDataComment(txtComment.value, postID).then(res => res.json());
+            sendDataComment(txtComment.value, postId).then(res => res.json());
 
             form.reset();
         });
@@ -279,8 +297,8 @@ function oldPost() {
                 } else {
                     imgLike.src = "http://localhost:8080/static/image/likeTRUE.png"
                     like = true;
-                    const postID = form.parentNode.dataset.id;
-                    sendDataLike(like, dislike, postID).then(r => r!=null)
+                    const postId = form.parentNode.dataset.id;
+                    sendDataLike(like, dislike, postId).then(r => r!=null)
                 }
             }
         });
@@ -296,8 +314,8 @@ function oldPost() {
                 } else {
                     imgDislike.src = "http://localhost:8080/static/image/dislikeTRUE.png"
                     dislike = true;
-                    const postID = form.parentNode.dataset.id;
-                    sendDataLike(like, dislike, postID).then(r => r!=null)
+                    const postId = form.parentNode.dataset.id;
+                    sendDataLike(like, dislike, postId).then(r => r!=null)
                 }
             }
         });

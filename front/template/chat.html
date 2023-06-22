@@ -17,47 +17,47 @@
         <h1 class="headerLetter">Category</h1>
     </a>
     {{if not .IsConnected}}
-    <a class="a_header" href="http://localhost:8080/login">
-        <h1 class="headerLetter">Sign in / Sign up</h1>
-    </a>
+        <a class="a_header" href="http://localhost:8080/login">
+            <h1 class="headerLetter">Sign in / Sign up</h1>
+        </a>
     {{else if .IsConnected}}
-    <a class="a_header" href="http://localhost:8080/activity">
-        <h1 class="headerLetter">Activity</h1>
-    </a>
-    <a class="a_header" href="http://localhost:8080/logout">
-        <h1 class="headerLetter">Logout</h1>
-    </a>
+        <a class="a_header" href="http://localhost:8080/activity">
+            <h1 class="headerLetter">Activity</h1>
+        </a>
+        <a class="a_header" href="http://localhost:8080/logout">
+            <h1 class="headerLetter">Logout</h1>
+        </a>
     {{end}}
 </header>
 
-{{if ne .Role ""}}
+{{if .IsConnected}}
     <form name="newPost">
 
     </form>
 {{end}}
 
 {{range .Database}}
-<div class="posts" data-id="{{.Id}}" data-like="{{.CountLike}}">
-    <h5>{{.NicknamePost}}</h5>
-    <p>{{.Content}}</p>
-    {{range .Comments}}
-    <div class="comment">
-        <h5>{{.NicknameComment}}</h5>
-        <p>{{.Message}}</p>
+    <div class="posts" data-id="{{.Id}}" data-like="{{.CountLike}}">
+        <h5>{{.NicknamePost}}</h5>
+        <p>{{.Content}}</p>
+        {{range .Comments}}
+            <div class="comment">
+                <h5>{{.NicknameComment}}</h5>
+                <p>{{.Message}}</p>
+                {{if eq $.Role "moderator"}}
+                    <button type="submit" name="reportCommentButton">Report</button>
+                {{end}}
+            </div>
+        {{end}}
+        {{if $.IsConnected}}
+            <form name="newComment">
+
+            </form>
+        {{end}}
         {{if eq $.Role "moderator"}}
-            <button type="submit" name="reportCommentButton">Report</button>
+            <button type="submit" name="reportPostButton">Report</button>
         {{end}}
     </div>
-    {{end}}
-    {{if ne $.Role ""}}
-        <form name="newComment">
-
-        </form>
-    {{end}}
-    {{if eq $.Role "moderator"}}
-        <button type="submit" name="reportPostButton">Report</button>
-    {{end}}
-</div>
 {{end}}
 
 <script type="module">

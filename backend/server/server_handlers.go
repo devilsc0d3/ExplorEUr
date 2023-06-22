@@ -308,21 +308,22 @@ func Info(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	// maybe mettre les reports avant les adds
 	//report post
 	if r.FormValue("reportPostButton") != "" {
-		postID, _ := strconv.Atoi(r.FormValue("postID"))
+		postID, _ := strconv.Atoi(r.FormValue("reportPostButton"))
 		var userId int
 		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
 		nicknameUser, _ := register.GetNicknameByID(userId)
-		fmt.Println("postID:", postID)
-		fmt.Println("postContent:", dataHub.ReportPostContent)
 		moderator.ReportPostByModeratorController(postID, nicknameUser, dataHub.ReportPostContent, catId)
 	}
 
 	//report comment
 	if r.FormValue("reportCommentButton") != "" {
-		fmt.Println("good comment")
+		postID, _ := strconv.Atoi(r.FormValue("reportPostButton"))
+		var userId int
+		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
+		nicknameUser, _ := register.GetNicknameByID(userId)
+		moderator.ReportPostByModeratorController(postID, nicknameUser, dataHub.ReportPostContent, catId)
 	}
 }
 
@@ -350,6 +351,7 @@ func ActivityHandler(w http.ResponseWriter, r *http.Request) {
 		register.Token = cookie.Value
 		InitRole(register.Token)
 	}
+
 	err := page.ExecuteTemplate(w, "activity.html", dataHub)
 	if err != nil {
 		panic("execute template error")
@@ -360,6 +362,7 @@ func RecoverHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/recovering_password.html")
 	if r.FormValue("nickname") != "" && r.FormValue("password") != "" && r.FormValue("confirmation") == r.FormValue("password") {
 		register.UpdateUserPasswordController(r.FormValue("nickname"), r.FormValue("password"))
+		http.Redirect(w, r, "/login", http.StatusFound)
 	}
 	err := page.ExecuteTemplate(w, "recovering_password.html", nil)
 	if err != nil {
