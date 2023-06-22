@@ -82,7 +82,7 @@ This project also focuses on the visualization of the forum website with all its
 
 - Clone repository with command :
 ```bash
-git clone 
+git clone https://github.com/devilsc0d3/ExplorEUr.git
 ```
 - Launch the forum project :
 Run with the command : 
