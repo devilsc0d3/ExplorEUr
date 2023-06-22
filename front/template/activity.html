@@ -30,7 +30,47 @@
 </header>
 <main>
     {{if .IsConnected}}
+    <div class="container">
+        <h1 class="title">Your activity</h1>
+        <div class="contai">
+        <h2 class="subtitle">Your last activities</h2>
+        <div class="element">
+            {{range .Activity}}
+            {{end}}
+        </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1 class="title">Your notifications</h1>
+        <div class="contai">
+        <h2 class="subtitle">Your last notifications</h2>
+        <div class="element">
+            {{range .Notification}}
+            {{end}}
+        </div>
+        </div>
+    </div>
+    {{if eq .Role "admin"}}
+    <div class="container">
+        <h1 class="title">Your admin activity</h1>
+        <div class="contai">
+            <h2 class="subtitle">Your last admin activity</h2>
+            <div class="element">
+                {{range .Admin-activity}}
+                {{end}}
+            </div>
+        </div>
+    </div>
+    {{end}}
     {{else if not .IsConnected}}
+    <div class="container">
+        <h1 class="title">You are not connected</h1>
+        <h2 class="subtitle">Please log in or sign up</h2>
+    </div>
+    {{end}}
+    <a class="button" href="/">
+        <h1 class="homepage-button">Return to Homepage</h1>
+    </a>
 </main>
 </body>
 </html>
