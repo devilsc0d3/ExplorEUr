@@ -319,8 +319,8 @@ func EasterEgg(w http.ResponseWriter, r *http.Request) {
 }
 
 func Error(w http.ResponseWriter, r *http.Request) {
-	page, _ := template.ParseFiles("./front/template/easter_egg.html")
-	err := page.ExecuteTemplate(w, "easter_egg.html", nil)
+	page, _ := template.ParseFiles("./front/template/error.html")
+	err := page.ExecuteTemplate(w, "error.html", nil)
 	if err != nil {
 		panic("execute template error")
 	}
