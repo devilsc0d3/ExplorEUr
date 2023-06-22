@@ -3,6 +3,7 @@ package server
 import (
 	"exploreur/backend/database/category"
 	"exploreur/backend/register"
+	"exploreur/backend/roles/moderator"
 	"exploreur/backend/roles/user"
 	"exploreur/backend/structure"
 	"fmt"
@@ -13,10 +14,12 @@ import (
 )
 
 //type DataHub struct {
-//	Role        string
-//	Database    []Posts
-//	Category    []string
-//	IsConnected bool
+//	Role                 string
+//	Database             []Posts
+//	Category             []string
+//	IsConnected          bool
+//	ReportPostContent    string
+//	ReportCommentContent string
 //}
 
 //var dataHub DataHub
@@ -292,8 +295,17 @@ func Info(w http.ResponseWriter, r *http.Request) {
 
 	//add category
 	if r.FormValue("categoryName") != "" {
-		fmt.Println(r.FormValue("categoryName"))
 		category.AddCategory(r.FormValue("categoryName"))
+	}
+
+	//init textReport
+	if structure.DataHub1.ReportPostContent == "" {
+		structure.DataHub1.ReportPostContent = r.FormValue("textPostReport")
+	}
+
+	//init commentReport
+	if dataHub.ReportCommentContent == "" {
+		dataHub.ReportCommentContent = r.FormValue("textCommentReport")
 	}
 
 	//add post
@@ -315,7 +327,7 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("like") != "" {
 		like := r.FormValue("like")
 		dislike := r.FormValue("dislike")
-		postID, _ := strconv.Atoi(r.FormValue("postId"))
+		postID, _ := strconv.Atoi(r.FormValue("postID"))
 		if like == "true" {
 			user.AddLikePostByUserController(postID)
 		}
@@ -323,6 +335,24 @@ func Info(w http.ResponseWriter, r *http.Request) {
 			user.AddDislikePostByUserController(postID)
 		}
 
+	}
+
+	//report post
+	if r.FormValue("reportPostButton") != "" {
+		postID, _ := strconv.Atoi(r.FormValue("reportPostButton"))
+		var userId int
+		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
+		nicknameUser, _ := register.GetNicknameByID(userId)
+		moderator.ReportPostByModeratorController(postID, nicknameUser, dataHub.ReportPostContent, catId)
+	}
+
+	//report comment
+	if r.FormValue("reportCommentButton") != "" {
+		postID, _ := strconv.Atoi(r.FormValue("reportPostButton"))
+		var userId int
+		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
+		nicknameUser, _ := register.GetNicknameByID(userId)
+		moderator.ReportPostByModeratorController(postID, nicknameUser, dataHub.ReportPostContent, catId)
 	}
 }
 
@@ -366,6 +396,10 @@ func ActivityHandler(w http.ResponseWriter, r *http.Request) {
 
 func RecoverHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/recovering_password.html")
+	if r.FormValue("nickname") != "" && r.FormValue("password") != "" && r.FormValue("confirmation") == r.FormValue("password") {
+		register.UpdateUserPasswordController(r.FormValue("nickname"), r.FormValue("password"))
+		http.Redirect(w, r, "/login", http.StatusFound)
+	}
 	err := page.ExecuteTemplate(w, "recovering_password.html", nil)
 	if err != nil {
 		panic("execute template error")

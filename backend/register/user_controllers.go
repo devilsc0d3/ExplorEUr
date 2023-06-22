@@ -1,53 +1,45 @@
 package register
 
-import (
-	"fmt"
-)
-
 func AddUserController(nickname string, email string, password string) string {
-	if !IfNicknameExist(nickname) {
-		if !IfEmailExist(email) {
-			if CheckPassword(password) {
-				if CheckEmail(email) {
-					AddUser(nickname, email, password, "admin")
-					return ""
-				} else {
-					return "the email is incorrect"
-				}
-			} else {
-				return "the password is incorrect"
-			}
-		} else {
-			return "the email already exist"
-		}
-	} else {
+	if IfNicknameExist(nickname) {
 		return "the nickname already exist"
 	}
+	if IfEmailExist(email) {
+		return "the email already exist"
+	}
+	if !CheckPassword(password) {
+		return "the password is incorrect"
+	}
+	if !CheckEmail(email) {
+		return "the email is incorrect"
+	}
+	AddUser(nickname, email, password, "user")
+	return ""
 }
 
-func UpdateUserRoleController(role string, nickname string) {
-	if !IfNicknameExist(nickname) {
-		id, _ := GetIDByNickname(nickname)
-		UpdateUserRole(role, id)
-	} else {
-		fmt.Println("the nickname already exist")
+func UpdateUserRoleController(role string, nickname string) string {
+	if IfNicknameExist(nickname) {
+		return "the nickname already exist"
 	}
+	id, _ := GetIDByNickname(nickname)
+	UpdateUserRole(role, id)
+	return ""
 }
 
-func UpdateUserNicknameController(nickname string, newNickname string) {
-	if !IfNicknameExist(newNickname) {
-		id, _ := GetIDByNickname(nickname)
-		UpdateUserNickname(newNickname, id)
-	} else {
-		fmt.Println("the nickname already exist")
+func UpdateUserNicknameController(nickname string, newNickname string) string {
+	if IfNicknameExist(newNickname) {
+		return "the nickname already exist"
 	}
+	id, _ := GetIDByNickname(nickname)
+	UpdateUserNickname(newNickname, id)
+	return ""
 }
 
-func UpdateUserPasswordController(nickname string, password string) {
-	if CheckPassword(password) {
-		id, _ := GetIDByNickname(nickname)
-		UpdateUserPassword(password, id)
-	} else {
-		fmt.Println("the password is incorrect") //+bonne pratique
+func UpdateUserPasswordController(nickname string, password string) string {
+	if !CheckPassword(password) {
+		return "the password is incorrect"
 	}
+	id, _ := GetIDByNickname(nickname)
+	UpdateUserPassword(password, id)
+	return ""
 }

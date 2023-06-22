@@ -27,17 +27,28 @@ func AddPostByUserController(input string, categoryID int) string {
 	return "guest mod"
 }
 
-func DeletePostByUserController(postID int) {
+func DeletePostByUserController(postID int) string {
 	_, role, err := register.DecodeJWTToken(register.Token)
 	if err != nil {
 		panic("token error")
 	}
-	if role == "user" || role == "moderator" {
+	if role != "" {
 		post.DeletePost(postID)
+		return ""
 	}
+	return "guest mod"
 }
 
-func UpdatePostByUserController() {
+func UpdatePostByUserController(content string, postID int) string {
+	_, role, err := register.DecodeJWTToken(register.Token)
+	if err != nil {
+		panic("token error")
+	}
+	if role != "" {
+		post.UpdatePost(content, postID)
+		return ""
+	}
+	return "guest mod"
 }
 
 func AddCommentByUserController(postID int, input string, categoryID int) string {
@@ -62,20 +73,31 @@ func AddCommentByUserController(postID int, input string, categoryID int) string
 	return "guest mod"
 }
 
-func DeleteCommentByUserController(commentID int) {
+func DeleteCommentByUserController(commentID int) string {
 	_, role, err := register.DecodeJWTToken(register.Token)
 	if err != nil {
 		panic("token error")
 	}
-	if role == "user" || role == "moderator" {
+	if role != "" {
 		comment.DeleteComment(commentID)
+		return ""
 	}
+	return "guest mod"
 }
 
-func UpdateCommentByUserController() {
+func UpdateCommentByUserController(newComment string, commentID int) string {
+	_, role, err := register.DecodeJWTToken(register.Token)
+	if err != nil {
+		panic("token error")
+	}
+	if role != "" {
+		comment.UpdateCommentMessage(newComment, commentID)
+		return ""
+	}
+	return "guest mod"
 }
 
-func AddLikePostByUserController(postID int) {
+func AddLikePostByUserController(postID int) string {
 	nickname, role, err := register.DecodeJWTToken(register.Token)
 	if err != nil {
 		panic("token error")
@@ -86,22 +108,27 @@ func AddLikePostByUserController(postID int) {
 			panic("GetIDByNickname error")
 		}
 		like_post.AddLikePost(true, false, id, postID)
+		return ""
 		//idk if it's bullshit or not, need to test
 		//like_post.CancelDislikePost(false, postID)
 	}
+	return "guest mod"
 }
 
-func CancelLikePostByUserController(postID int) {
+func CancelLikePostByUserController(postID int) string {
 	_, role, err := register.DecodeJWTToken(register.Token)
 	if err != nil {
 		panic("token error")
 	}
 	if role != "" {
 		like_post.DeleteLikePost(postID)
+		return ""
 	}
+	return "guest mod"
+
 }
 
-func AddDislikePostByUserController(postID int) {
+func AddDislikePostByUserController(postID int) string {
 	nickname, role, err := register.DecodeJWTToken(register.Token)
 	if err != nil {
 		panic("token error")
@@ -112,21 +139,25 @@ func AddDislikePostByUserController(postID int) {
 			panic("GetIDByNickname error")
 		}
 		like_post.AddLikePost(false, true, id, postID)
+		return ""
 		//like_post.CancelLikePost(false, postID)
 	}
+	return "guest mod"
 }
 
-func CancelDislikePostByUserController(postID int) {
+func CancelDislikePostByUserController(postID int) string {
 	_, role, err := register.DecodeJWTToken(register.Token)
 	if err != nil {
 		panic("token error")
 	}
 	if role != "" {
 		like_post.DeleteLikePost(postID)
+		return ""
 	}
+	return "guest mod"
 }
 
-func AddLikeCommentByUserController(commentID int) {
+func AddLikeCommentByUserController(commentID int) string {
 	nickname, role, err := register.DecodeJWTToken(register.Token)
 	if err != nil {
 		panic("token error")
@@ -137,22 +168,26 @@ func AddLikeCommentByUserController(commentID int) {
 			panic("GetIDByNickname error")
 		}
 		like_comment.AddLikeComment(true, false, id, commentID)
+		return ""
 		//idk if it's bullshit or not, need to test
 		//like_comment.CancelDislikeComment(false, commentID)
 	}
+	return "guest mod"
 }
 
-func CancelLikeCommentByUserController(commentID int) {
+func CancelLikeCommentByUserController(commentID int) string {
 	_, role, err := register.DecodeJWTToken(register.Token)
 	if err != nil {
 		panic("token error")
 	}
 	if role != "" {
 		like_comment.DeleteLikeComment(commentID)
+		return ""
 	}
+	return "guest mod"
 }
 
-func AddDislikeCommentByUserController(commentID int) {
+func AddDislikeCommentByUserController(commentID int) string {
 	nickname, role, err := register.DecodeJWTToken(register.Token)
 	if err != nil {
 		panic("token error")
@@ -163,18 +198,22 @@ func AddDislikeCommentByUserController(commentID int) {
 			panic("GetIDByNickname error")
 		}
 		like_comment.AddLikeComment(false, true, id, commentID)
+		return ""
 		//like_comment.CancelLikeComment(false, commentID)
 	}
+	return "guest mod"
 }
 
-func CancelDislikeCommentByUserController(commentID int) {
+func CancelDislikeCommentByUserController(commentID int) string {
 	_, role, err := register.DecodeJWTToken(register.Token)
 	if err != nil {
 		panic("token error")
 	}
 	if role != "" {
 		like_comment.DeleteLikeComment(commentID)
+		return ""
 	}
+	return "guest mod"
 }
 
 func AskToBeAModerator() {

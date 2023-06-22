@@ -37,44 +37,48 @@
 
 <main>
     {{if .IsConnected}}
-    <div class="container">
-        <h1 class="title">Your activity</h1>
-        <div class="contai">
-        <h2 class="subtitle">Your last activities</h2>
-        <div class="element">
-        </div>
-        </div>
-    </div>
-    <div class="container">
-        <h1 class="title">Your notifications</h1>
-        <div class="contai">
-        <h2 class="subtitle">Your last notifications</h2>
-        <div class="element">
-        </div>
-        </div>
-    </div>
-    {{if eq .Role "admin"}}
-    <div class="container">
-        <h1 class="title">Your admin activity</h1>
-        <div class="contai">
-            <h2 class="subtitle">Your last admin activity</h2>
-            <div class="element">
+        <div class="container">
+            <h1 class="title">Your activity</h1>
+            <div class="contai">
+                <h2 class="subtitle">Your last activities</h2>
+                <div class="element">
+
+                </div>
             </div>
         </div>
-    </div>
-    {{end}}
+        <div class="container">
+            <h1 class="title">Your notifications</h1>
+            <div class="contai">
+                <h2 class="subtitle">Your last notifications</h2>
+                <div class="element">
+
+                </div>
+            </div>
+        </div>
+        {{if eq .Role "admin"}}
+            <div class="container">
+                <h1 class="title">Your admin activity</h1>
+                <div class="contai">
+                    <h2 class="subtitle">Your last admin activity</h2>
+                    <div class="element">
+                        <p>Report posts / comments + link to the post or comment for deleting</p>
+                        <p>User1 ask to be a moderator: hello, I would like to be a moderator / ACCEPT OR DELETE</p>
+                    </div>
+                </div>
+            </div>
+        {{end}}
     {{else if not .IsConnected}}
-    <div class="container">
-        <h1 class="title">You are not connected</h1>
-        <h2 class="subtitle">Please log in or sign up</h2>
-    </div>
+        <div class="container">
+            <h1 class="title">You are not connected</h1>
+            <h2 class="subtitle">Please log in or sign up</h2>
+        </div>
     {{end}}
     <a class="button" href="/">
         <h1 class="homepage-button">Return to Homepage</h1>
     </a>
 </main>
 <footer>
-    <p align="center">the project is a Forum was created for 2023 end year with : <br>- Fauré Léo <br>- Cenac Lucille <br>- Brun Sasha <br>- Laldy-Maquiha Adan</p>
+    <p align="center">The project is a Forum was created for 2023 end year with: <br>- Fauré Léo <br>- Cénac Lucille <br>- Brun Sasha <br>- Laldy-Maquiha Adan</p>
 </footer>
 </body>
 </html>

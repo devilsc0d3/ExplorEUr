@@ -1,3 +1,4 @@
+//add post ou commentaire ou like
 const sendDataPost = async (txt) => {
 
     await fetch('https://localhost:8080/info', {
@@ -26,7 +27,49 @@ const sendDataLike = async (like, dislike, postId) => {
         body: new URLSearchParams({
             like: like,
             dislike: dislike,
-            postId: postId
+            postID: postId
+        })
+    });
+};
+
+//button for report
+
+const sendDataReportPost = async (txt) => {
+
+    await fetch('http://localhost:8080/info', {
+        method: 'POST',
+        body: new URLSearchParams({
+            reportPostButton: txt,
+        })
+    });
+}
+
+const sendDataReportComment = async (txt) => {
+
+    await fetch('http://localhost:8080/info', {
+        method: 'POST',
+        body: new URLSearchParams({
+            reportCommentButton: txt,
+        })
+    });
+}
+
+//text inside when report
+
+const sendTextPostReport = async (txt) => {
+    await fetch('http://localhost:8080/info', {
+        method: 'POST',
+        body: new URLSearchParams({
+            textPostReport: txt,
+        })
+    });
+};
+
+const sendTextCommentReport = async (txt) => {
+    await fetch('http://localhost:8080/info', {
+        method: 'POST',
+        body: new URLSearchParams({
+            textCommentReport: txt,
         })
     });
 };
@@ -39,7 +82,6 @@ function newPost() {
 
     //add input for new post
     let form = document.querySelector('[name="newPost"]')
-    console.log(form)
     form.classList.add('posts');
     const header = document.querySelector("header")
     header.insertAdjacentElement('afterend', form);
@@ -78,24 +120,31 @@ function newPost() {
         formComment.appendChild(subComment);
         newDiv.appendChild(formComment);
 
+        //add div like/dislike
+        let div = document.createElement("div");
+        div.classList.add("divLike");
+
         //add button like/dislike
         let buttonLike2 = document.createElement("button");
         buttonLike2.classList.add("like");
-        newDiv.appendChild(buttonLike2);
+        div.appendChild(buttonLike2);
         let imgLike = document.createElement("img");
         imgLike.src = "https://localhost:8080/static/image/likeFALSE.png";
         imgLike.classList.add("img_like");
         buttonLike2.appendChild(imgLike);
         let buttonDislike2 = document.createElement("button");
         buttonDislike2.classList.add("dislike");
-        newDiv.appendChild(buttonDislike2);
+        div.appendChild(buttonDislike2);
         let imgDislike = document.createElement("img");
         imgDislike.src = "https://localhost:8080/static/image/dislikeFALSE.png";
         imgDislike.classList.add("img_like");
         buttonDislike2.appendChild(imgDislike);
 
+        newDiv.appendChild(div);
+
+
         form.insertAdjacentElement('afterend', newDiv);
-        sendDataPost(txt.value).then(res => res.json()).catch(res => Promise.fail({error: res}));
+        sendDataPost(txt.value).then(res => res.json());
         form.reset();
 
         //event when submit your comment
@@ -170,10 +219,33 @@ function oldPost() {
         form.appendChild(subComment);
         posts[i].appendChild(form);
 
+        // report post
+        let buttons = posts[i].querySelectorAll("[name='reportPostButton']");
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                let text = posts[i + 1].querySelector("p").innerHTML;
+                sendTextPostReport(text).then((response) => {
+                        sendDataReportPost(" ").then((response) => {
+                                const postId = form.parentNode.dataset.id;
+                                sendDataReportPost(postId).then((response) => {
+                                    if (response != null) {
+                                        // Code à exécuter après l'envoi réussi du signalement
+                                    }
+                                });
+                        });
+                });
+            });
+        });
+
+        //add div like/dislike
+        let div = document.createElement("div");
+        div.classList.add("divLike");
+
+
         //add button like/dislike
         let buttonLike = document.createElement("button");
         buttonLike.classList.add("like");
-        posts[i].appendChild(buttonLike);
+        div.appendChild(buttonLike);
         let imgLike = document.createElement("img");
         imgLike.src = "https://localhost:8080/static/image/likeFALSE.png";
         imgLike.classList.add("img_like");
@@ -181,11 +253,12 @@ function oldPost() {
         let countLike = posts[i].dataset.like;
         let nbrLike = document.createElement("h6");
         nbrLike.innerHTML = countLike;
-        posts[i].appendChild(nbrLike)
+        div.appendChild(nbrLike)
 
         let buttonDislike = document.createElement("button");
         buttonDislike.classList.add("dislike");
-        posts[i].appendChild(buttonDislike);
+        div.appendChild(buttonDislike);
+        posts[i].appendChild(div);
         let imgDislike = document.createElement("img");
         imgDislike.src = "https://localhost:8080/static/image/dislikeFALSE.png";
         imgDislike.classList.add("img_like");
@@ -199,6 +272,25 @@ function oldPost() {
             newDivComment.innerHTML = txtComment.value;
             newDivComment.classList.add('comment');
             const postId = form.parentNode.dataset.id;
+
+            let buttons2 = newDivComment.querySelectorAll("[name='reportCommentButton']");
+            buttons2.forEach((button2) => {
+                button2.addEventListener("click", () => {
+                    let text = newDivComment.querySelector("p").innerHTML;
+                    sendTextCommentReport(text).then((response) => {
+                            sendDataReportComment(" ").then((response) => {
+                                    const postId = form.parentNode.dataset.id;
+                                    sendDataReportComment(postId).then((response) => {
+                                        if (response != null) {
+                                            // Code à exécuter après l'envoi réussi du signalement
+                                        }
+                                    });
+                            });
+                    });
+                });
+            });
+
+
             form.insertAdjacentElement('beforebegin', newDivComment);
 
             sendDataComment(txtComment.value, postId).then(res => res.json());

@@ -46,28 +46,34 @@
 </form>
 
 
-{{if ne .Role ""}}
+{{if .IsConnected}}
     <form name="newPost">
 
     </form>
 {{end}}
 
 {{range .Database}}
-<div class="posts" data-id="{{.Id}}" data-like="{{.CountLike}}">
-    <h5>{{.NicknamePost}}</h5>
-    <p>{{.Content}}</p>
-    {{range .Comments}}
-    <div class="comment">
-        <h5>{{.NicknameComment}}</h5>
-        <p>{{.Message}}</p>
-    </div>
-    {{end}}
-    {{if ne $.Role ""}}
-        <form name="newComment">
+    <div class="posts" data-id="{{.Id}}" data-like="{{.CountLike}}">
+        <h5>{{.NicknamePost}}</h5>
+        <p>{{.Content}}</p>
+        {{range .Comments}}
+            <div class="comment">
+                <h5>{{.NicknameComment}}</h5>
+                <p>{{.Message}}</p>
+                {{if eq $.Role "moderator"}}
+                    <button type="submit" name="reportCommentButton">Report</button>
+                {{end}}
+            </div>
+        {{end}}
+        {{if $.IsConnected}}
+            <form name="newComment">
 
-        </form>
-    {{end}}
-</div>
+            </form>
+        {{end}}
+        {{if eq $.Role "moderator"}}
+            <button class="reportPostButton" type="submit" name="reportPostButton">Report</button>
+        {{end}}
+    </div>
 {{end}}
 
 <script type="module">
