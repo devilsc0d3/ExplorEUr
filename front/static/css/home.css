@@ -4,6 +4,13 @@ body {
     margin: 0;
 }
 
+.up {
+    height: 100px;
+    width: 100%;
+    margin: 0;
+    top: -50px;
+}
+
 .div_warning {
     width: 52vw;
     display: flex;
