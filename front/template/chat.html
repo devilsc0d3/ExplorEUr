@@ -36,6 +36,15 @@
     </div>
 </header>
 
+<form method="POST">
+<label for="order-select" class="white">Order :</label>
+<select name="order" id="order-select">
+    <option value="desc" selected="selected">Recently first</option>
+    <option value="asc">Oldest first</option>
+</select>
+    <button type="submit">Submit</button>
+</form>
+
 
 {{if ne .Role ""}}
     <form name="newPost">

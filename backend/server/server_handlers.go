@@ -200,6 +200,28 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	register.Db.Table("comments").Where("category_id = ?", catId).Pluck("user_id", &userIdComment)
 	register.Db.Table("like_posts").Where("is_like = ?", true).Pluck("post_id", &postIdLike)
 
+	// order select
+	if r.FormValue("order") == "desc" {
+
+		register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("content", &content)
+		register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("id", &postId)
+		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
+		register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("message", &message)
+		register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("post_id", &postIdComment)
+		register.Db.Table("comments").Where("category_id = ?", catId).Pluck("user_id", &userIdComment)
+		register.Db.Table("like_posts").Where("is_like = ?", true).Pluck("post_id", &postIdLike)
+
+	} else if r.FormValue("order") == "asc" {
+
+		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("content", &content)
+		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("id", &postId)
+		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
+		register.Db.Table("comments").Where("category_id = ?", catId).Pluck("message", &message)
+		register.Db.Table("comments").Where("category_id = ?", catId).Pluck("post_id", &postIdComment)
+		register.Db.Table("comments").Where("category_id = ?", catId).Pluck("user_id", &userIdComment)
+		register.Db.Table("like_posts").Where("is_like = ?", true).Pluck("post_id", &postIdLike)
+	}
+
 	database := ManageData(content, postId, message, postIdComment, userId, userIdComment, postIdLike)
 	structure.DataHub1.Database = database
 

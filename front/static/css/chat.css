@@ -51,27 +51,8 @@ body {
     text-transform: uppercase;
 }
 
-.ranges {
-    position: fixed;
-    top: 5rem;
-    display: flex;
-}
-
-.range {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--clear);
-    font-family: monospace;
-}
-
-.range label,
-.range span {
-    width: 100px;
-}
-
-.range label {
-    text-align: right;
+.white {
+    color: white;
 }
 
 input {
