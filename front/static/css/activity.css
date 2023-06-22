@@ -1,6 +1,6 @@
 body {
     text-align: center;
-    background: url("http://localhost:8080/static/image/background.jpg");
+    background: url("https://localhost:8080/static/image/background.jpg");
     background-size: cover;
     margin: 0;
 }
