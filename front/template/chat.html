@@ -42,12 +42,11 @@
     <p>{{.Content}}</p>
     {{range .Comments}}
     <div class="comment">
-        <p>{{.}}</p>
-        {{if eq $.Role "moderator"}}
-            <button type="submit" name="reportComment">Report</button>
-        {{end}}
         <h5>{{.NicknameComment}}</h5>
         <p>{{.Message}}</p>
+        {{if eq $.Role "moderator"}}
+            <button type="submit" name="reportCommentButton">Report</button>
+        {{end}}
     </div>
     {{end}}
     {{if ne $.Role ""}}
@@ -56,7 +55,7 @@
         </form>
     {{end}}
     {{if eq $.Role "moderator"}}
-        <button type="submit" name="reportPost">Report</button>
+        <button type="submit" name="reportPostButton">Report</button>
     {{end}}
 </div>
 {{end}}

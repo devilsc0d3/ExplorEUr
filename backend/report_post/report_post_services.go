@@ -2,7 +2,6 @@ package report_post
 
 import (
 	"exploreur/backend/register"
-	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -23,6 +22,5 @@ func ReportAPost(postID int, nicknameModerator string, nicknameUser string, post
 	if err != nil {
 		panic("failed to connect database")
 	}
-	fmt.Println("test2")
 	db.Create(&ReportPost{PostID: postID, NicknameModerator: nicknameModerator, NicknameUser: nicknameUser, PostContent: postContent, CategoryID: categoryID})
 }

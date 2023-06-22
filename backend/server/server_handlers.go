@@ -93,7 +93,6 @@ func CategoryHandler(w http.ResponseWriter, r *http.Request) {
 	var categoryName []string
 	register.Db.Table("categories").Pluck("name", &categoryName)
 	dataHub.Category = categoryName
-	fmt.Println(dataHub)
 	err = page.ExecuteTemplate(w, "category.html", dataHub)
 	if err != nil {
 		panic("failed to execute template")
@@ -267,7 +266,6 @@ func Info(w http.ResponseWriter, r *http.Request) {
 
 	//add category
 	if r.FormValue("categoryName") != "" {
-		fmt.Println(r.FormValue("categoryName"))
 		category.AddCategory(r.FormValue("categoryName"))
 	}
 
@@ -300,7 +298,7 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("like") != "" {
 		like := r.FormValue("like")
 		dislike := r.FormValue("dislike")
-		postID, _ := strconv.Atoi(r.FormValue("postId"))
+		postID, _ := strconv.Atoi(r.FormValue("postID"))
 		if like == "true" {
 			user.AddLikePostByUserController(postID)
 		}
@@ -317,6 +315,8 @@ func Info(w http.ResponseWriter, r *http.Request) {
 		var userId int
 		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
 		nicknameUser, _ := register.GetNicknameByID(userId)
+		fmt.Println("postID:", postID)
+		fmt.Println("postContent:", dataHub.ReportPostContent)
 		moderator.ReportPostByModeratorController(postID, nicknameUser, dataHub.ReportPostContent, catId)
 	}
 
@@ -358,6 +358,9 @@ func ActivityHandler(w http.ResponseWriter, r *http.Request) {
 
 func RecoverHandler(w http.ResponseWriter, r *http.Request) {
 	page, _ := template.ParseFiles("./front/template/recovering_password.html")
+	if r.FormValue("nickname") != "" && r.FormValue("password") != "" && r.FormValue("confirmation") == r.FormValue("password") {
+		register.UpdateUserPasswordController(r.FormValue("nickname"), r.FormValue("password"))
+	}
 	err := page.ExecuteTemplate(w, "recovering_password.html", nil)
 	if err != nil {
 		panic("execute template error")

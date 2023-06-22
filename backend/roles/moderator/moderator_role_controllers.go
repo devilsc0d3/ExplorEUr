@@ -23,8 +23,8 @@ func ReportCommentByModeratorController(commentID int, nicknameUser string, comm
 	if err != nil {
 		panic("token error")
 	}
-	if role != "admin" {
-		return "not admin mod"
+	if role != "moderator" {
+		return "not moderator mod"
 	}
 	report_comment.ReportAComment(commentID, nickname, nicknameUser, commentContent, categoryID, postID)
 	return ""

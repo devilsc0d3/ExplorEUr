@@ -138,19 +138,3 @@ func ResetUserTable() {
 		panic("failed to auto migrate: ")
 	}
 }
-
-func GetNicknameByID(id int) (string, error) {
-	db, err := gorm.Open(postgres.Open(GetEnv("DATABASE_URL")), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
-	}
-	var singleUser User
-	result := db.Select("nickname").Where("id = ?", id).First(&singleUser)
-	if result.Error != nil {
-		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return "", nil
-		}
-		return "", result.Error
-	}
-	return singleUser.Nickname, nil
-}
