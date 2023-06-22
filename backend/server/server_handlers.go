@@ -24,7 +24,7 @@ import (
 
 //var dataHub DataHub
 
-var catId int
+//var catId int
 
 //type Posts struct {
 //	Content      string
@@ -184,7 +184,7 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 
 	//get category_id
 	compile := regexp.MustCompile(`[^/]`)
-	catId, _ = strconv.Atoi(compile.FindString(r.URL.String()))
+	structure.CatId, _ = strconv.Atoi(compile.FindString(r.URL.String()))
 
 	//get info posts for put to struct
 	var content []string
@@ -195,33 +195,33 @@ func Chat(w http.ResponseWriter, r *http.Request) {
 	var userIdComment []int
 	var postIdLike []int
 
-	register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("content", &content)
-	register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("id", &postId)
-	register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
-	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("message", &message)
-	register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("post_id", &postIdComment)
-	register.Db.Table("comments").Where("category_id = ?", catId).Pluck("user_id", &userIdComment)
+	register.Db.Table("posts").Where("category_id = ?", structure.CatId).Order("created_at DESC").Pluck("content", &content)
+	register.Db.Table("posts").Where("category_id = ?", structure.CatId).Order("created_at DESC").Pluck("id", &postId)
+	register.Db.Table("posts").Where("category_id = ?", structure.CatId).Pluck("user_id", &userId)
+	register.Db.Table("comments").Where("category_id = ?", structure.CatId).Order("created_at DESC").Pluck("message", &message)
+	register.Db.Table("comments").Where("category_id = ?", structure.CatId).Order("created_at DESC").Pluck("post_id", &postIdComment)
+	register.Db.Table("comments").Where("category_id = ?", structure.CatId).Pluck("user_id", &userIdComment)
 	register.Db.Table("like_posts").Where("is_like = ?", true).Pluck("post_id", &postIdLike)
 
 	// order select
 	if r.FormValue("order") == "desc" {
 
-		register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("content", &content)
-		register.Db.Table("posts").Where("category_id = ?", catId).Order("created_at DESC").Pluck("id", &postId)
-		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
-		register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("message", &message)
-		register.Db.Table("comments").Where("category_id = ?", catId).Order("created_at DESC").Pluck("post_id", &postIdComment)
-		register.Db.Table("comments").Where("category_id = ?", catId).Pluck("user_id", &userIdComment)
+		register.Db.Table("posts").Where("category_id = ?", structure.CatId).Order("created_at DESC").Pluck("content", &content)
+		register.Db.Table("posts").Where("category_id = ?", structure.CatId).Order("created_at DESC").Pluck("id", &postId)
+		register.Db.Table("posts").Where("category_id = ?", structure.CatId).Pluck("user_id", &userId)
+		register.Db.Table("comments").Where("category_id = ?", structure.CatId).Order("created_at DESC").Pluck("message", &message)
+		register.Db.Table("comments").Where("category_id = ?", structure.CatId).Order("created_at DESC").Pluck("post_id", &postIdComment)
+		register.Db.Table("comments").Where("category_id = ?", structure.CatId).Pluck("user_id", &userIdComment)
 		register.Db.Table("like_posts").Where("is_like = ?", true).Pluck("post_id", &postIdLike)
 
 	} else if r.FormValue("order") == "asc" {
 
-		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("content", &content)
-		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("id", &postId)
-		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
-		register.Db.Table("comments").Where("category_id = ?", catId).Pluck("message", &message)
-		register.Db.Table("comments").Where("category_id = ?", catId).Pluck("post_id", &postIdComment)
-		register.Db.Table("comments").Where("category_id = ?", catId).Pluck("user_id", &userIdComment)
+		register.Db.Table("posts").Where("category_id = ?", structure.CatId).Pluck("content", &content)
+		register.Db.Table("posts").Where("category_id = ?", structure.CatId).Pluck("id", &postId)
+		register.Db.Table("posts").Where("category_id = ?", structure.CatId).Pluck("user_id", &userId)
+		register.Db.Table("comments").Where("category_id = ?", structure.CatId).Pluck("message", &message)
+		register.Db.Table("comments").Where("category_id = ?", structure.CatId).Pluck("post_id", &postIdComment)
+		register.Db.Table("comments").Where("category_id = ?", structure.CatId).Pluck("user_id", &userIdComment)
 		register.Db.Table("like_posts").Where("is_like = ?", true).Pluck("post_id", &postIdLike)
 	}
 
@@ -310,7 +310,7 @@ func Info(w http.ResponseWriter, r *http.Request) {
 
 	//add post
 	if r.FormValue("postContent") != "" {
-		postErr := user.AddPostByUserController(r.FormValue("postContent"), catId)
+		postErr := user.AddPostByUserController(r.FormValue("postContent"), structure.CatId)
 		if postErr != "" {
 			panic("post error")
 		}
@@ -320,7 +320,7 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("comment") != "" {
 		commentContent := r.FormValue("comment")
 		postID, _ := strconv.Atoi(r.FormValue("postID"))
-		user.AddCommentByUserController(postID, commentContent, catId)
+		user.AddCommentByUserController(postID, commentContent, structure.CatId)
 	}
 
 	//add like/dislike post
@@ -341,18 +341,18 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	if r.FormValue("reportPostButton") != "" {
 		postID, _ := strconv.Atoi(r.FormValue("reportPostButton"))
 		var userId int
-		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
+		register.Db.Table("posts").Where("category_id = ?", structure.CatId).Pluck("user_id", &userId)
 		nicknameUser, _ := register.GetNicknameByID(userId)
-		moderator.ReportPostByModeratorController(postID, nicknameUser, structure.DataHub1.ReportPostContent, catId)
+		moderator.ReportPostByModeratorController(postID, nicknameUser, structure.DataHub1.ReportPostContent, structure.CatId)
 	}
 
 	//report comment
 	if r.FormValue("reportCommentButton") != "" {
 		postID, _ := strconv.Atoi(r.FormValue("reportPostButton"))
 		var userId int
-		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
+		register.Db.Table("posts").Where("category_id = ?", structure.CatId).Pluck("user_id", &userId)
 		nicknameUser, _ := register.GetNicknameByID(userId)
-		moderator.ReportPostByModeratorController(postID, nicknameUser, structure.DataHub1.ReportPostContent, catId)
+		moderator.ReportPostByModeratorController(postID, nicknameUser, structure.DataHub1.ReportPostContent, structure.CatId)
 	}
 }
 
