@@ -22,6 +22,16 @@ body {
     align-items: flex-start;
 }
 
+.up {
+    position: relative;
+    height: 100px;
+    width: 100%;
+    margin: 0;
+    bottom: 20px;
+    z-index: -10;
+}
+
+
 .posts {
     font-family: sans-serif;
     background: #81847d;

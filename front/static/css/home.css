@@ -5,10 +5,12 @@ body {
 }
 
 .up {
+    position: relative;
     height: 100px;
     width: 100%;
     margin: 0;
-    top: -50px;
+    bottom: 20px;
+    z-index: -10;
 }
 
 .div_warning {
