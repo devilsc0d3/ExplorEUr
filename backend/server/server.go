@@ -13,6 +13,7 @@ var RegisteredPaths = make(map[int]bool) // Map to track registered paths
 func Router() {
 	fs := http.FileServer(http.Dir("./front/static/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	http.HandleFunc("/404", Error)
 	http.HandleFunc("/", HomeHandler)
 	http.HandleFunc("/category", CategoryHandler)
 	http.HandleFunc("/login", LoginHandler)

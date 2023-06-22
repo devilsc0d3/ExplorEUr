@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="../static/css/header.css">
     <link rel="icon" type="image/x-icon" href="http://localhost:8080/static/image/logo.png">
 </head>
+<style>
+    .up {
+        height: 100px;
+        width: 100%;
+        margin: 0;
+        top: -50px;
+    }
+</style>
+
 <body class="center">
 
 <header>
@@ -17,18 +26,21 @@
         <h1 class="headerLetter">Category</h1>
     </a>
     {{if not .IsConnected}}
-        <a class="a_header" href="http://localhost:8080/login">
-            <h1 class="headerLetter">Sign in / Sign up</h1>
-        </a>
+    <a class="a_header" href="http://localhost:8080/login">
+        <h1 class="headerLetter">Sign in / Sign up</h1>
+    </a>
     {{else if .IsConnected}}
-        <a class="a_header" href="http://localhost:8080/activity">
-            <h1 class="headerLetter">Activity</h1>
-        </a>
-        <a class="a_header" href="http://localhost:8080/logout">
-            <h1 class="headerLetter">Logout</h1>
-        </a>
+    <a class="a_header" href="http://localhost:8080/activity">
+        <h1 class="headerLetter">Activity</h1>
+    </a>
+    <a class="a_header" href="http://localhost:8080/logout">
+        <h1 class="headerLetter">Logout</h1>
+    </a>
     {{end}}
 </header>
+<div class="up">
+    <svg id="wave" style="transform:rotate(180deg); transition: 0.3s" viewBox="0 0 1440 100" version="1.1" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sw-gradient-0" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(129, 132, 125, 1)" offset="0%"></stop><stop stop-color="rgba(129, 132, 125, 1)" offset="100%"></stop></linearGradient></defs><path style="transform:translate(0, 0px); opacity:1" fill="url(#sw-gradient-0)" d="M0,90L24,76.7C48,63,96,37,144,26.7C192,17,240,23,288,36.7C336,50,384,70,432,66.7C480,63,528,37,576,28.3C624,20,672,30,720,28.3C768,27,816,13,864,13.3C912,13,960,27,1008,35C1056,43,1104,47,1152,41.7C1200,37,1248,23,1296,26.7C1344,30,1392,50,1440,56.7C1488,63,1536,57,1584,56.7C1632,57,1680,63,1728,56.7C1776,50,1824,30,1872,31.7C1920,33,1968,57,2016,56.7C2064,57,2112,33,2160,33.3C2208,33,2256,57,2304,66.7C2352,77,2400,73,2448,60C2496,47,2544,23,2592,11.7C2640,0,2688,0,2736,13.3C2784,27,2832,53,2880,66.7C2928,80,2976,80,3024,68.3C3072,57,3120,33,3168,26.7C3216,20,3264,30,3312,41.7C3360,53,3408,67,3432,73.3L3456,80L3456,100L3432,100C3408,100,3360,100,3312,100C3264,100,3216,100,3168,100C3120,100,3072,100,3024,100C2976,100,2928,100,2880,100C2832,100,2784,100,2736,100C2688,100,2640,100,2592,100C2544,100,2496,100,2448,100C2400,100,2352,100,2304,100C2256,100,2208,100,2160,100C2112,100,2064,100,2016,100C1968,100,1920,100,1872,100C1824,100,1776,100,1728,100C1680,100,1632,100,1584,100C1536,100,1488,100,1440,100C1392,100,1344,100,1296,100C1248,100,1200,100,1152,100C1104,100,1056,100,1008,100C960,100,912,100,864,100C816,100,768,100,720,100C672,100,624,100,576,100C528,100,480,100,432,100C384,100,336,100,288,100C240,100,192,100,144,100C96,100,48,100,24,100L0,100Z"></path></svg>
+</div>
 
 <h1 class="white">Welcome to the forum ExploreUr !</h1>
 <p class="white">This forum is for urbex enthusiasts and to provide global information and best practices</p>
@@ -56,6 +68,10 @@
     </div>
 </section>
 <h3 class="white">We wish you great urban discoveries and fruitful discussions within the ExpleUr community<a
-            class="easter_egg" href="http://localhost:8080/easter_egg">!</a></h3>
+        class="easter_egg" href="http://localhost:8080/easter_egg">!</a></h3>
+
+    <footer>
+        <p align="center">the project is a Forum was created for 2023 end year with : <br>- Fauré Léo <br>- Cenac Lucille <br>- Brun Sasha <br> Laldy-Maquiha Adan</p>
+    </footer>
 </body>
 </html>
