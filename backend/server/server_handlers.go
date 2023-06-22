@@ -304,8 +304,8 @@ func Info(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//init commentReport
-	if dataHub.ReportCommentContent == "" {
-		dataHub.ReportCommentContent = r.FormValue("textCommentReport")
+	if structure.DataHub1.ReportCommentContent == "" {
+		structure.DataHub1.ReportCommentContent = r.FormValue("textCommentReport")
 	}
 
 	//add post
@@ -343,7 +343,7 @@ func Info(w http.ResponseWriter, r *http.Request) {
 		var userId int
 		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
 		nicknameUser, _ := register.GetNicknameByID(userId)
-		moderator.ReportPostByModeratorController(postID, nicknameUser, dataHub.ReportPostContent, catId)
+		moderator.ReportPostByModeratorController(postID, nicknameUser, structure.DataHub1.ReportPostContent, catId)
 	}
 
 	//report comment
@@ -352,7 +352,7 @@ func Info(w http.ResponseWriter, r *http.Request) {
 		var userId int
 		register.Db.Table("posts").Where("category_id = ?", catId).Pluck("user_id", &userId)
 		nicknameUser, _ := register.GetNicknameByID(userId)
-		moderator.ReportPostByModeratorController(postID, nicknameUser, dataHub.ReportPostContent, catId)
+		moderator.ReportPostByModeratorController(postID, nicknameUser, structure.DataHub1.ReportPostContent, catId)
 	}
 }
 

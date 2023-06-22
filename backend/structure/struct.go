@@ -1,10 +1,12 @@
 package structure
 
 type DataHub struct {
-	Role        string
-	Database    []Posts
-	Category    []string
-	IsConnected bool
+	Role                 string
+	Database             []Posts
+	Category             []string
+	IsConnected          bool
+	ReportPostContent    string
+	ReportCommentContent string
 }
 
 type Posts struct {
